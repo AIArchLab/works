@@ -1,0 +1,23 @@
+{
+  "id": "0000",
+  "slug": "work-slug-here",
+  "title": "",
+  "published": "YYYY-MM-DD",
+  "status": "sample | concept | illustrative | sanitized-example",
+  "tags": [],
+  "license": "MIT",
+  "language": "en",
+  "deidentification_checklist": {
+    "no_client_names": false,
+    "no_platform_names_in_case_content": false,
+    "no_budgets_or_prices": false,
+    "no_private_strategy_layer": false,
+    "principal_referred_only_as_dongshizhang": false,
+    "all_claims_sourced_or_marked_laiyuanque": false
+  },
+  "review": {
+    "technical_architecture_review": "pending",
+    "marketing_planning_review": "pending",
+    "approved_by_dongshizhang": "pending"
+  }
+}
