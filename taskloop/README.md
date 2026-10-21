@@ -4,6 +4,19 @@
 
 **Why this work is here.** Taskloop is a sample of engineering discipline - tests, de-identification, and verifiable delivery - not a showcase of technical difficulty. It is written for clients evaluating governance and delivery quality.
 
+## Background / Why this exists
+
+Agent tasks fail quietly. A process restart can erase an unfinished task. A finished result can
+die in a crashed notification queue. And an HTTP 200 from a webhook is easily mistaken for a
+delivery that actually persisted. The premise of Taskloop is that an agent task is complete only
+when its result is durably acknowledged by the recipient - execution, delivery, and a human
+reading the message are three different states, and only the first two are this tool's job.
+
+This repository exists to make that discipline concrete and inspectable: durable task state, a
+transactional outbox, signed receipts bound to the exact payload, and tests that prove each
+property. It documents how AIArchLab delivers agent work, and it claims nothing beyond what the
+included tests and evidence show.
+
 Runnable MVP · Sanitized Example · Python 3.10+ · Standard library only · MIT
 
 Taskloop implements one bounded use case: schedule an HTTP status check, let a configured
