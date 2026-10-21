@@ -1,6 +1,6 @@
 # AIArchLab works
 
-Finished works from AIArchLab. One work per folder. 作品，不是文章。
+Finished works from AIArchLab. One work per folder. Works, not articles.
 Scenario and data in every work are fictional unless the work itself states otherwise.
 
 | # | Work | What it shows | Published |
