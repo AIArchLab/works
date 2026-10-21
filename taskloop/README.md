@@ -2,6 +2,8 @@
 
 **A durable agent task is not complete until its result reaches a recipient inbox.**
 
+**Why this work is here.** Taskloop is a sample of engineering discipline - tests, de-identification, and verifiable delivery - not a showcase of technical difficulty. It is written for clients evaluating governance and delivery quality.
+
 Runnable MVP · Sanitized Example · Python 3.10+ · Standard library only · MIT
 
 Taskloop implements one bounded use case: schedule an HTTP status check, let a configured
