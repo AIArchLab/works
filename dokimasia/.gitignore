@@ -1,0 +1,4 @@
+dokima-reports/
+*.pyc
+__pycache__/
+.env

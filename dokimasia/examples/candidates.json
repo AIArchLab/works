@@ -1,0 +1,5 @@
+[
+  {"model": "vendor-a/model-flash", "price_in": 0.11, "price_out": 0.51},
+  {"model": "vendor-b/model-lite", "price_in": 0.05, "price_out": 0.20},
+  {"model": "vendor-c/model-pro"}
+]

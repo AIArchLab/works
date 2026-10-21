@@ -6,6 +6,7 @@ Scenario and data in every work are fictional unless the work itself states othe
 | # | Work | What it shows | Published |
 |---|------|---------------|-----------|
 | 1 | [Taskloop](taskloop/) | Durable HTTP-check agent with signed delivery receipts | 2026-10-21 |
+| 2 | [dokimasia](dokimasia/) | AI model vetting in three gates, priced from measured token load | 2026-10-22 |
 
 Works that need their own repository (code with releases, issues, tests):
 - [weirwright](https://github.com/AIArchLab/weirwright) — executable change-control gates.

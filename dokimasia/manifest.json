@@ -1,0 +1,29 @@
+{
+  "id": "0001",
+  "slug": "dokimasia",
+  "title": "dokimasia — AI model vetting in three gates",
+  "published": "2026-10-21",
+  "status": "sample",
+  "tags": [
+    "ai",
+    "model-selection",
+    "evals",
+    "cli",
+    "mvp"
+  ],
+  "license": "MIT",
+  "language": "en",
+  "deidentification_checklist": {
+    "no_client_names": true,
+    "no_platform_names_in_case_content": true,
+    "no_budgets_or_prices": true,
+    "no_private_strategy_layer": true,
+    "principal_referred_only_as_founder": true,
+    "all_claims_sourced_or_marked_source_missing": true
+  },
+  "review": {
+    "technical_architecture_review": "author self-test, live run passed (2026-10-21)",
+    "marketing_planning_review": "pending",
+    "approved_by_founder": "2026-10-22"
+  }
+}
