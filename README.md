@@ -13,7 +13,7 @@ Works that need their own repository (code with releases, issues, tests):
 ## How a work lands here
 
 1. Drafted and de-identified (see [CONTENT_POLICY.md](CONTENT_POLICY.md)).
-2. Reviewed by the studio's technical architecture and marketing planning members.
+2. Reviewed internally.
 3. Approved by the Founder. Only then: folder published, this index updated.
 
 New works start from [`_template/`](_template/).
