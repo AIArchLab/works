@@ -5,7 +5,7 @@ Scenario and data in every work are fictional unless the work itself states othe
 
 | # | Work | What it shows | Published |
 |---|------|---------------|-----------|
-| — | First work in preparation | — | — |
+| 1 | [Taskloop](taskloop/) | Durable HTTP-check agent with signed delivery receipts | 2026-10-21 |
 
 Works that need their own repository (code with releases, issues, tests):
 - [weirwright](https://github.com/AIArchLab/weirwright) — executable change-control gates.

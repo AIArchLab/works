@@ -1,0 +1,56 @@
+{
+  "scenario": "Synthetic local HTTP endpoint and durable signed recipient inbox",
+  "agent": "real remote model",
+  "ran_at": "2026-10-21T12:34:25.649098+00:00",
+  "actions": [
+    "inspect",
+    "report"
+  ],
+  "http_gets": 1,
+  "notification_requests": 2,
+  "state_after_first_503": "AWAITING_DELIVERY",
+  "final_state": "COMPLETED",
+  "receiver_unique_events": 1,
+  "delivery_attempts": 2,
+  "resumed_in_new_process": true,
+  "valid_signed_receipt": true,
+  "usage": [
+    {
+      "promptTokenCount": 135,
+      "candidatesTokenCount": 6,
+      "totalTokenCount": 141,
+      "trafficType": "ON_DEMAND",
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 135
+        }
+      ],
+      "candidatesTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 6
+        }
+      ]
+    },
+    {
+      "promptTokenCount": 253,
+      "candidatesTokenCount": 53,
+      "totalTokenCount": 306,
+      "trafficType": "ON_DEMAND",
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 253
+        }
+      ],
+      "candidatesTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 53
+        }
+      ]
+    }
+  ],
+  "human_read_receipt": false
+}

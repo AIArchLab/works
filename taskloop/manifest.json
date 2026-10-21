@@ -1,0 +1,51 @@
+{
+  "name": "Taskloop",
+  "version": "0.1.0",
+  "kind": "Sanitized Example / runnable MVP",
+  "license": "MIT",
+  "description": "Durable HTTP-check agent and signed recipient delivery loop",
+  "author": "AIArchLab",
+  "scenario": "Synthetic endpoint and example recipient; no customer workload",
+  "review": {
+    "technical": "34 author-run tests passed; real model smoke passed",
+    "marketing": "not performed",
+    "publication_authorization": "Publication approved by the Founder on 2026-10-21"
+  },
+  "verification": {
+    "unit_tests": 34,
+    "live_smoke": "evidence/live_smoke.json",
+    "state_contract": "Execution and recipient delivery are independent; human-read receipt is not claimed"
+  },
+  "limits": [
+    "Persistent single-host worker required",
+    "Read-only safe HTTP GET only",
+    "At-least-once webhook delivery with receiver deduplication",
+    "No arbitrary chat/email connector or external escalation channel"
+  ],
+  "checklist": {
+    "deidentified": true,
+    "no_credentials": true,
+    "no_client_cases": true,
+    "sample_label_present": true,
+    "actual_results_only": true,
+    "no_budget_or_price_claims": true
+  },
+  "files": {
+    ".dockerignore": "b200f852c02340fa30cac0bd4dc7d44003664e7386f490a9c5e386c78b5f2f91",
+    ".gitignore": "041121de6e3165b56429062a91022dfc6d9ac9ca1b217ccc23c0b86893c7b879",
+    "Dockerfile": "fc93596b90258b69d307cb3b0dba18ef7d8c9827f9cf2a224b52fd69e61ab314",
+    "LICENSE": "6927fbe7cf37143fb0bce07467db4c4751ad846ff795b038da8e6d74bdbaac5b",
+    "README.md": "a698726054f8facb9114f0469db22912cbd4c50c33d4452c695dd95bd49307a4",
+    "SECURITY.md": "39b215d29e22779f66da1db5a1e126760d36300d7b3f3d5f19bd24f13b85d3ea",
+    "evidence/live_smoke.json": "837e5063a0467b6f8606a0407d4b36dd7118cf7ab40c2a62a68e2e0679cd119f",
+    "evidence/unit_tests.txt": "f277971cc14755636c0ce41d1b627fe62a5118ee3be88165325c773a78fd0c22",
+    "examples/smoke.py": "7948ae5b4fdf24b4c4745eb2e87a5ee272ef1a1ee2ae3ec43f7d555d4b04afbe",
+    "pyproject.toml": "028ec2551aa29df021abbfc43689c082cd2df86e035179ce300fb49068e4855b",
+    "taskloop/__init__.py": "91447944015cec709e8aa7655f7e9d64e1e4508e7023a57fe3746911c0fc6fed",
+    "taskloop/__main__.py": "e8bd4979c279b54ca79c33c145841325f1be101d0d1edf8d0c714a46b34b25d8",
+    "taskloop/agents.py": "acf6cd5390da2d1ca842b4860893a85c858c3f25e106557b919da72849de3bab",
+    "taskloop/core.py": "affa1058704dedacec3d4264d16677ea1aa3e7f94933838d85f38b33e5c64e05",
+    "taskloop/receiver.py": "9963cf32795f7a34e3ff5b1487a1a7df2f9f42257ccbe392096ebf04bab4fe61",
+    "tests/test_taskloop.py": "f3e5123b0d40bf94012f4bad66acd5558d1fdade5fa8662c0ab1ebf7dd1c1657"
+  }
+}

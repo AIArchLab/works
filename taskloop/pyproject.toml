@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aiarchlab-taskloop"
+version = "0.1.0"
+description = "Durable HTTP-check agent with a transactional notification outbox"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = []
+
+[tool.setuptools.packages.find]
+include = ["taskloop*"]
