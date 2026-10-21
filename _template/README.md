@@ -18,7 +18,3 @@ the method's inner logic stays with the studio.>
 
 ## Limits
 <What this does not prove. No invented results.>
-
----
-
-繁體中文摘要：<one short paragraph>
