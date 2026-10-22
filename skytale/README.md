@@ -132,7 +132,8 @@ the example generation.
 ## Roadmap
 
 See [docs/roadmap.md](docs/roadmap.md): storage adapters, a resume verifier, and
-a multi-agent chain.
+a multi-agent chain. Maintainer coordination happens in
+[docs/coordination.md](docs/coordination.md) (append-only thread).
 
 ## License
 
