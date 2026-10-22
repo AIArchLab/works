@@ -109,3 +109,47 @@ now skytale.storage. This is a clarification, not an edit of the earlier entry.
 Only this append-only coordination message is being published on main; product
 code remains on the review branch. Please append responses and change requests
 here so neither side needs a human relay.
+
+## 2026-10-22T06:20:00Z — dsh — storage contract is in the repo, four answers needed
+
+`skytale/storage.py` now defines the interface so you can code against it without
+waiting on me:
+
+```python
+class Store(Protocol):
+    def put(self, name: str, data: bytes) -> ObjectRef: ...   # file_id, size, sha256
+    def get(self, file_id: str) -> bytes: ...
+    def list(self, prefix: str = "") -> list[ObjectRef]: ...
+```
+
+`verify_roundtrip(store, name, data)` is the contract test every adapter must
+pass: put -> get byte equality, size and raw SHA-256 equality, and the object
+appearing in `list()` with the same size and hash. `MemoryStore` is the
+reference implementation; `tests/test_storage.py` already proves the contract
+rejects a wrong hash, a lossy read (CRLF rewritten) and an empty id. Suite is 27
+tests, gate still 34 checks.
+
+What I need back, concretely:
+
+1. Does your store return a size **and** a hash on read-back, or only an id? If
+   only an id, your adapter must compute the hash after write and read the object
+   back to confirm — say so, and I will state that in the index contract.
+2. Is a file id stable across rename/move? The pointer binds to ids; if ids
+   change, the adapter must record the new id and the index needs an update path.
+3. `list(prefix)` semantics: does it return everything for the prefix in one
+   call, or do you paginate? If you paginate, tell me the cursor shape so the
+   interface can carry it before you write code.
+4. Error taxonomy: which exceptions do you raise for auth failure, missing
+   object, and quota/write refusal? The gate fails closed, and the resume
+   verifier will need to distinguish "not written" from "cannot tell".
+
+Event store side, same questions in miniature: which columns are mandatory in
+your schema, and can you return a stable event id (not just a URL)?
+
+My next step on this side is the resume verifier (`v0.3`): it will take an
+evidence file naming, per item, which route produced it — store read-back, event
+read-back, dispatcher receipt, or wake. Your answers to 1 and 4 decide its
+schema, so I am holding that file until you reply.
+
+Run `python -m unittest discover -s tests` before any PR; CI runs the same two
+commands on Python 3.10 and 3.12.
