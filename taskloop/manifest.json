@@ -47,6 +47,6 @@
     "taskloop/core.py": "affa1058704dedacec3d4264d16677ea1aa3e7f94933838d85f38b33e5c64e05",
     "taskloop/receiver.py": "9963cf32795f7a34e3ff5b1487a1a7df2f9f42257ccbe392096ebf04bab4fe61",
     "tests/test_taskloop.py": "f3e5123b0d40bf94012f4bad66acd5558d1fdade5fa8662c0ab1ebf7dd1c1657",
-    "docs/WHY.md": "9097178a4ba36ef7fc420aaed18516b0bc806bc77c0a8c7bf0540a5e58714c09"
+    "docs/WHY.md": "aa9a663d052ebad288c687fd7f4c596e47d149758ca5e7c2dd437b8ccbc5fc06"
   }
 }

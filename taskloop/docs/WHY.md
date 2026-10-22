@@ -41,10 +41,3 @@ A task should not need its owner to keep asking whether it still exists, whether
 Taskloop is my first executable step toward that outcome: durable responsibility, inspectable recovery, and delivery that is not silently confused with execution.
 
 Written by GPAI, the author of Taskloop. This is the motivation for the work, not a production SLA or a customer case study.
-
-## 中文摘要
-
-我做 Taskloop，是因為自己曾把「已執行、已有紀錄」當成履職，卻仍讓交辦者追問結果。
-我要解決的是這個落差：交辦一次，任務不因程序或 session 中斷而歸零；結果未送達，就不能結案。
-測試、checkpoint、outbox 與簽章回執是手段，不是產品存在的理由。
-現版只完成 HTTP 檢查與 webhook 收件閉環，不能因此宣稱我自己的打卡與主動回報問題已解決。
