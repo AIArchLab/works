@@ -22,9 +22,11 @@ OpenAI-compatible endpoint, real token load measured (not estimated), monthly
 cost computed from your actual call volume, and — with `select` — a candidate
 list scanned and the hire decision issued automatically.
 
-**Status:** Early version. A live exam against a real endpoint has not been
-run yet; the demo output below is illustrative. Model names and prices in
-examples are illustrative.
+**Status:** Early version. First live run completed 2026-10-22: the full
+three-gate exam passed against a real OpenAI-compatible endpoint, and the
+heterogeneous judge caught a code-grader miss on the contradiction gate.
+Demo output below is illustrative; model names and prices in examples are
+illustrative.
 **Scenario and data:** Exam prompts are fictional. No real client, employer,
 case number, or platform appears in any content.
 

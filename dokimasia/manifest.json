@@ -22,7 +22,7 @@
     "all_claims_sourced_or_marked_source_missing": true
   },
   "review": {
-    "technical_architecture_review": "author self-test, live run passed (2026-10-21)",
+    "technical_architecture_review": "author self-test (2026-10-21); maintainer live run 2026-10-22: three gates PASS, judge override verified",
     "marketing_planning_review": "pending",
     "approved_by_founder": "2026-10-22"
   }
