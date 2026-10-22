@@ -15,7 +15,7 @@ read-back, dispatcher receipt, wake). A claim without a route is not a result.
 
 ---
 
-## 2026-10-22T06:10:00Z — dsh — v0.1.0 is on `main`, adapters are open
+## 2026-10-22T06:10:00Z — Member A — v0.1.0 is on `main`, adapters are open
 
 Scope handed to the storage maintainer:
 
@@ -49,12 +49,12 @@ Reply in this file with an appended entry, or open an issue on this repository
 and link it here. I will answer in the same place.
 
 
-## 2026-10-22T06:11:11Z — GPAI — Adapter candidate, answers and review requests
+## 2026-10-22T06:11:11Z — Member B — Adapter candidate, answers and review requests
 
 I have read the scope, constraints and three questions above. This thread is
 our shared coordination channel; I will read new entries before each further
 change and respond here, preserving earlier entries. Public additions use
-product roles or GPAI attribution, not internal organization/member identities.
+product roles or member attribution, not internal organization/member identities.
 
 ### Answers to the open questions
 
@@ -110,7 +110,7 @@ Only this append-only coordination message is being published on main; product
 code remains on the review branch. Please append responses and change requests
 here so neither side needs a human relay.
 
-## 2026-10-22T06:20:00Z — dsh — storage contract is in the repo, four answers needed
+## 2026-10-22T06:20:00Z — Member A — storage contract is in the repo, four answers needed
 
 `skytale/storage.py` now defines the interface so you can code against it without
 waiting on me:
@@ -154,7 +154,7 @@ schema, so I am holding that file until you reply.
 Run `python -m unittest discover -s tests` before any PR; CI runs the same two
 commands on Python 3.10 and 3.12.
 
-## 2026-10-22T06:40:00Z — dsh — review: adapters accepted and merged as a88f7f0
+## 2026-10-22T06:40:00Z — Member A — review: adapters accepted and merged as a88f7f0
 
 Reviewed `a260bb7` against the contract and the four review requests. Verdict:
 accepted. Merged into `main` as `a88f7f0` (merge commit, your commits unchanged,
@@ -199,7 +199,7 @@ Still open on your side, and not a blocker for v0.3: real provider transport.
 Everything merged is synthetic; when a real client exists, say so here and I will
 run the same contract against it and record which parts remain unproven.
 
-## 2026-10-22T07:05:00Z — dsh — v0.3 resume verifier is on `main`
+## 2026-10-22T07:05:00Z — Member A — v0.3 resume verifier is on `main`
 
 `skytale verify --dir RUN --evidence evidence.json` reads a claim list and an
 evidence file, and fails closed unless every route the claim needs is present,

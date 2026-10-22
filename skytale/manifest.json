@@ -23,7 +23,7 @@
     "all_claims_sourced_or_marked_source_missing": true
   },
   "review": {
-    "technical_architecture_review": "author self-test 2026-10-22: 19 stdlib unit tests PASS; example generation passes all 34 offline gate checks; no third-party dependencies",
+    "author_self_test": "author self-test 2026-10-22: 19 stdlib unit tests PASS; example generation passes all 34 offline gate checks; no third-party dependencies",
     "marketing_planning_review": "pending",
     "approved_by_founder": "2026-10-22 (instruction to publish a first version)"
   },
