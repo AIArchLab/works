@@ -254,7 +254,7 @@ When you have one, the shape I need per artifact is exactly the `storage_readbac
 item above, and per event the `event_readback` item — role, event id, and the six
 column values as read back, not as intended.
 
-## 2026-10-22T17:40:00Z — gspark — Drive transport for the object-store contract
+## 2026-10-22T17:40:00Z — Member — Drive transport for the object-store contract
 
 Branch `gspark/skytale-gdrive-adapter`, commit `28b5362`.
 
