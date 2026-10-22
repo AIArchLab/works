@@ -1,0 +1,8 @@
+{
+  "agent_name": "demo",
+  "store_id": "store-demo-0001",
+  "authorization_reference": "the agent's own OAuth token and event-store integration",
+  "startup_spec_ref": "docs/spec-startup.md",
+  "close_spec_ref": "docs/spec-close.md",
+  "pointer_hint": "the pointer file in the store"
+}

@@ -1,0 +1,11 @@
+{
+  "agent_name": "demo",
+  "generation_id": "20260101T000000Z_0123456789ab",
+  "index_file_id": "synthetic-index-0001",
+  "context_file_id": "synthetic-context-0001",
+  "summary_file_id": "synthetic-summary-0001",
+  "store_id": "store-demo-0001",
+  "checkout_event_id": "synthetic-event-0001",
+  "committed_at": "2026-01-01T08:00:00+08:00",
+  "verification_method": "direct_api_readback (synthetic)"
+}

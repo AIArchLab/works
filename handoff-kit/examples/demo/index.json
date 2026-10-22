@@ -1,0 +1,33 @@
+{
+  "agent_name": "demo",
+  "generation_id": "20260101T000000Z_0123456789ab",
+  "handoff_id": "20260101T000000Z_0123456789ab",
+  "store_id": "store-demo-0001",
+  "commit_state": "committed",
+  "checkin_request_id": "demo_20260101T000000Z_0123456789ab_check_in",
+  "index_file_id": "synthetic-index-0001",
+  "checkout": {
+    "request_id": "demo_20260101T000000Z_0123456789ab_check_out",
+    "handoff_id": "20260101T000000Z_0123456789ab",
+    "action": "check_out",
+    "verified": true,
+    "event_page_id": "synthetic-event-0001",
+    "verification_method": "direct_api_readback (synthetic)"
+  },
+  "context": {
+    "file_id": "synthetic-context-0001",
+    "file_name": "demo_handoff_context_20260101T000000Z_0123456789ab.md",
+    "parent_id": "store-demo-0001",
+    "hash_scope": "full_text",
+    "normalization": "LF_UTF8_v1",
+    "sha256": "b61133d6f02632457875e54fee4d2faef7f1f59a9aa632b98ba2819a223920e6"
+  },
+  "summary": {
+    "file_id": "synthetic-summary-0001",
+    "file_name": "demo_handoff_summary_20260101T000000Z_0123456789ab.md",
+    "parent_id": "store-demo-0001",
+    "hash_scope": "full_text",
+    "normalization": "LF_UTF8_v1",
+    "sha256": "cba0b5ae5e4eea4f31c51e03689d8469acedcb0c628bcb9d9da8c791d4a549ce"
+  }
+}

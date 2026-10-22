@@ -1,0 +1,39 @@
+{
+  "id": "0004",
+  "slug": "handoff-kit",
+  "title": "handoff-kit — fail-closed session handoff for LLM agents",
+  "published": "2026-10-22",
+  "status": "concept",
+  "tags": [
+    "ai",
+    "agents",
+    "handoff",
+    "session-state",
+    "cli",
+    "mvp"
+  ],
+  "license": "MIT",
+  "language": "en",
+  "deidentification_checklist": {
+    "no_client_names": true,
+    "no_platform_names_in_case_content": true,
+    "no_budgets_or_prices": true,
+    "no_private_strategy_layer": true,
+    "principal_referred_only_as_founder": true,
+    "all_claims_sourced_or_marked_source_missing": true
+  },
+  "review": {
+    "technical_architecture_review": "author self-test 2026-10-22: 19 stdlib unit tests PASS; example generation passes all 34 offline gate checks; no third-party dependencies",
+    "marketing_planning_review": "pending",
+    "approved_by_founder": "2026-10-22 (instruction to publish a first version)"
+  },
+  "verification": {
+    "unit_tests": 19,
+    "offline_gate_checks": 34,
+    "example": "examples/demo (synthetic ids)",
+    "limits": [
+      "Offline structure check only; remote storage read-back, event read-back, dispatcher receipts and wakes are not exercised",
+      "No storage or event-store adapter ships in v0.1"
+    ]
+  }
+}
