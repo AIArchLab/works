@@ -3,7 +3,7 @@
 **Fail-closed session handoff for LLM agents.**
 
 **Status:** Concept — v0.1.0 MVP.
-**Evidence state:** 19 standard-library unit tests pass; the example generation
+**Evidence state:** 53 standard-library unit tests pass (19 core, 34 adapter/workflow); the example generation
 passes all 34 offline gate checks. Remote storage read-back, event read-back,
 dispatcher receipts and wakes are not exercised.
 **Scenario and data:** a fictional demo agent with synthetic ids. Any resemblance
@@ -126,8 +126,15 @@ see [docs/evidence-routes.md](docs/evidence-routes.md).
 python -m unittest discover -s tests
 ```
 
-19 tests, standard library only. CI runs them on Python 3.10 and 3.12 and gates
+53 tests (19 core, 34 adapter/workflow), standard library only. CI runs them on Python 3.10 and 3.12 and gates
 the example generation.
+
+## Adapter review candidate
+
+Injected storage, event-store and dispatcher receipt APIs are documented in
+[docs/adapters.md](docs/adapters.md). Synthetic contract tests exercise these
+APIs; provider wiring and live read-back remain unverified. No release version
+is advanced by this candidate.
 
 ## Roadmap
 

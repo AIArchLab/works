@@ -1,110 +1,118 @@
-"""Storage contract: the one interface a store adapter must satisfy.
+"""Injected object-store adapter and independent, fail-closed read-back.
 
-The gate never talks to a store. It only checks that local artifacts agree with
-the index they ship with. A store plugs in here, and a store adapter is
-responsible for returning an id, a size and a raw SHA-256 on every write and on
-every read, so that a later read-back can be compared with what was recorded.
-
-Rules for adapters:
-
-1. ``put`` returns an ``ObjectRef`` whose ``size`` and ``sha256`` describe the
-   bytes the store now holds. If the store cannot report a hash, the adapter must
-   compute it locally after the write and read the object back to confirm.
-2. ``get`` returns exactly the bytes written. No transcoding, no newline
-   rewriting: bytes are bytes. Text normalization (``LF_UTF8_v1``) is applied by
-   the caller, not by the store.
-3. ``list`` is prefix-based and deterministic in ordering for a given store
-   state; adapters that paginate must keep returning everything for a prefix.
-4. Adapters never read credentials from a fixed local path. The operator injects
-   them.
+Transport implementations own authentication. No provider SDK or credentials are
+bundled. SHA-256 in StoredFile is over raw bytes, never normalized text.
 """
-
 from __future__ import annotations
 
 import hashlib
 from dataclasses import dataclass
-from typing import Protocol, runtime_checkable
+from typing import Protocol
+
+from .core import sha256_lf_utf8_v1
+
+
+class StorageVerificationError(ValueError):
+    """Missing or inconsistent storage evidence."""
 
 
 @dataclass(frozen=True)
-class ObjectRef:
-    """What a store reports about one stored object."""
-
+class StoredFile:
     file_id: str
+    name: str
+    parent_id: str
     size: int
     sha256: str
 
 
-@runtime_checkable
-class Store(Protocol):
-    """Minimal object store used by a handoff run."""
-
-    def put(self, name: str, data: bytes) -> ObjectRef: ...
-
+class Storage(Protocol):
+    def put(self, name: str, data: bytes) -> StoredFile: ...
     def get(self, file_id: str) -> bytes: ...
-
-    def list(self, prefix: str = "") -> list[ObjectRef]: ...
-
-
-class ContractError(AssertionError):
-    """Raised when an adapter violates the storage contract."""
+    def stat(self, file_id: str) -> StoredFile: ...
+    def list(self, query: str = "") -> list[StoredFile]: ...
 
 
-def _digest(data: bytes) -> str:
-    return hashlib.sha256(data).hexdigest()
+class ObjectStoreClient(Protocol):
+    """Operator-supplied transport; errors must propagate, not become success."""
+    def put_object(self, store_id: str, name: str, data: bytes) -> StoredFile: ...
+    def get_object(self, store_id: str, file_id: str) -> bytes: ...
+    def stat_object(self, store_id: str, file_id: str) -> StoredFile: ...
+    def list_objects(self, store_id: str, query: str) -> list[StoredFile]: ...
 
 
-def verify_roundtrip(store: Store, name: str, data: bytes) -> ObjectRef:
-    """Exercise put -> get -> list on one payload and fail loudly on any drift.
+class ObjectStoreAdapter:
+    def __init__(self, client: ObjectStoreClient, store_id: str):
+        if not isinstance(store_id, str) or not store_id.strip():
+            raise ValueError("store_id is required")
+        self.client, self.store_id = client, store_id
 
-    Adapters call this from their own tests; CI runs it against an in-memory
-    reference store so the contract itself cannot rot.
-    """
-    ref = store.put(name, data)
-    if not ref.file_id:
-        raise ContractError("put() returned an empty file_id")
-    if ref.size != len(data):
-        raise ContractError(f"size mismatch: store={ref.size} payload={len(data)}")
-    if ref.sha256 != _digest(data):
-        raise ContractError(f"hash mismatch: store={ref.sha256} payload={_digest(data)}")
-
-    back = store.get(ref.file_id)
-    if back != data:
-        raise ContractError("get() returned different bytes than put() stored")
-
-    listed = store.list(prefix=name.split("/")[0])
-    ids = [item.file_id for item in listed]
-    if ref.file_id not in ids:
-        raise ContractError(f"list() did not return {ref.file_id!r} for the prefix")
-
-    for item in listed:
-        if item.file_id == ref.file_id and (item.size != ref.size or item.sha256 != ref.sha256):
-            raise ContractError("list() reported a different size or hash than put()")
-    return ref
-
-
-class MemoryStore:
-    """Reference store: dict-backed, used by the contract test and examples."""
-
-    def __init__(self) -> None:
-        self._objects: dict[str, tuple[str, bytes]] = {}
-        self._counter = 0
-
-    def put(self, name: str, data: bytes) -> ObjectRef:
-        self._counter += 1
-        file_id = f"mem-{self._counter:04d}"
-        self._objects[file_id] = (name, data)
-        return ObjectRef(file_id=file_id, size=len(data), sha256=_digest(data))
+    def put(self, name: str, data: bytes) -> StoredFile:
+        if not isinstance(name, str) or not name.strip() or not isinstance(data, bytes):
+            raise ValueError("put requires a nonempty name and bytes")
+        result = self.client.put_object(self.store_id, name, data)
+        _check_metadata(result, result.file_id, name, self.store_id, data)
+        return result
 
     def get(self, file_id: str) -> bytes:
-        try:
-            return self._objects[file_id][1]
-        except KeyError as exc:
-            raise KeyError(f"unknown file_id: {file_id}") from exc
+        if not isinstance(file_id, str) or not file_id.strip():
+            raise ValueError("file_id is required")
+        data = self.client.get_object(self.store_id, file_id)
+        if not isinstance(data, bytes):
+            raise StorageVerificationError("get must return complete bytes")
+        return data
 
-    def list(self, prefix: str = "") -> list[ObjectRef]:
-        return [
-            ObjectRef(file_id=fid, size=len(data), sha256=_digest(data))
-            for fid, (name, data) in self._objects.items()
-            if name.startswith(prefix)
-        ]
+    def stat(self, file_id: str) -> StoredFile:
+        result = self.client.stat_object(self.store_id, file_id)
+        if result.file_id != file_id or result.parent_id != self.store_id:
+            raise StorageVerificationError("stat identity or parent mismatch")
+        return result
+
+    def list(self, query: str = "") -> list[StoredFile]:
+        results = self.client.list_objects(self.store_id, query)
+        ids = set()
+        for item in results:
+            if not item.file_id or item.parent_id != self.store_id or item.file_id in ids:
+                raise StorageVerificationError("list contains invalid, foreign or duplicate ids")
+            ids.add(item.file_id)
+        return results
+
+
+def _check_metadata(meta: StoredFile, file_id: str, name: str,
+                    parent_id: str, data: bytes) -> None:
+    if (not file_id or meta.file_id != file_id or meta.name != name
+            or meta.parent_id != parent_id or type(meta.size) is not int
+            or meta.size != len(data)
+            or meta.sha256 != hashlib.sha256(data).hexdigest()):
+        raise StorageVerificationError("file id/name/parent/size/raw hash mismatch")
+
+
+@dataclass(frozen=True)
+class StorageReadback:
+    file: StoredFile
+    normalized_sha256: str | None
+    route: str = "storage_readback"
+
+
+def verify_readback(store: Storage, expected: StoredFile, original: bytes,
+                    *, normalized_sha256: str | None = None) -> StorageReadback:
+    """Read metadata and complete bytes independently of the write response.
+
+    A normalization-only match is insufficient: byte equality is mandatory.
+    Optional LF_UTF8_v1 verification binds a text artifact to its index hash.
+    This function neither commits a pointer nor proves a remote deployment.
+    """
+    _check_metadata(expected, expected.file_id, expected.name, expected.parent_id, original)
+    actual = store.stat(expected.file_id)
+    data = store.get(expected.file_id)
+    _check_metadata(actual, expected.file_id, expected.name, expected.parent_id, data)
+    if actual != expected or data != original:
+        raise StorageVerificationError("read-back differs from the submitted bytes or metadata")
+    digest = None
+    if normalized_sha256 is not None:
+        try:
+            digest = sha256_lf_utf8_v1(data)
+        except UnicodeDecodeError as exc:
+            raise StorageVerificationError("artifact is not UTF-8") from exc
+        if digest != normalized_sha256:
+            raise StorageVerificationError("LF_UTF8_v1 hash mismatch")
+    return StorageReadback(actual, digest)
