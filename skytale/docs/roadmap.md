@@ -23,6 +23,9 @@ keep the gate fail-closed.
   injected by the operator and never stored in the repo.
 - Contract test every adapter must pass: put, get, hash equality.
 
+Adapter API review candidate: [contracts and limits](adapters.md). These are
+injected-transport library modules, not a released or live-verified integration.
+
 ## v0.3 — resume verifier
 
 - `skytale resume-check --dir RUN --evidence evidence.json`
