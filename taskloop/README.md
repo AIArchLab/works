@@ -6,6 +6,8 @@
 
 ## Background / Why this exists
 
+[Why I built Taskloop — the author's motivation](docs/WHY.md)
+
 Agent tasks fail quietly. A process restart can erase an unfinished task. A finished result can
 die in a crashed notification queue. And an HTTP 200 from a webhook is easily mistaken for a
 delivery that actually persisted. The premise of Taskloop is that an agent task is complete only
