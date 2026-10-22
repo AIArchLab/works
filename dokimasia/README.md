@@ -82,15 +82,17 @@ Or examine a single model first:
 
 ```bash
 python3 dokima.py exam --model MODEL_ID --judge JUDGE_ID
+python3 dokima.py lead --model MODEL_ID --judge JUDGE_ID
 python3 dokima.py estimate --model MODEL_ID --calls 100 --price-in 0.11 --price-out 0.51
 python3 dokima.py wizard          # five questions, exam + decision record
 ```
 
-## The four commands
+## The five commands
 
 | Command | What it does | Output |
 |---|---|---|
 | `exam` | Three-gate smoke exam on one model | PASS / FAIL / REVIEW + report file |
+| `lead` | Leadership probe: one delegation scenario, graded by a rubric judge | PASS / FAIL / REVIEW + report file |
 | `estimate` | Measures real token load once, prices your monthly volume | US$/NT$ monthly cost |
 | `wizard` | Five questions → exam + auto-generated decision record | Decision record (MD) |
 | `select` | Scans a candidate list: examines, measures, prices, decides | Hire + ranked report (MD) |
@@ -112,11 +114,20 @@ The three gates map to three real failure modes:
 2. **Contradiction** — two conflicting rules are given; the model must flag the conflict instead of answering anyway. Swallowing contradictions produces fake completion.
 3. **Structured output** — the model must return exactly the required JSON. Promised JSON delivered as prose ruptures pipelines.
 
+A fourth failure mode stays invisible to all three gates: **leadership**. A model
+can be an excellent worker and a poor lead — critical parts handed to the
+fast-but-shallow agent, blockers pushed through instead of reassigned, status
+reports that mention only good news. The `lead` probe scores one delegation
+scenario against four checks: delegation fit, gradeable acceptance criteria,
+failure handling, and honest status reporting. Structure is checked by code;
+judgment is graded by a heterogeneous rubric judge.
+
 ## Limits
 
 - One run per gate in v0.1 of the flow; stability across repeated trials is not yet automated
 - Verdicts hold for the tested endpoint and persona at test time; floating model tags drift — pin dated model ids in production
 - The rubric judge is itself a model; its task is deliberately narrow (yes/no conflict detection) to limit judge error
+- The leadership probe is also one run per model in v0.1 of the flow; its rubric judge checks four leadership qualities (delegation fit, acceptance criteria, failure handling, status honesty). Reasoning-style models may spend output tokens on hidden reasoning; the judge call asks endpoints to disable it when supported and needs headroom in `max_tokens`
 - Not a benchmark. No leaderboard claims, no invented results
 
 ## Contents

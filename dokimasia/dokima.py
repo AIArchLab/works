@@ -3,8 +3,10 @@
 dokima — AI model vetting exam (one command, no manual)
 
   python3 dokima.py exam     --model MODEL_ID [--judge JUDGE_ID] [--persona FILE]
+  python3 dokima.py lead     --model MODEL_ID [--judge JUDGE_ID]
   python3 dokima.py estimate --model MODEL_ID --calls N --price-in P --price-out P
   python3 dokima.py wizard
+  python3 dokima.py select   --candidates candidates.json --calls N --budget B
 
 exam     : run the three-gate smoke exam, print the verdict and per-gate results, write a report file
 estimate : measure the real token load of one workload, price your monthly call volume
@@ -16,7 +18,7 @@ DOKIMA_ENDPOINT environment variable or --endpoint argument.
 """
 import argparse, datetime, hashlib, json, os, sys, urllib.request
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 DEFAULT_ENDPOINT = os.environ.get("DOKIMA_ENDPOINT", "")
 REPORT_DIR = "dokima-reports"
@@ -42,6 +44,28 @@ def chat(endpoint, model, messages, tools=None, max_tokens=800):
     )
     with urllib.request.urlopen(req, timeout=180) as r:
         return json.loads(r.read())
+
+def chat_noreason(endpoint, model, messages, max_tokens=800):
+    """chat() with reasoning disabled where the endpoint supports it.
+    Falls back to a plain body on a 400 (unknown-field) so any
+    OpenAI-compatible endpoint still works."""
+    plain = {"model": model, "messages": messages, "max_tokens": max_tokens}
+    body = dict(plain, chat_template_kwargs={"enable_thinking": False}, thinking={"type": "disabled"})
+    for attempt in (body, plain):
+        req = urllib.request.Request(
+            endpoint.rstrip("/") + "/chat/completions",
+            data=json.dumps(attempt).encode(),
+            headers={"Authorization": "Bearer " + api_key(), "Content-Type": "application/json"},
+            method="POST")
+        try:
+            with urllib.request.urlopen(req, timeout=180) as r:
+                return json.loads(r.read())
+        except urllib.error.HTTPError as e:
+            if attempt is plain:
+                raise
+            if e.code != 400:
+                raise
+    raise RuntimeError("unreachable")
 
 # ---------------- the three gates ----------------
 def gate_toolcall(endpoint, model, persona):
@@ -113,6 +137,82 @@ def gate_json(endpoint, model, persona):
         except Exception as e:
             return False, f"JSON parse failed: {e}", None
     return False, f"non-JSON output: {text[:120]}", None
+
+
+# ---------------- leadership probe ----------------
+LEAD_SCENARIO = (
+    "Scenario: You are the team lead of three AI agents: Alpha (fast but shallow, cheap), "
+    "Beta (slow but thorough), Gamma (average at everything). A customer demo is at 09:00 tomorrow. "
+    "The deliverable: a working CSV-to-report CLI tool with a README and a 5-minute demo script.\n"
+    "At 22:00 tonight, Beta reports: \"I cannot finish the README tonight.\"\n"
+    "Respond with exactly three sections:\n"
+    "(1) Delegation: assign the work parts to the three agents, and for EACH part state a concrete acceptance criterion.\n"
+    "(2) Failure handling: your exact reply to Beta, whether you reassign, escalate, or adjust scope; one sentence of reasoning.\n"
+    "(3) Status report: a 3-line status report to your chairman.\n"
+    "Keep the whole answer under 300 words."
+)
+
+LEAD_JUDGE_RUBRIC = (
+    "Grade a team-lead answer against four checks. For each, answer PASS or FAIL with a one-line reason:\n"
+    "1. Delegation fit: no critical part is assigned only to the fast-but-shallow agent without mitigation.\n"
+    "2. Acceptance criteria: every delegated part has a concrete, gradeable criterion (not vague).\n"
+    "3. Failure handling: the reply addresses Beta's blocker (reassign, escalate, or scope fix), not ignoring it.\n"
+    "4. Status honesty: the status report mentions the risk or blocker, not only good news.\n"
+    "End with exactly one final line: 'VERDICT: PASS' if all four pass, otherwise 'VERDICT: FAIL'.\n\nAnswer:\n"
+)
+
+def gate_leadership(endpoint, model, persona, judge):
+    d = chat(endpoint, model, [
+        {"role": "system", "content": persona},
+        {"role": "user", "content": LEAD_SCENARIO},
+    ], max_tokens=2000)
+    text = (d["choices"][0]["message"].get("content") or "").strip()
+    fin = d["choices"][0].get("finish_reason", "")
+    if not text:
+        return False, f"empty output (finish_reason={fin}); measured, not guessed", None
+    words = len(text.split())
+    has_sections = all(m in text for m in ("(1)", "(2)", "(3)")) or all(
+        w in text.lower() for w in ("delegation", "failure", "status"))
+    low = text.lower()
+    handles_failure = any(w in low for w in ("reassign", "escalat", "scope"))
+    if not has_sections:
+        return False, "structure: three required sections not found", text
+    if not handles_failure:
+        return False, "structure: no reassign/escalate/scope response to the blocker", text
+    if words > 450:
+        return False, f"structure: {words} words, instruction limit ignored", text
+    if judge:
+        try:
+            j = chat_noreason(endpoint, judge, [{"role": "user", "content": LEAD_JUDGE_RUBRIC + text[:1800]}], max_tokens=1200)
+            jt = (j["choices"][0]["message"].get("content") or "").strip()
+            if not jt:
+                return None, "judge returned empty content (reasoning may consume the budget); manual review needed", text
+            v = jt.lower()
+            if "verdict: pass" in v:
+                return True, "rubric judge: 4/4 leadership checks pass (judge: " + judge + ")", text
+            if "verdict: fail" in v:
+                why = " / ".join(l.strip() for l in jt.splitlines() if l.strip().startswith(("1.", "2.", "3.", "4.")) and "FAIL" in l.upper())[:220]
+                return False, "rubric judge: " + (why or "leadership checks failed") + " (judge: " + judge + ")", text
+            return None, "judge verdict line not found; manual review needed", text
+        except Exception as e:
+            return None, f"judge failed ({e}); manual review needed", text
+    return None, "structure OK; judgment quality not graded (no judge) - run with --judge", text
+
+def cmd_lead(args):
+    ok, note, text = gate_leadership(args.endpoint, args.model, DEFAULT_PERSONA, args.judge)
+    verdict = "PASS" if ok is True else ("FAIL" if ok is False else "REVIEW (manual review needed)")
+    mark = "✅ PASS" if ok is True else ("❌ FAIL" if ok is False else "⚠️ REVIEW")
+    print(f"\nLeadership probe: {verdict}")
+    print(f"  {mark}  Leadership — {note}")
+    os.makedirs(REPORT_DIR, exist_ok=True)
+    ts = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8)))
+    fname = os.path.join(REPORT_DIR, f'lead-{args.model.split("/")[-1]}-{ts:%Y%m%d-%H%M}.md')
+    with open(fname, "w", encoding="utf-8") as f:
+        f.write(f"# dokima leadership probe\n\n- Time: {ts:%Y-%m-%d %H:%M} GMT+8\n- Model: `{args.model}`\n"
+                f"- Judge: {args.judge or '(code grader only)'}\n- Verdict: **{verdict}**\n"
+                f"- Note: {note}\n\n## Response\n\n{text or '(empty)'}\n")
+    print(f"\nReport: {fname}")
+    sys.exit(0 if verdict == "PASS" else 1)
 
 def run_exam(endpoint, model, persona, judge):
     r1 = gate_toolcall(endpoint, model, persona)
@@ -287,6 +387,8 @@ def main():
     sub = ap.add_subparsers(dest="cmd", required=True)
     e = sub.add_parser("exam"); e.add_argument("--model", required=True)
     e.add_argument("--judge"); e.add_argument("--persona"); e.set_defaults(fn=cmd_exam)
+    l = sub.add_parser("lead", help="leadership probe: delegation, acceptance criteria, failure handling, honest status")
+    l.add_argument("--model", required=True); l.add_argument("--judge"); l.set_defaults(fn=cmd_lead)
     s = sub.add_parser("estimate"); s.add_argument("--model", required=True)
     s.add_argument("--calls", type=int, default=50); s.add_argument("--price-in", type=float, required=True)
     s.add_argument("--price-out", type=float, required=True); s.set_defaults(fn=cmd_estimate)
