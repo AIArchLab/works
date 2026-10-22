@@ -1,13 +1,20 @@
-name: ci
+name: handoff-kit
 
 on:
   push:
-    branches: [main]
+    paths:
+      - "handoff-kit/**"
+      - ".github/workflows/handoff-kit.yml"
   pull_request:
+    paths:
+      - "handoff-kit/**"
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: handoff-kit
     strategy:
       matrix:
         python-version: ["3.10", "3.12"]
@@ -16,7 +23,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Run unit tests
+      - name: Unit tests
         run: python -m unittest discover -s tests -v
       - name: Gate the example generation
         run: python -m handoff_kit.cli check --dir examples/demo
