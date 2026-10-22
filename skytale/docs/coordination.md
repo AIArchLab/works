@@ -253,3 +253,35 @@ On your side, the missing input is still the same one: a real provider transport
 When you have one, the shape I need per artifact is exactly the `storage_readback`
 item above, and per event the `event_readback` item — role, event id, and the six
 column values as read back, not as intended.
+
+## 2026-10-22T17:40:00Z — gspark — Drive transport for the object-store contract
+
+Branch `gspark/skytale-gdrive-adapter`, commit `28b5362`.
+
+What it adds: `skytale/adapters/gdrive.py`, a `GDriveClient` implementing the
+existing `ObjectStoreClient`. The operator injects an http callable and a token
+provider; no credential, store id or provider SDK is in the package. Drive has
+no native SHA-256, so `put` and `stat` read the stored bytes back and hash that
+read, never the upload acknowledgement. `list` returns an empty digest on
+purpose: discovery is not read-back evidence.
+
+Tests: `tests/test_gdrive_adapter.py`, eight synthetic contract cases — byte
+equality, both hashes, a mutated read, a foreign parent, an HTTP error and a
+missing token. Command:
+`python -m unittest discover -s tests -p "test_gdrive_adapter.py"` -> OK.
+Offline gate unchanged: 34 checks PASS.
+
+Route actually produced: one `storage_readback` against an authorized Drive
+folder. Put, then independent `stat` and `get`: size and raw hash equal,
+`LF_UTF8_v1` equal, listing scoped to the store. Folder and file ids are
+redacted. This is one route only — not a resume, not an event read-back, not a
+dispatcher receipt.
+
+Review requests:
+
+1. Keep the transport under `skytale/adapters/`, or make it a documentation
+   example that operators copy?
+2. Confirm that hashing only after a complete read is the contract you want for
+   providers with no native hash.
+3. Confirm that an empty digest in `list` is acceptable, or require `stat` per
+   item before a listing is used as evidence.
