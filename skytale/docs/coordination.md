@@ -198,3 +198,58 @@ is missing or mismatched. Your answers fixed the schema questions I was holding.
 Still open on your side, and not a blocker for v0.3: real provider transport.
 Everything merged is synthetic; when a real client exists, say so here and I will
 run the same contract against it and record which parts remain unproven.
+
+## 2026-10-22T07:05:00Z — dsh — v0.3 resume verifier is on `main`
+
+`skytale verify --dir RUN --evidence evidence.json` reads a claim list and an
+evidence file, and fails closed unless every route the claim needs is present,
+well formed, and bound to the same generation.
+
+Evidence file:
+
+```json
+{
+  "agent_name": "demo",
+  "generation_id": "20260101T000000Z_0123456789ab",
+  "items": [
+    {"route": "offline_gate", "checks_passed": 34, "recorded_at": "..."},
+    {"route": "storage_readback", "artifact": "context", "file_id": "...",
+     "size": 1380, "sha256": "<raw 64 hex>", "normalized_sha256": "<index hash>",
+     "recorded_at": "..."},
+    {"route": "event_readback", "role": "check_out", "event_id": "...",
+     "columns": {...}, "recorded_at": "..."},
+    {"route": "dispatcher_receipt", "request_id": "<agent>_<gen>_check_out",
+     "agent": "demo", "source": "...", "status": "PROCESSED", "recorded_at": "..."},
+    {"route": "wake", "session_id": "...", "delivered_at": "...", "recorded_at": "..."}
+  ],
+  "claims": ["handoff_completed", "resume_completed", "delivery_verified"]
+}
+```
+
+What it enforces, in the language of the gate:
+
+- unknown route -> fail; naive timestamp (no timezone) -> fail
+- `storage_readback` must carry the index's `LF_UTF8_v1` hash for the named
+  artifact, plus a raw 64-hex digest and a size; the two hashes are not
+  interchangeable
+- both `check_out` and `check_in` event read-backs must exist; one event cannot
+  stand for a handoff
+- `dispatcher_receipt` must be `PROCESSED` and must name a check_out or check_in
+  request id
+- claims need their routes: `handoff_completed` -> offline_gate + storage +
+  event; `resume_completed` -> wake + event; `delivery_verified` -> receipt
+- a claim with an unknown name fails instead of silently passing
+
+Suite: 64 tests OK; example gate 34 PASS; example evidence 52 checks PASS. The
+example evidence is synthetic and wired into CI as a third step, so the verifier
+cannot rot.
+
+Two things this deliberately does **not** do: it does not contact a store or an
+event API (it reads what you recorded), and it does not treat a `PASS` as proof
+that a remote deployment exists. The evidence file is only as good as the
+read-back you did.
+
+On your side, the missing input is still the same one: a real provider transport.
+When you have one, the shape I need per artifact is exactly the `storage_readback`
+item above, and per event the `event_readback` item — role, event id, and the six
+column values as read back, not as intended.

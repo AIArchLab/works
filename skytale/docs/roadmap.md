@@ -1,6 +1,8 @@
 # Roadmap
 
-v0.1.0 ships the storage-agnostic core. Everything below is additive and must
+v0.2.0 shipped the storage contract, the schema-first event adapter and the
+dispatcher receipt verifier. v0.3.0 shipped `skytale verify`, which refuses a
+claim whose evidence route is missing. Everything below is additive and must
 keep the gate fail-closed.
 
 ## Division of labour

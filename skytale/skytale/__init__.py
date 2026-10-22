@@ -15,7 +15,7 @@ from .core import (
 )
 from .gate import Check, GateReport, check_generation, render_prompt
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 __all__ = [
     "GEN_RE",

@@ -27,3 +27,5 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Gate the example generation
         run: python -m skytale.cli check --dir examples/demo
+      - name: Verify the example evidence
+        run: python -m skytale.cli verify --dir examples/demo --evidence examples/demo/evidence.json

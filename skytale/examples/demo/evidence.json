@@ -1,0 +1,76 @@
+{
+  "agent_name": "demo",
+  "generation_id": "20260101T000000Z_0123456789ab",
+  "items": [
+    {
+      "route": "offline_gate",
+      "checks_passed": 34,
+      "recorded_at": "2026-01-01T00:00:30Z"
+    },
+    {
+      "route": "storage_readback",
+      "artifact": "context",
+      "file_id": "synthetic-context-0001",
+      "size": 1380,
+      "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "normalized_sha256": "44d8f3132ecd08ee46c417481d3a9f74f70808e2f3be143cb34ff2907314b267",
+      "recorded_at": "2026-01-01T00:01:00Z"
+    },
+    {
+      "route": "storage_readback",
+      "artifact": "summary",
+      "file_id": "synthetic-summary-0001",
+      "size": 537,
+      "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "normalized_sha256": "cba0b5ae5e4eea4f31c51e03689d8469acedcb0c628bcb9d9da8c791d4a549ce",
+      "recorded_at": "2026-01-01T00:01:10Z"
+    },
+    {
+      "route": "event_readback",
+      "role": "check_out",
+      "event_id": "synthetic-event-out",
+      "columns": {
+        "name": "demo check_out 20260101T000000Z_0123456789ab",
+        "owner": "demo",
+        "state": "done",
+        "time": "2026-01-01T08:00:00+08:00",
+        "note": "action: check_out",
+        "source": "https://example.invalid/index"
+      },
+      "recorded_at": "2026-01-01T00:02:00Z"
+    },
+    {
+      "route": "event_readback",
+      "role": "check_in",
+      "event_id": "synthetic-event-in",
+      "columns": {
+        "name": "demo check_in 20260101T000000Z_0123456789ab",
+        "owner": "demo",
+        "state": "live",
+        "time": "2026-01-01T08:03:00+08:00",
+        "note": "action: check_in",
+        "source": "https://example.invalid/index"
+      },
+      "recorded_at": "2026-01-01T00:03:00Z"
+    },
+    {
+      "route": "dispatcher_receipt",
+      "request_id": "demo_20260101T000000Z_0123456789ab_check_out",
+      "agent": "demo",
+      "source": "synthetic-queue",
+      "status": "PROCESSED",
+      "recorded_at": "2026-01-01T00:03:30Z"
+    },
+    {
+      "route": "wake",
+      "session_id": "synthetic-session-0001",
+      "delivered_at": "2026-01-01T00:04:00Z",
+      "recorded_at": "2026-01-01T00:04:00Z"
+    }
+  ],
+  "claims": [
+    "handoff_completed",
+    "resume_completed",
+    "delivery_verified"
+  ]
+}

@@ -164,6 +164,22 @@ def cmd_prompt(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_verify(args: argparse.Namespace) -> int:
+    from .verify import verify_evidence
+
+    report = verify_evidence(args.dir, args.evidence)
+    if args.json:
+        print(json.dumps(report.as_dict(), ensure_ascii=False, indent=2))
+    else:
+        for finding in report.findings:
+            if finding.ok:
+                print(f"[ok  ] {finding.code}")
+            else:
+                print(f"[FAIL] {finding.code} {finding.detail}")
+        print(report.summary())
+    return 0 if report.ok else 1
+
+
 def cmd_hash(args: argparse.Namespace) -> int:
     for name in args.files:
         path = Path(name)
@@ -199,6 +215,12 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("prompt", help="render the new-conversation prompt")
     p.add_argument("--dir", required=True)
     p.set_defaults(func=cmd_prompt)
+
+    p = sub.add_parser("verify", help="verify claims against their evidence routes")
+    p.add_argument("--dir", required=True)
+    p.add_argument("--evidence", required=True)
+    p.add_argument("--json", action="store_true")
+    p.set_defaults(func=cmd_verify)
 
     p = sub.add_parser("hash", help="compute the LF_UTF8_v1 SHA-256 of files")
     p.add_argument("files", nargs="+")

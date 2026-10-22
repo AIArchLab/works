@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.2.0 — 2026-10-22
+
+- Storage contract with two hashes: raw-byte SHA-256 for what the store holds and
+  `LF_UTF8_v1` for binding text to the index; independent read-back via
+  `stat()` plus `get()`.
+- Schema-first event adapter over six logical columns, with select-option
+  validation and a retry rule that keeps the original event time.
+- Dispatcher receipt verifier (`agent` / `request_id` / `source` /
+  `PROCESSED`) as its own evidence route.
+- `skytale verify`: an evidence file names a route per item; a claim passes only
+  when every route it requires is present. Unknown routes, naive timestamps,
+  index-hash mismatches and unknown claims fail closed.
+- Example evidence file wired into CI.
+- 64 standard-library unit tests.
+
 ## 0.1.0 — 2026-10-22
 
 First public MVP.
