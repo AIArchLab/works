@@ -1,20 +1,20 @@
-name: handoff-kit
+name: skytale
 
 on:
   push:
     paths:
-      - "handoff-kit/**"
-      - ".github/workflows/handoff-kit.yml"
+      - "skytale/**"
+      - ".github/workflows/skytale.yml"
   pull_request:
     paths:
-      - "handoff-kit/**"
+      - "skytale/**"
 
 jobs:
   test:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: handoff-kit
+        working-directory: skytale
     strategy:
       matrix:
         python-version: ["3.10", "3.12"]
@@ -26,4 +26,4 @@ jobs:
       - name: Unit tests
         run: python -m unittest discover -s tests -v
       - name: Gate the example generation
-        run: python -m handoff_kit.cli check --dir examples/demo
+        run: python -m skytale.cli check --dir examples/demo

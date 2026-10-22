@@ -20,7 +20,7 @@
     "parent_id": "store-demo-0001",
     "hash_scope": "full_text",
     "normalization": "LF_UTF8_v1",
-    "sha256": "b61133d6f02632457875e54fee4d2faef7f1f59a9aa632b98ba2819a223920e6"
+    "sha256": "44d8f3132ecd08ee46c417481d3a9f74f70808e2f3be143cb34ff2907314b267"
   },
   "summary": {
     "file_id": "synthetic-summary-0001",

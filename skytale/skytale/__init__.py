@@ -1,9 +1,9 @@
-"""handoff-kit: fail-closed session handoff for LLM agents.
+"""skytale: fail-closed session handoff for LLM agents.
 
 Public API:
-    handoff_kit.core      - hashing, naming, generation ids
-    handoff_kit.gate      - offline verification of a handoff generation
-    handoff_kit.cli       - command line interface
+    skytale.core      - hashing, naming, generation ids
+    skytale.gate      - offline verification of a handoff generation
+    skytale.cli       - command line interface
 """
 
 from .core import (

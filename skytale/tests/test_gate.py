@@ -5,8 +5,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from handoff_kit.cli import main
-from handoff_kit.gate import check_generation, render_prompt
+from skytale.cli import main
+from skytale.gate import check_generation, render_prompt
 
 GEN = "20261022T043928Z_c4fadc50311c"
 AGENT = "demo"

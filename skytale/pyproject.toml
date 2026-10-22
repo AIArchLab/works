@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "handoff-kit"
+name = "skytale"
 version = "0.1.0"
 description = "Fail-closed session handoff for LLM agents"
 readme = "README.md"
@@ -20,7 +20,7 @@ classifiers = [
 ]
 
 [project.scripts]
-handoff-kit = "handoff_kit.cli:main"
+skytale = "skytale.cli:main"
 
 [tool.setuptools]
-packages = ["handoff_kit"]
+packages = ["skytale"]

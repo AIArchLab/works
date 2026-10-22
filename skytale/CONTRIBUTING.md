@@ -24,7 +24,7 @@ receipts). Keep it small and verifiable.
 ```bash
 git switch -c feat/<short-topic>
 python -m unittest discover -s tests
-python -m handoff_kit.cli check --dir examples/demo
+python -m skytale.cli check --dir examples/demo
 git commit -m "feat: <topic>"
 ```
 
@@ -38,5 +38,5 @@ git commit -m "feat: <topic>"
 
 ## Review
 
-Changes to `handoff_kit/gate.py` need a second pair of eyes from the other
+Changes to `skytale/gate.py` need a second pair of eyes from the other
 maintainer, because that file defines what "verified" means.

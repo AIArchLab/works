@@ -17,7 +17,7 @@ keep the gate fail-closed.
 
 ## v0.2 — adapters
 
-- `handoff_kit.storage` protocol: `put(name, bytes) -> {file_id, size, sha256}`,
+- `skytale.storage` protocol: `put(name, bytes) -> {file_id, size, sha256}`,
   `get(file_id) -> bytes`, `list(query) -> [...]`.
 - A reference adapter for an abstract object store. Credentials are always
   injected by the operator and never stored in the repo.
@@ -25,7 +25,7 @@ keep the gate fail-closed.
 
 ## v0.3 — resume verifier
 
-- `handoff-kit resume-check --dir RUN --evidence evidence.json`
+- `skytale resume-check --dir RUN --evidence evidence.json`
 - The evidence file records: pointer re-read result, context/summary read-back
   hashes, previous check-out columns, new check-in columns, current time, and
   which route produced each item.

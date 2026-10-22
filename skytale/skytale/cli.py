@@ -1,4 +1,4 @@
-"""Command line interface for handoff-kit."""
+"""Command line interface for skytale."""
 
 from __future__ import annotations
 
@@ -115,7 +115,7 @@ def cmd_init(args: argparse.Namespace) -> int:
     }
     _write(run / "index.json", json.dumps(index, ensure_ascii=False, indent=2) + "\n", args.force)
     print(f"prepared generation {gen} in {run}")
-    print("next: fill context/summary, then run: handoff-kit seal --commit")
+    print("next: fill context/summary, then run: skytale seal --commit")
     return 0
 
 
@@ -173,8 +173,8 @@ def cmd_hash(args: argparse.Namespace) -> int:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="handoff-kit", description="Fail-closed session handoff for LLM agents")
-    parser.add_argument("--version", action="version", version=f"handoff-kit {__version__}")
+        prog="skytale", description="Fail-closed session handoff for LLM agents")
+    parser.add_argument("--version", action="version", version=f"skytale {__version__}")
     sub = parser.add_subparsers(dest="command", required=True)
 
     p = sub.add_parser("init", help="scaffold a prepared generation")

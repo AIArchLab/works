@@ -1,7 +1,7 @@
 {
   "id": "0004",
-  "slug": "handoff-kit",
-  "title": "handoff-kit — fail-closed session handoff for LLM agents",
+  "slug": "skytale",
+  "title": "skytale — fail-closed session handoff for LLM agents",
   "published": "2026-10-22",
   "status": "concept",
   "tags": [

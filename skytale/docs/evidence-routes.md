@@ -6,7 +6,7 @@ record which one you used.
 
 | Route | What it proves | What it does not prove |
 |---|---|---|
-| Offline gate (`handoff-kit check`) | Names, parent ids, hashes, identity lines, request ids, pointer agreement are consistent locally | Anything about remote state |
+| Offline gate (`skytale check`) | Names, parent ids, hashes, identity lines, request ids, pointer agreement are consistent locally | Anything about remote state |
 | Storage read-back (direct API) | The same bytes exist in the store, with the same size and hash | That an event was written |
 | Event-store read-back | The check-out/check-in row exists with all required columns | That the store artifacts match |
 | Dispatcher receipt | A dispatcher accepted and processed `request_id` / agent / source | That the receiving agent read anything |

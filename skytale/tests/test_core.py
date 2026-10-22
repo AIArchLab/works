@@ -4,7 +4,7 @@ import hashlib
 import unittest
 from datetime import datetime, timezone
 
-from handoff_kit.core import (
+from skytale.core import (
     GEN_RE,
     artifact_name,
     generation_id,

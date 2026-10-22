@@ -1,4 +1,4 @@
-# handoff-kit
+# skytale
 
 **Fail-closed session handoff for LLM agents.**
 
@@ -19,7 +19,7 @@ Most handoff implementations are prose. This one is a contract you can verify
 offline, before you claim anything.
 
 ```text
-$ handoff-kit check --dir examples/demo
+$ skytale check --dir examples/demo
 [ok  ] CFG-001
 [ok  ] IDX-003
 [ok  ] CONTEXT-005
@@ -28,6 +28,14 @@ $ handoff-kit check --dir examples/demo
 PASS: 34 offline checks passed. Remote evidence (storage read-back, event
 read-back, new-conversation recovery) is still required and is not proven here.
 ```
+
+## Name
+
+A *skytale* (σκυτάλη) was the baton Spartan officials passed to each other: a
+strip of leather wound around the staff, written on, then unwound. The letters
+scrambled; only the officer holding a staff of the same thickness could read the
+message again. That is the contract here — the narrative only resolves against
+the right generation, and a mismatch is visible rather than plausible.
 
 ## Background / Why this exists
 
@@ -67,29 +75,29 @@ Python 3.10+, standard library only.
 
 ```bash
 python -m pip install .
-handoff-kit --version
+skytale --version
 ```
 
 Or from a checkout without installing:
 
 ```bash
-python -m handoff_kit.cli check --dir examples/demo
+python -m skytale.cli check --dir examples/demo
 ```
 
 ## Usage
 
 ```bash
 # 1. Scaffold a prepared generation
-handoff-kit init --agent demo --dir runs/20261022T043928Z_c4fadc50311c --store store-demo-0001
+skytale init --agent demo --dir runs/20261022T043928Z_c4fadc50311c --store store-demo-0001
 
 # 2. Fill context/summary, then bind them by hash
-handoff-kit seal --dir runs/20261022T043928Z_c4fadc50311c
+skytale seal --dir runs/20261022T043928Z_c4fadc50311c
 
 # 3. Verify before you tell anyone it worked
-handoff-kit check --dir runs/20261022T043928Z_c4fadc50311c
+skytale check --dir runs/20261022T043928Z_c4fadc50311c
 
 # 4. Render the prompt for the new conversation
-handoff-kit prompt --dir runs/20261022T043928Z_c4fadc50311c
+skytale prompt --dir runs/20261022T043928Z_c4fadc50311c
 ```
 
 `seal --commit` flips `commit_state` to `committed`; only then do the remote id
