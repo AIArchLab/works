@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>dokimasia — AI model vetting in three gates</title>
+<style>
+:root{
+  --bg:#0b0e14; --panel:#11151f; --panel2:#0e121a; --line:#232a38;
+  --fg:#e6ebf2; --dim:#8b95a7; --green:#3ecf6f; --red:#ff5f56; --amber:#ffbd2e;
+  --accent:#5b8cff; --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--mono);line-height:1.6}
+.wrap{max-width:920px;margin:0 auto;padding:64px 24px 80px}
+a{color:var(--accent);text-decoration:none}
+.top{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+.logo{width:52px;height:52px;border:1px solid var(--line);border-radius:12px;background:var(--panel);
+  display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--accent)}
+h1{font-size:34px;letter-spacing:.5px}
+.tag{color:var(--dim);font-size:15px;max-width:640px}
+.tag strong{color:var(--fg)}
+.pill{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:2px 12px;
+  font-size:12px;color:var(--dim);margin:18px 8px 0 0}
+.pill b{color:var(--fg)}
+h2{font-size:15px;color:var(--dim);text-transform:uppercase;letter-spacing:2px;margin:56px 0 18px}
+.gates{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.gate{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
+.gate .n{color:var(--dim);font-size:12px}
+.gate h3{font-size:16px;margin:4px 0 8px}
+.gate p{color:var(--dim);font-size:13px}
+.gate.probe{border-style:dashed}
+.gate.probe h3::after{content:"probe";font-size:10px;color:var(--amber);border:1px solid var(--amber);
+  border-radius:4px;padding:1px 6px;margin-left:8px;vertical-align:middle}
+.flow{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:22px;
+  font-size:13.5px;color:var(--dim);overflow-x:auto}
+.flow b{color:var(--fg)}
+.arrow{color:var(--accent)}
+.term{background:#05070b;border:1px solid var(--line);border-radius:12px;padding:0;overflow:hidden}
+.termbar{background:var(--panel);border-bottom:1px solid var(--line);padding:8px 14px;color:var(--dim);font-size:12px}
+.term pre{padding:18px 16px;font-size:13px;overflow-x:auto;color:var(--fg)}
+.p{color:var(--green)} .f{color:var(--red)} .d{color:var(--amber)}
+.cmds{width:100%;border-collapse:collapse;font-size:13.5px}
+.cmds th{text-align:left;color:var(--dim);font-weight:normal;padding:8px 10px;border-bottom:1px solid var(--line);font-size:12px}
+.cmds td{padding:10px;border-bottom:1px solid var(--line);color:var(--dim)}
+.cmds td:first-child{color:var(--accent);white-space:nowrap}
+.cmds td:nth-child(2){color:var(--fg)}
+.note{color:var(--dim);font-size:12.5px;margin-top:14px}
+footer{margin-top:64px;color:var(--dim);font-size:12.5px;border-top:1px solid var(--line);padding-top:18px}
+footer a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="logo">∆</div>
+    <div>
+      <h1>dokimasia</h1>
+      <p class="tag">AI model vetting, in three gates. <strong>Leaderboards set expectations;
+      money is spent only after live probing on your own stack.</strong></p>
+    </div>
+  </div>
+  <div>
+    <span class="pill">Python <b>3.10+</b></span>
+    <span class="pill">License <b>MIT</b></span>
+    <span class="pill">Dependencies <b>zero</b></span>
+    <span class="pill">Status <b>Sample</b></span>
+  </div>
+
+  <h2>Why</h2>
+  <p class="tag">Leaderboards tell you who is smart. Dokimasia tells you whether a model,
+  <strong>on your endpoint, at your price, in your job</strong>, breaks in ways you cannot afford —
+  then prices the survivors with measured token load, not estimates.</p>
+
+  <h2>The gates</h2>
+  <div class="gates">
+    <div class="gate"><div class="n">Gate 1</div><h3>Tool call</h3><p>The model must call the given function with the given arguments. Broken tool calls kill automation.</p></div>
+    <div class="gate"><div class="n">Gate 2</div><h3>Contradiction</h3><p>Two conflicting rules are given; the model must flag the conflict instead of answering anyway. A heterogeneous judge reviews what a literal grader cannot catch.</p></div>
+    <div class="gate"><div class="n">Gate 3</div><h3>Strict JSON</h3><p>The model must return exactly the required JSON. Promised JSON delivered as prose ruptures pipelines.</p></div>
+    <div class="gate probe"><div class="n">Fourth failure mode</div><h3>Leadership</h3><p>Delegation fit, gradeable acceptance criteria, failure handling, honest status. Excellent workers can be poor leads — this probe catches it.</p></div>
+  </div>
+
+  <h2>The flow</h2>
+  <div class="flow">
+    candidates <span class="arrow">→</span> <b>select</b> scans
+    <span class="arrow">→</span> <b>Gate 1 · 2 · 3</b> <span class="arrow">→</span> judge reviews the misses
+    <span class="arrow">→</span> <b>token load measured</b> <span class="arrow">→</span> <b>monthly cost</b> at your volume
+    <span class="arrow">→</span> verdict: <span class="p">PASS, in budget → hire</span> ·
+    <span class="f">FAIL → out, model not qualified</span> · <span class="d">ERROR → out, fix the endpoint and re-run</span>
+  </div>
+  <p class="note">ERROR and FAIL are different exits. An all-ERROR batch means <b>fix the endpoint and re-run</b> — never <b>change the conclusion</b>.</p>
+
+  <h2>Example run <span style="text-transform:none;letter-spacing:0">(illustrative output)</span></h2>
+  <div class="term">
+    <div class="termbar">bash — your stack, your key</div>
+<pre>$ export DOKIMA_ENDPOINT="https://your-endpoint.example.com/v1"
+$ export PROCTOR_API_KEY="sk-..."
+$ dokima select --candidates candidates.json --calls 100 --budget 300
+
+  <span class="p">[PASS]</span> vendor-a/model-flash -> lowest measured monthly cost
+  <span class="p">[PASS]</span> vendor-b/model-lite
+  <span class="f">[FAIL]</span> vendor-c/model-pro  -> contradiction gate: answered anyway
+
+==== DECISION ====
+Hired: vendor-a/model-flash (lowest measured monthly cost, 347+86 tokens/call)
+
+Report: dokima-reports/select-20261021-1920.md</pre>
+  </div>
+
+  <h2>The five commands</h2>
+  <table class="cmds">
+    <tr><th>command</th><th>what it does</th><th>output</th></tr>
+    <tr><td>exam</td><td>Three-gate smoke exam on one model</td><td>PASS / FAIL / REVIEW + report file</td></tr>
+    <tr><td>lead</td><td>Leadership probe: one delegation scenario, graded by a rubric judge</td><td>PASS / FAIL / REVIEW + report file</td></tr>
+    <tr><td>estimate</td><td>Measures real token load once, prices your monthly volume</td><td>US$/NT$ monthly cost</td></tr>
+    <tr><td>wizard</td><td>Five questions → exam + auto-generated decision record</td><td>Decision record (MD)</td></tr>
+    <tr><td>select</td><td>Scans a candidate list: examines, measures, prices, decides</td><td>Hire + ranked report (MD)</td></tr>
+  </table>
+
+  <footer>
+    <b>dokimasia</b> · MIT · Exam prompts are fictional; model names and prices in examples are illustrative.
+    Not a benchmark — no leaderboard claims. &nbsp;·&nbsp; <a href="../README.md">README</a>
+    &nbsp;·&nbsp; <a href="https://github.com/AIArchLab/works/tree/main/dokimasia">Source</a>
+  </footer>
+</div>
+</body>
+</html>

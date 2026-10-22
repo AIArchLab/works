@@ -8,6 +8,8 @@
   <strong>AI model vetting, in three gates. Leaderboards set expectations;<br>money is spent only after live probing on your own stack.</strong>
 </p>
 
+<p align="center"><a href="docs/index.html">Project page</a> · <a href="#quickstart">Quickstart</a> · <a href="#the-five-commands">Commands</a></p>
+
 <p align="center">
   <a href="https://www.python.org/"><img alt="Python" src="https://img.shields.io/badge/python-3.10%2B-3776ab?logo=python&logoColor=white" /></a>
   &nbsp;
