@@ -1,0 +1,36 @@
+{
+  "id": "0006",
+  "slug": "claimcheck",
+  "title": "claimcheck — per-claim hallucination scoring with a trust ledger",
+  "published": "2026-10-24",
+  "status": "sample",
+  "tags": [
+    "llm",
+    "hallucination",
+    "verification",
+    "trust-ledger",
+    "cli",
+    "mvp",
+    "python"
+  ],
+  "license": "MIT",
+  "language": "en",
+  "deidentification_checklist": {
+    "no_client_names": true,
+    "no_platform_names_in_case_content": true,
+    "no_budgets_or_prices": true,
+    "no_private_strategy_layer": true,
+    "principal_referred_only_as_founder": true,
+    "all_claims_sourced_or_marked_source_missing": true
+  },
+  "verification": {
+    "unit_tests": 6,
+    "offline_test_evidence": "evidence/offline_tests.txt",
+    "limits": [
+      "Selection-time scoring, not weight training; model weights are not modified",
+      "Live multi-model benchmark not run at publish time; external endpoint refused API calls (source-missing)",
+      "Single verifier model per run; verifier quality bounds the audit",
+      "Single-file JSON ledger without concurrency control"
+    ]
+  }
+}

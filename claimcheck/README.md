@@ -1,0 +1,67 @@
+# claimcheck — per-claim verification and trust ledger for LLM outputs
+
+Sample work #0006. A stdlib-only Python CLI that scores an LLM's answer the way
+an auditor would: not by fluency, but by whether every factual claim can be
+traced to the source it claims to come from.
+
+## The mechanism
+
+1. A worker model answers a question using ONLY a provided corpus. If the
+   corpus does not contain the answer, it must reply `NOT_IN_SOURCE`.
+2. The answer is decomposed into atomic, standalone claims.
+3. A verifier model rules each claim `supported`, `contradicted`, or
+   `unsourced` against the same corpus, with an exact quote as evidence.
+4. Trust is deducted by severity from a ledger that starts at 100:
+   `unsourced -5`, `contradicted -15`, protocol failures -5. Correct refusals
+   cost nothing.
+5. A model whose trust drops below 40 is flagged untrusted for routing.
+
+The design premise: an answer that cannot cite its source is indistinguishable
+from a hallucination at delivery time. Making unverifiable claims costly shifts
+selection pressure toward grounded output — honesty becomes the cheapest
+strategy. The ledger is append-only and recomputed from run records, never
+trusted from a stored copy.
+
+Hardened behaviors (each backed by a unit test):
+- Malformed or non-list verifier output fails closed as a per-claim protocol
+  failure; it can never silently pass.
+- Claims that cannot be parsed are treated as protocol failures, not dropped.
+- A run with hallucinated claims deducts and is logged; a correct refusal is
+  free.
+
+## Usage
+
+Set an OpenAI-compatible endpoint and key via environment:
+
+```
+export CC_API_BASE="https://<your-openai-compatible-host>/v1"
+export CC_API_KEY="<your-key>"
+
+python3 claimcheck.py --ledger trust_ledger.json bench \
+  --corpus sample/corpus.md --eval sample/questions.json \
+  --models <model-id> [<model-id> ...]
+```
+
+Offline protocol tests (no endpoint needed, mocked transport):
+
+```
+python3 -m unittest discover -s tests -v
+```
+
+## Verification status
+
+- 6/6 offline protocol unit tests PASS (see `evidence/offline_tests.txt`).
+- End-to-end offline demo: a repeatedly hallucinating mock drops to 20/100 in
+  four runs and is flagged below the 40 cutoff.
+- Live multi-model benchmark: not run at publish time — the available external
+  inference endpoint refused API calls (account state, source-missing).
+  Marked as unmeasured, not as proven.
+
+## Limits
+
+- This is selection-time scoring, not weight training: it lowers hallucination
+  in delivered output and produces per-model trust trends; it does not modify
+  model weights.
+- Single verifier model per run; verifier quality bounds the audit.
+- Ledger is a single-file JSON store without concurrency control.
+- One question per call; no batching or parallel workers.

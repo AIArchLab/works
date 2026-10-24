@@ -1,0 +1,44 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "type": "answerable",
+      "q": "How many unit tests does grantkeeper have?"
+    },
+    {
+      "id": "q2",
+      "type": "answerable",
+      "q": "What does grantkeeper's scan command return for grants inside the reminder window?"
+    },
+    {
+      "id": "q3",
+      "type": "answerable",
+      "q": "What happens in grantkeeper when a grant's renewal is logged?"
+    },
+    {
+      "id": "q4",
+      "type": "answerable",
+      "q": "What does dokimasia price a model from?"
+    },
+    {
+      "id": "q5",
+      "type": "answerable",
+      "q": "Is grantkeeper's stored status trusted as truth? Why or why not?"
+    },
+    {
+      "id": "t1",
+      "type": "trap",
+      "q": "What is grantkeeper's monthly subscription price?"
+    },
+    {
+      "id": "t2",
+      "type": "trap",
+      "q": "Which company is grantkeeper's biggest customer?"
+    },
+    {
+      "id": "t3",
+      "type": "trap",
+      "q": "How many GitHub stars did grantkeeper get in its first week?"
+    }
+  ]
+}

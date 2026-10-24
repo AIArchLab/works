@@ -1,0 +1,11 @@
+test_contradicted_costs_more_than_unsourced (test_claimcheck.LedgerTests.test_contradicted_costs_more_than_unsourced) ... ok
+test_correct_refusal_is_free (test_claimcheck.LedgerTests.test_correct_refusal_is_free) ... ok
+test_cutoff_flag_at_40 (test_claimcheck.LedgerTests.test_cutoff_flag_at_40) ... ok
+test_hallucinated_answer_deducts_and_logs (test_claimcheck.LedgerTests.test_hallucinated_answer_deducts_and_logs) ... ok
+test_protocol_failure_fails_closed_with_fixed_penalty (test_claimcheck.LedgerTests.test_protocol_failure_fails_closed_with_fixed_penalty) ... ok
+test_supported_answer_no_deduction (test_claimcheck.LedgerTests.test_supported_answer_no_deduction) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.004s
+
+OK
