@@ -1,8 +1,9 @@
-# claimcheck — per-claim verification and trust ledger for LLM outputs
+# claimcheck — trust ledger for AI agent teams
 
-Sample work #0006. A stdlib-only Python CLI that scores an LLM's answer the way
-an auditor would: not by fluency, but by whether every factual claim can be
-traced to the source it claims to come from.
+Sample work #0006. A stdlib-only Python CLI that governs an AI agent team on
+evidence: a member trust ledger (start at 100, severity-based deductions,
+append-only events, cutoff flagging) plus a per-claim evidence engine that
+scores an LLM answer by whether every factual claim traces to its source.
 
 ## The mechanism
 
@@ -41,6 +42,19 @@ python3 claimcheck.py --ledger trust_ledger.json bench \
   --corpus sample/corpus.md --eval sample/questions.json \
   --models <model-id> [<model-id> ...]
 ```
+
+Member trust ledger (governance, no endpoint needed):
+
+```
+python3 claimcheck.py member add <name> --role <role>
+python3 claimcheck.py member deduct <name> <points> --reason "..." --by chair
+python3 claimcheck.py members
+python3 claimcheck.py member events <name>
+```
+
+Each member starts at 100. Deductions log an append-only event; trust floors at
+0; a member at or below 40 is flagged `dismissed`. Scores are recomputed from
+the event log, never trusted from a stored copy.
 
 Offline protocol tests (no endpoint needed, mocked transport):
 
