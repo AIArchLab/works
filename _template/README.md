@@ -18,3 +18,5 @@ the method's inner logic stays with the studio.>
 
 ## Limits
 <What this does not prove. No invented results.>
+
+Public manifests must not include internal review state or approval fields.

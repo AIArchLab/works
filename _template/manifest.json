@@ -14,10 +14,5 @@
     "no_private_strategy_layer": false,
     "principal_referred_only_as_founder": false,
     "all_claims_sourced_or_marked_source_missing": false
-  },
-  "review": {
-    "technical_architecture_review": "pending",
-    "marketing_planning_review": "pending",
-    "approved_by_founder": "pending"
   }
 }
