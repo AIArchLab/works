@@ -50,7 +50,10 @@ def save_data(path: str, data: dict) -> None:
 def parse_date(value):
     if value in (None, ""):
         return None
-    return date.fromisoformat(value)
+    try:
+        return date.fromisoformat(value)
+    except ValueError:
+        raise SystemExit(f"date must be YYYY-MM-DD, got: {value!r}")
 
 
 def compute_status(grant: dict, ref: date) -> str:

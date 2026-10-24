@@ -5,7 +5,7 @@ recomputed from dates on every scan, expiring grants surface with their
 recorded renewal method, and every renewal lands in an append-only ledger.
 
 **Status:** Sample (runnable MVP)
-**Evidence state:** 11 unit tests PASS (author run, output in `evidence/unit_tests.txt`);
+**Evidence state:** 13 unit tests PASS (author run, output in `evidence/unit_tests.txt`);
 sample scan in `evidence/sample_scan.txt`; no third-party dependencies.
 Scenario and data: fictional (see `examples/credentials.sample.json`). Any
 resemblance to real organizations is coincidental.
@@ -29,8 +29,9 @@ The mechanism instead makes three things cheap and honest:
   reminder window or past expiry, each with its recorded renewal method —
   a report ready to act on, not a dashboard to babysit.
 
-Fail-closed throughout: corrupt JSON, duplicate names, and renewals of
-unknown grants abort the command instead of guessing.
+Fail-closed throughout: corrupt JSON, duplicate names, renewals of
+unknown grants, and malformed dates (message + no write) abort the command
+instead of guessing.
 
 ## How to use / run
 
@@ -49,8 +50,8 @@ metadata and expiry dates only, never tokens.
 
 ## Contents
 
-- `grantkeeper.py` — the CLI (single file, stdlib only)
-- `tests/test_grantkeeper.py` — 11 unit tests (status rules, fail-closed paths, full CLI cycle)
+`grantkeeper.py` — the CLI (single file, stdlib only)
+`tests/test_grantkeeper.py` — 13 unit tests (status rules, fail-closed paths, full CLI cycle)
 - `examples/credentials.sample.json` — fictional sample data (Sample-labelled)
 - `evidence/unit_tests.txt` — author test run
 - `evidence/sample_scan.txt` — sample scan output

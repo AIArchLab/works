@@ -78,6 +78,26 @@ class CliTests(unittest.TestCase):
             with self.assertRaises(SystemExit):
                 gk.load_data(path)
 
+    def test_invalid_date_fails_closed_and_writes_nothing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = f"{tmp}/credentials.json"
+            with self.assertRaises(SystemExit) as cm:
+                self.run_cli(path, "add", "bad-date grant", "--expires-at", "not-a-date")
+            self.assertIn("YYYY-MM-DD", str(cm.exception))
+            data = gk.load_data(path)
+            self.assertEqual(data["grants"], [])  # nothing written
+
+    def test_invalid_renew_date_fails_closed_and_logs_nothing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = f"{tmp}/credentials.json"
+            self.run_cli(path, "add", "grant", "--expires-at", (date.today() + timedelta(days=30)).isoformat())
+            with self.assertRaises(SystemExit):
+                self.run_cli(path, "renew", "grant", "--new-expires", "31-12-2026")
+            with open(path) as fh:
+                after = json.load(fh)
+            self.assertEqual(after["renewals"], [])  # ledger untouched
+            self.assertEqual(after["grants"][0]["grant_date"], date.today().isoformat())  # grant untouched
+
     def test_renew_missing_grant_fails_closed(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = f"{tmp}/credentials.json"
