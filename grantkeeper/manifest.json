@@ -1,0 +1,32 @@
+{
+  "id": "0005",
+  "slug": "grantkeeper",
+  "title": "grantkeeper — expiry-aware OAuth grant watch and renewal ledger",
+  "published": "2026-10-24",
+  "status": "sample",
+  "tags": ["oauth", "credentials", "cli", "ledger", "mvp", "python"],
+  "license": "MIT",
+  "language": "en",
+  "deidentification_checklist": {
+    "no_client_names": true,
+    "no_platform_names_in_case_content": true,
+    "no_budgets_or_prices": true,
+    "no_private_strategy_layer": true,
+    "principal_referred_only_as_founder": true,
+    "all_claims_sourced_or_marked_source_missing": true
+  },
+  "review": {
+    "technical_architecture_review": "author self-test 2026-10-24: 11 stdlib unit tests PASS; sample scan verified on sample data; no third-party dependencies",
+    "marketing_planning_review": "pending",
+    "approved_by_founder": "2026-10-24 (Founder instruction to publish)"
+  },
+  "verification": {
+    "unit_tests": 11,
+    "sample_scan": "evidence/sample_scan.txt",
+    "limits": [
+      "Offline date logic only; does not probe live endpoints",
+      "No scheduler included; scan must be invoked by cron or an agent routine",
+      "Single-file JSON store without concurrency control"
+    ]
+  }
+}
