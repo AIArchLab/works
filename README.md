@@ -10,6 +10,7 @@ Scenario and data in every work are fictional unless the work itself states othe
 | 3 | [notion-checkin](notion-checkin/) | Fail-closed agent check-in SDK with idempotency and local audit log | 2026-10-22 |
 | 4 | [skytale](skytale/) | Fail-closed session handoff: generation ids, hash-bound artifacts, offline gate | 2026-10-22 |
 | 5 | [grantkeeper](grantkeeper/) | Expiry-aware OAuth grant watch with append-only renewal ledger | 2026-10-24 |
+| 6 | [claimcheck](claimcheck/) | Trust ledger for AI agent teams: member governance plus a per-claim evidence engine | 2026-10-24 |
 
 Works that need their own repository (code with releases, issues, tests):
 - [weirwright](https://github.com/AIArchLab/weirwright) — executable change-control gates.

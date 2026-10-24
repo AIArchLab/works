@@ -6,11 +6,6 @@
   "description": "Durable HTTP-check agent and signed recipient delivery loop",
   "author": "AIArchLab",
   "scenario": "Synthetic endpoint and example recipient; no customer workload",
-  "review": {
-    "technical": "34 author-run tests passed; real model smoke passed",
-    "marketing": "not performed",
-    "publication_authorization": "Publication approved by the Founder on 2026-10-21"
-  },
   "verification": {
     "unit_tests": 34,
     "live_smoke": "evidence/live_smoke.json",
