@@ -47,7 +47,7 @@ Member trust ledger (governance, no endpoint needed):
 
 ```
 python3 claimcheck.py member add <name> --role <role>
-python3 claimcheck.py member deduct <name> <points> --reason "..." --by chair
+python3 claimcheck.py member deduct <name> <points> --reason "..." --by founder
 python3 claimcheck.py members
 python3 claimcheck.py member events <name>
 ```
