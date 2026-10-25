@@ -1,7 +1,7 @@
 {
   "id": "0006",
   "slug": "claimcheck",
-  "title": "claimcheck — trust ledger for AI agent teams (member governance + per-claim evidence engine)",
+  "title": "claimcheck — member trust ledger for AI agent teams (v0.5 rules: three-state status, severity caps, per-claim evidence engine)",
   "published": "2026-10-24",
   "status": "sample",
   "tags": [
@@ -24,7 +24,7 @@
     "all_claims_sourced_or_marked_source_missing": true
   },
   "verification": {
-    "unit_tests": 12,
+    "unit_tests": 17,
     "offline_test_evidence": "evidence/offline_tests.txt",
     "limits": [
       "Selection-time scoring, not weight training; model weights are not modified",

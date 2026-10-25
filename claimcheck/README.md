@@ -52,9 +52,12 @@ python3 claimcheck.py members
 python3 claimcheck.py member events <name>
 ```
 
-Each member starts at 100. Deductions log an append-only event; trust floors at
-0; a member at or below 40 is flagged `dismissed`. Scores are recomputed from
-the event log, never trusted from a stored copy.
+Each member starts at 100. Deductions log an append-only event; trust floors
+at 0 and never restores above 100. Status is a pure function of score:
+> 60 active, 41-60 observation (per-item delivery verification), at or below
+40 dismissed. A single deduction event is capped at 30 points; the extreme
+clause allows exactly 60. Scores are recomputed from the event log, never
+trusted from a stored copy.
 
 Offline protocol tests (no endpoint needed, mocked transport):
 

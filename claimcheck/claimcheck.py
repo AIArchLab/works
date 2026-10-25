@@ -132,7 +132,9 @@ def cmd_ledger(args):
 # violations deduct points by severity; at or below the cutoff the member
 # is flagged dismissed. Events are append-only evidence.
 
-MEMBER_CUTOFF = 40
+MEMBER_CUTOFF = 40      # at or below: dismissed (removal line)
+MEMBER_OBS_HIGH = 60    # 41-60: observation band; above 60: active
+MEMBER_CAP = 100        # trust never restored above 100
 
 def load_members(path):
     try:
@@ -154,9 +156,15 @@ def get_member(data, name):
 def _apply(m, amount, reason, by):
     m["events"].append({"at": date.today().isoformat(), "amount": amount,
                         "reason": reason or "", "by": by or "unrecorded"})
-    m["trust"] = max(0, m["trust"] + amount)
+    m["trust"] = min(MEMBER_CAP, max(0, m["trust"] + amount))
+    # Status is a pure function of score: <=40 dismissed, 41-60 observation,
+    # >60 active. Recovery above 60 is automatic per the published rules.
     if m["trust"] <= MEMBER_CUTOFF:
         m["status"] = "dismissed"
+    elif m["trust"] <= MEMBER_OBS_HIGH:
+        m["status"] = "observation"
+    else:
+        m["status"] = "active"
 
 def cmd_member(args):
     data = load_members(args.members_path)
@@ -172,12 +180,18 @@ def cmd_member(args):
     else:
         m = get_member(data, args.name)
         if args.member_cmd == "deduct":
-            _apply(m, -args.points, args.reason, args.by)
-            print("deducted %d from %r: trust=%d status=%s" % (args.points, args.name, m["trust"], m["status"]))
+            pts = args.points
+            if pts <= 0:
+                raise SystemExit("fail-closed: deduction points must be positive")
+            if pts == 60:
+                if not args.extreme:
+                    raise SystemExit("fail-closed: single-event cap is 30; deducting 60 requires the extreme clause (--extreme)")
+            elif pts > 30:
+                raise SystemExit("fail-closed: single-event cap is 30; the extreme clause is exactly 60")
+            _apply(m, -pts, args.reason, args.by)
+            print("deducted %d from %r: trust=%d status=%s" % (pts, args.name, m["trust"], m["status"]))
         elif args.member_cmd == "restore":
             _apply(m, args.points, args.reason, args.by)
-            if args.reinstate and m["trust"] > MEMBER_CUTOFF and m["status"] == "dismissed":
-                m["status"] = "active"
             print("restored %d to %r: trust=%d status=%s" % (args.points, args.name, m["trust"], m["status"]))
         elif args.member_cmd == "events":
             for e in m["events"]:
@@ -204,9 +218,9 @@ def main(argv=None):
     pa = pm_sub.add_parser("add"); pa.add_argument("name"); pa.add_argument("--role"); pa.set_defaults(fn=cmd_member)
     pl = pm_sub.add_parser("list"); pl.set_defaults(fn=cmd_member_list)
     pd = pm_sub.add_parser("deduct"); pd.add_argument("name"); pd.add_argument("points", type=int)
-    pd.add_argument("--reason"); pd.add_argument("--by"); pd.set_defaults(fn=cmd_member)
+    pd.add_argument("--reason"); pd.add_argument("--by"); pd.add_argument("--extreme", action="store_true"); pd.set_defaults(fn=cmd_member)
     pr = pm_sub.add_parser("restore"); pr.add_argument("name"); pr.add_argument("points", type=int)
-    pr.add_argument("--reason"); pr.add_argument("--by"); pr.add_argument("--reinstate", action="store_true"); pr.set_defaults(fn=cmd_member)
+    pr.add_argument("--reason"); pr.add_argument("--by"); pr.set_defaults(fn=cmd_member)
     pe = pm_sub.add_parser("events"); pe.add_argument("name"); pe.set_defaults(fn=cmd_member)
     a = p.parse_args(argv)
     a.fn(a)

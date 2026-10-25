@@ -7,12 +7,23 @@ test_supported_answer_no_deduction (test_claimcheck.LedgerTests.test_supported_a
 test_cutoff_at_40_marks_dismissed (test_members.MemberTrustTests.test_cutoff_at_40_marks_dismissed) ... ok
 test_deduct_logs_append_only (test_members.MemberTrustTests.test_deduct_logs_append_only) ... ok
 test_duplicate_member_fails_closed (test_members.MemberTrustTests.test_duplicate_member_fails_closed) ... ok
-test_floor_zero (test_members.MemberTrustTests.test_floor_zero) ... ok
+test_extreme_clause_requires_flag_and_exactly_60 (test_members.MemberTrustTests.test_extreme_clause_requires_flag_and_exactly_60) ... ok
+test_floor_zero (test_members.MemberTrustTests.test_floor_zero) ... /app/conversations/6adc19cc15ab7e5896019284/works_repo/claimcheck/tests/test_members.py:58: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp021ecpue/members.json' mode='r' encoding='UTF-8'>
+  m = json.load(open(f"{tmp}/members.json"))["members"]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
 test_member_starts_at_100 (test_members.MemberTrustTests.test_member_starts_at_100) ... ok
+test_observation_band_41_to_60 (test_members.MemberTrustTests.test_observation_band_41_to_60) ... ok
+test_recovery_above_60_returns_active (test_members.MemberTrustTests.test_recovery_above_60_returns_active) ... ok
+test_restore_caps_at_100 (test_members.MemberTrustTests.test_restore_caps_at_100) ... ok
+test_single_event_cap_30 (test_members.MemberTrustTests.test_single_event_cap_30) ... /app/conversations/6adc19cc15ab7e5896019284/works_repo/claimcheck/tests/test_members.py:72: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpv7mx9s1y/members.json' mode='r' encoding='UTF-8'>
+  m = json.load(open(f"{tmp}/members.json"))["members"]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
 test_unknown_member_fails_closed (test_members.MemberTrustTests.test_unknown_member_fails_closed) ... ok
 
 ----------------------------------------------------------------------
-Ran 12 tests in 0.022s
+Ran 17 tests in 0.078s
 
 OK
 added 'agent-x' (trust 100, active)
@@ -22,5 +33,21 @@ deducted 5 from 'agent-x': trust=95 status=active
 deducted 10 from 'agent-x': trust=85 status=active
 added 'dup' (trust 100, active)
 added 'agent-x' (trust 100, active)
-deducted 200 from 'agent-x': trust=0 status=dismissed
+deducted 60 from 'agent-x': trust=40 status=dismissed
+added 'agent-x' (trust 100, active)
+deducted 30 from 'agent-x': trust=70 status=active
+deducted 30 from 'agent-x': trust=40 status=dismissed
+deducted 30 from 'agent-x': trust=10 status=dismissed
+deducted 30 from 'agent-x': trust=0 status=dismissed
+added 'agent-x' (trust 100, active)
+added 'agent-x' (trust 100, active)
+deducted 30 from 'agent-x': trust=70 status=active
+deducted 10 from 'agent-x': trust=60 status=observation
+deducted 5 from 'agent-x': trust=55 status=observation
+added 'agent-x' (trust 100, active)
+deducted 30 from 'agent-x': trust=70 status=active
+deducted 30 from 'agent-x': trust=40 status=dismissed
+restored 25 to 'agent-x': trust=65 status=active
+added 'agent-x' (trust 100, active)
+restored 50 to 'agent-x': trust=100 status=active
 added 'agent-x' (trust 100, active)
