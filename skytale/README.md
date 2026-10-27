@@ -136,6 +136,13 @@ Injected storage, event-store and dispatcher receipt APIs are documented in
 APIs; provider wiring and live read-back remain unverified. No release version
 is advanced by this candidate.
 
+## Decision record
+
+Architecture decisions recorded in the coordination thread are compiled, with
+their original wording and what each one cost, in
+[docs/decisions/ADR-001-storage-evidence-and-review-contract.md](docs/decisions/ADR-001-storage-evidence-and-review-contract.md).
+Proposals still under review are listed there as open, not as decisions.
+
 ## Roadmap
 
 See [docs/roadmap.md](docs/roadmap.md): storage adapters, a resume verifier, and
