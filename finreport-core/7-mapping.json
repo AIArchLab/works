@@ -1,0 +1,4 @@
+{
+  "A": {"agent_id": "Agent ID", "date": "Date", "amount": "Monthly sales"},
+  "B": {"agent_id": "Emp no", "date": "Policy date", "amount": "Premium"}
+}

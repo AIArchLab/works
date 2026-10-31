@@ -1,0 +1,24 @@
+{
+  "id": "0007",
+  "slug": "finreport-core",
+  "title": "finreport-core — heterogeneous report merge with fail-closed validation",
+  "published": "2026-10-31",
+  "status": "sample",
+  "tags": [
+    "reports",
+    "reconciliation",
+    "fail-closed",
+    "cli",
+    "mvp"
+  ],
+  "license": "MIT",
+  "language": "en",
+  "deidentification_checklist": {
+    "no_client_names": true,
+    "no_platform_names_in_case_content": true,
+    "no_budgets_or_prices": true,
+    "no_private_strategy_layer": true,
+    "principal_referred_only_as_founder": true,
+    "all_claims_sourced_or_marked_source_missing": true
+  }
+}
