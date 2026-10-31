@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>finreport-core — architecture</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin:0; background:#0d1117; color:#e6edf3; font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; display:flex; flex-direction:column; align-items:center; padding:28px 16px 40px; }
+  h1 { font-size:20px; font-weight:600; margin:0 0 4px; }
+  .sub { color:#8b949e; font-size:13px; margin:0 0 22px; }
+  svg { max-width:960px; width:100%; height:auto; }
+  .box { fill:#161b22; stroke:#30363d; stroke-width:1.5; rx:10; }
+  .io   { stroke:#3fb950; }
+  .gate { stroke:#f0883e; }
+  .err  { stroke:#f85149; }
+  .out  { stroke:#58a6ff; }
+  text { fill:#e6edf3; font-size:13px; }
+  .lbl { fill:#8b949e; font-size:11px; }
+  .flow { stroke:#58a6ff; stroke-width:2; fill:none; }
+  .flow.errflow { stroke:#f85149; stroke-dasharray:6 5; }
+  .dot { fill:#58a6ff; }
+  .dot.errdot { fill:#f85149; }
+  .legend { display:flex; gap:18px; margin-top:18px; font-size:12px; color:#8b949e; flex-wrap:wrap; justify-content:center; }
+  .legend span::before { content:""; display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:6px; }
+  .lg-io::before{ background:#3fb950; } .lg-gate::before{ background:#f0883e; }
+  .lg-out::before{ background:#58a6ff; } .lg-err::before{ background:#f85149; }
+</style>
+</head>
+<body>
+<h1>finreport-core — architecture</h1>
+<p class="sub">Two report formats in, one reconciliation table out — or a blocked run with an error list. Nothing is ever overwritten.</p>
+<svg viewBox="0 0 960 430" role="img" aria-label="finreport-core data flow">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#58a6ff"/>
+    </marker>
+    <marker id="arrE" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#f85149"/>
+    </marker>
+  </defs>
+
+  <!-- inputs -->
+  <rect class="box io" x="20" y="60" width="200" height="86" rx="10"/>
+  <text x="120" y="88" text-anchor="middle">Summary report A</text>
+  <text class="lbl" x="120" y="108" text-anchor="middle">xlsx · one row per person</text>
+  <text class="lbl" x="120" y="126" text-anchor="middle">its own column names</text>
+
+  <rect class="box io" x="20" y="270" width="200" height="86" rx="10"/>
+  <text x="120" y="298" text-anchor="middle">Detail export B</text>
+  <text class="lbl" x="120" y="318" text-anchor="middle">csv · many rows per person</text>
+  <text class="lbl" x="120" y="336" text-anchor="middle">different column names</text>
+
+  <!-- mapping -->
+  <rect class="box" x="300" y="160" width="180" height="96" rx="10"/>
+  <text x="390" y="192" text-anchor="middle">Column mapping</text>
+  <text class="lbl" x="390" y="212" text-anchor="middle">mapping.json is data, not code</text>
+  <text class="lbl" x="390" y="230" text-anchor="middle">canonical: id · date · amount</text>
+
+  <!-- gate -->
+  <rect class="box gate" x="540" y="150" width="170" height="110" rx="10"/>
+  <text x="625" y="182" text-anchor="middle">Validate (fail-closed)</text>
+  <text class="lbl" x="625" y="202" text-anchor="middle">key present · unique (A)</text>
+  <text class="lbl" x="625" y="220" text-anchor="middle">date format · finite amount</text>
+  <text class="lbl" x="625" y="240" text-anchor="middle">any bad row blocks the run</text>
+
+  <!-- error branch -->
+  <rect class="box err" x="540" y="310" width="170" height="86" rx="10"/>
+  <text x="625" y="342" text-anchor="middle">Error list (csv)</text>
+  <text class="lbl" x="625" y="362" text-anchor="middle">file · row · reason · raw</text>
+  <text class="lbl" x="625" y="380" text-anchor="middle">no summary written · exit 2</text>
+
+  <!-- aggregate -->
+  <rect class="box" x="760" y="40" width="180" height="86" rx="10"/>
+  <text x="850" y="72" text-anchor="middle">Aggregate</text>
+  <text class="lbl" x="850" y="92" text-anchor="middle">normalize dates + amounts</text>
+  <text class="lbl" x="850" y="110" text-anchor="middle">sum detail per person</text>
+
+  <!-- output -->
+  <rect class="box out" x="760" y="300" width="180" height="96" rx="10"/>
+  <text x="850" y="330" text-anchor="middle">Reconciliation xlsx</text>
+  <text class="lbl" x="850" y="350" text-anchor="middle">A amount · B total · diff · status</text>
+  <text class="lbl" x="850" y="366" text-anchor="middle">OK · MISMATCH · one-side-only</text>
+  <text class="lbl" x="850" y="384" text-anchor="middle">existing path? refuse · exit 1</text>
+
+  <!-- edges -->
+  <path class="flow" id="p1" d="M220 103 C 270 103 260 190 300 200" marker-end="url(#arr)"/>
+  <path class="flow" id="p2" d="M220 313 C 270 313 260 226 300 218" marker-end="url(#arr)"/>
+  <path class="flow" id="p3" d="M480 208 L 540 208" marker-end="url(#arr)"/>
+  <path class="flow" id="p4" d="M625 150 C 625 90 720 83 760 83" marker-end="url(#arr)"/>
+  <path class="flow" id="p5" d="M850 126 C 850 210 850 250 850 300" marker-end="url(#arr)"/>
+  <path class="flow errflow" id="p6" d="M625 260 L 625 310" marker-end="url(#arrE)"/>
+
+  <!-- animated packets -->
+  <circle class="dot" r="4"><animateMotion dur="2.4s" repeatCount="indefinite"><mpath href="#p1"/></animateMotion></circle>
+  <circle class="dot" r="4"><animateMotion dur="2.4s" begin="0.7s" repeatCount="indefinite"><mpath href="#p2"/></animateMotion></circle>
+  <circle class="dot" r="4"><animateMotion dur="1.6s" begin="0.3s" repeatCount="indefinite"><mpath href="#p3"/></animateMotion></circle>
+  <circle class="dot" r="4"><animateMotion dur="2s" begin="0.5s" repeatCount="indefinite"><mpath href="#p4"/></animateMotion></circle>
+  <circle class="dot" r="4"><animateMotion dur="2s" begin="1s" repeatCount="indefinite"><mpath href="#p5"/></animateMotion></circle>
+  <circle class="dot errdot" r="4"><animateMotion dur="1.8s" begin="1.2s" repeatCount="indefinite"><mpath href="#p6"/></animateMotion></circle>
+</svg>
+<div class="legend">
+  <span class="lg-io">inputs (synthetic fixtures)</span>
+  <span class="lg-gate">fail-closed gate</span>
+  <span class="lg-out">outputs</span>
+  <span class="lg-err">blocked path</span>
+</div>
+</body>
+</html>
