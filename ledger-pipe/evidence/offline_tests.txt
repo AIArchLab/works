@@ -1,0 +1,5 @@
+[adjacent] exit=0 RESULT 12/12 passed
+[adversarial] exit=0 RESULT 15/15 passed
+[xlsx] exit=0 RESULT 10/10 passed
+====================================================
+CLAIM_ALLOWED

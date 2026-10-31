@@ -1,0 +1,31 @@
+{
+  "pattern_id": "Micro-ETL-Report-v0.1",
+  "name": "月報管線",
+  "version": "0.1.0",
+  "sources": {
+    "premium": {
+      "file": "premium.csv",
+      "label": "保費收入",
+      "required": ["保單號", "通路", "保費", "日期"],
+      "types": {"保費": "money", "日期": "date"},
+      "keys": ["保單號"],
+      "non_negative": ["保費"]
+    },
+    "claims": {
+      "file": "claims.csv",
+      "label": "理賠支出",
+      "required": ["理賠號", "類別", "金額", "日期"],
+      "types": {"金額": "money", "日期": "date"},
+      "keys": ["理賠號"],
+      "non_negative": ["金額"]
+    },
+    "commission": {
+      "file": "commission.csv",
+      "label": "佣金",
+      "required": ["業務員", "保費", "佣金率", "日期"],
+      "types": {"保費": "money", "佣金率": "ratio", "日期": "date"},
+      "keys": ["業務員", "日期"],
+      "non_negative": ["保費"]
+    }
+  }
+}

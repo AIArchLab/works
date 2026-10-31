@@ -1,0 +1,29 @@
+{
+  "id": "0007",
+  "slug": "ledger-pipe",
+  "title": "ledger-pipe — monthly reporting behind a source contract (v0.3: adjacent-period diff, encoding autodetect, native xlsx, append-only snapshots)",
+  "published": "2026-11-01",
+  "status": "sample",
+  "tags": ["etl", "reporting", "data-quality", "cli", "python", "mvp"],
+  "license": "MIT",
+  "language": "en",
+  "deidentification_checklist": {
+    "no_client_names": true,
+    "no_platform_names_in_case_content": true,
+    "no_budgets_or_prices": true,
+    "no_private_strategy_layer": true,
+    "principal_referred_only_as_founder": true,
+    "all_claims_sourced_or_marked_source_missing": true
+  },
+  "verification": {
+    "self_test": "37 cases across three suites (adjacent-period 12, adversarial 15, xlsx 10)",
+    "offline_test_evidence": "evidence/offline_tests.txt",
+    "external_review": "not performed; no external validation is claimed",
+    "limits": [
+      "Legacy .xls (BIFF) not supported; convert to .xlsx or .csv",
+      "Only the first worksheet of an .xlsx is read; formulas read as cached values",
+      "Comparison is against the adjacent previous period only; gaps are reported, never bridged",
+      "All bundled data is Sample data generated for illustration"
+    ]
+  }
+}

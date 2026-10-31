@@ -11,6 +11,7 @@ Scenario and data in every work are fictional unless the work itself states othe
 | 4 | [skytale](skytale/) | Fail-closed session handoff: generation ids, hash-bound artifacts, offline gate | 2026-10-22 |
 | 5 | [grantkeeper](grantkeeper/) | Expiry-aware OAuth grant watch with append-only renewal ledger | 2026-10-24 |
 | 6 | [claimcheck](claimcheck/) | Trust ledger for AI agent teams: member governance plus a per-claim evidence engine | 2026-10-24 |
+| 7 | [ledger-pipe](ledger-pipe/) | Monthly reporting behind a source contract: bad sources stop the run and name the row and column | 2026-11-01 |
 
 Works that need their own repository (code with releases, issues, tests):
 - [weirwright](https://github.com/AIArchLab/weirwright) — executable change-control gates.
