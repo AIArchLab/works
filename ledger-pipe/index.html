@@ -1,80 +1,108 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Ledger Pipe — monthly reporting with a source contract</title>
+<title>ledger-pipe — monthly reporting behind a source contract</title>
 <style>
-:root{--bg:#0f1113;--card:#171a1d;--line:#2a2f34;--fg:#e8eaed;--mut:#98a0a6;--acc:#4ea1ff;--ok:#39d98a;--bad:#ff6b6b}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.7 -apple-system,"Inter",sans-serif}
-.wrap{max-width:880px;margin:0 auto;padding:56px 24px 80px}
-h1{font-size:34px;line-height:1.25;margin:0 0 8px;letter-spacing:.3px}
-.sub{color:var(--mut);margin:0 0 36px;max-width:640px}
-h2{font-size:19px;margin:44px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line)}
-.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:20px 0}
-.k{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px}
-.k b{display:block;font-size:23px;font-variant-numeric:tabular-nums}
-.k span{color:var(--mut);font-size:13px}
-table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:15px}
-th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line)}
-th{color:var(--mut);font-weight:500}
-code,pre{font-family:ui-monospace,Menlo,monospace;font-size:14px}
-pre{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);padding:14px;border-radius:8px;overflow-x:auto}
-.up{color:var(--ok)}.down{color:var(--bad)}
-.tag{display:inline-block;border:1px solid var(--line);color:var(--mut);border-radius:999px;padding:3px 10px;font-size:13px;margin:0 6px 6px 0}
-.warn{border-left:3px solid #d9a339;background:var(--card);padding:12px 14px;border-radius:8px;color:var(--fg);font-size:15px}
+:root{--ink:#14213d;--navy:#12305b;--line:#d7dde6;--panel:#f5f7fa;--muted:#5b6675;--good:#0b6b3a;--bad:#a32020;--accent:#12305b}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#fff;color:var(--ink);font:15px/1.65 -apple-system,"Segoe UI",Roboto,"Noto Sans TC",sans-serif}
+.wrap{max-width:940px;margin:0 auto;padding:44px 28px 72px}
+.kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+h1{font:600 34px/1.2 Georgia,"Times New Roman",serif;color:var(--navy);margin:0 0 10px}
+.sub{font-size:16px;color:var(--muted);margin:0 0 18px;max-width:640px}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 30px}
+.chip{font-size:12px;color:var(--navy);background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:4px 9px}
+h2{font:600 17px/1.3 Georgia,serif;color:var(--navy);margin:36px 0 10px;padding-bottom:7px;border-bottom:2px solid var(--navy)}
+p{margin:0 0 12px}
+.lead{border-left:3px solid var(--navy);background:var(--panel);padding:14px 16px;font-size:15px}
+table{width:100%;border-collapse:collapse;font-size:14px;margin:6px 0 4px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--panel);font-size:12.5px;letter-spacing:.03em;color:var(--muted);font-weight:600;border-bottom:1px solid var(--line)}
+td.n{text-align:right;font-variant-numeric:tabular-nums}
+.pos{color:var(--good)}.neg{color:var(--bad)}
+pre{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--bad);padding:14px 16px;overflow-x:auto;font:13px/1.75 ui-monospace,Menlo,Consolas,monospace;color:#25303f;margin:8px 0 12px}
+code{font:13px ui-monospace,Menlo,monospace;background:var(--panel);padding:1px 5px;border-radius:2px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+@media(max-width:720px){.two{grid-template-columns:1fr}}
+ul{margin:6px 0 14px;padding-left:20px}li{margin:4px 0}
+.foot{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
 </style></head><body><div class="wrap">
-<h1>Ledger Pipe</h1>
-<p class="sub">Monthly reporting with a source contract. Sources that break the contract stop the run, and the error names the source, the row and the column.</p>
-<span class="tag">Python standard library</span><span class="tag">Single machine</span><span class="tag">No network</span><span class="tag">Author self-test 12/12</span><span class="tag">Sample data</span>
-
-<h2>The problem</h2>
-<p>Reporting fails because sources change shape, not because arithmetic is broken: a renamed column, an amount with a comma or a full-width digit, a blank row, a repeated key, an impossible date. Someone then reads the sheet line by line, and one bad row means redoing the table. So the product is the contract, not the report.</p>
-
-<h2>Output on Sample data (2026-09 against 2026-08)</h2>
-<div class="kpi">
-<div class="k"><span>Premium income</span><b>2,900,664</b><span class="up">+13.9%</span></div>
-<div class="k"><span>Claims paid</span><b>951,803</b><span class="up">+0.9%</span></div>
-<div class="k"><span>Commission</span><b>248,274</b><span class="up">+16.7%</span></div>
-<div class="k"><span>Net</span><b>1,700,587</b><span class="up">+22.3%</span></div>
+<p class="kicker">AIArchLab works &middot; Sample</p>
+<h1>Monthly reporting behind a source contract</h1>
+<p class="sub">Sources that break the contract stop the run, and the error names the source, the row and the column. No report is produced from data that failed validation.</p>
+<div class="meta">
+  <span class="chip">Sample data</span>
+  <span class="chip">Self-test 37/37</span>
+  <span class="chip">Python standard library only</span>
+  <span class="chip">Single machine &middot; no network &middot; no accounts</span>
 </div>
-<table><thead><tr><th>Channel</th><th>Current</th><th>Previous</th><th>Delta</th><th>Change</th></tr></thead><tbody>
-<tr><td>Agency</td><td>1,360,611</td><td>997,553</td><td class="up">+363,058</td><td>+36.4%</td></tr>
-<tr><td>Advisers</td><td>549,670</td><td>504,475</td><td class="up">+45,195</td><td>+9.0%</td></tr>
-<tr><td>Online</td><td>455,995</td><td>230,780</td><td class="up">+225,215</td><td>+97.6%</td></tr>
-<tr><td>Bank</td><td>534,388</td><td>814,264</td><td class="down">-279,876</td><td>-34.4%</td></tr>
+
+<h2>Why the contract, not the report</h2>
+<p>Monthly reporting rarely fails because the arithmetic is wrong. It fails because the sources change shape: a renamed column, an amount with a comma or a full-width digit, one blank row, a repeated key, an impossible date. Someone then reads the sheet line by line, and one bad row means redoing the table.</p>
+<p class="lead">The deliverable is therefore the contract: what each source must look like, checked on every run, before any number is produced. The report is the by-product.</p>
+
+<h2>Output on Sample data</h2>
+<table>
+<thead><tr><th>Line</th><th class="n">Current period</th><th class="n">Previous period</th><th class="n">Change</th></tr></thead>
+<tbody>
+<tr><td>Premium income</td><td class="n">2,900,664</td><td class="n">2,547,072</td><td class="n pos">+13.9%</td></tr>
+<tr><td>Claims paid</td><td class="n">951,803</td><td class="n">943,770</td><td class="n pos">+0.9%</td></tr>
+<tr><td>Commission</td><td class="n">248,274</td><td class="n">212,660</td><td class="n pos">+16.7%</td></tr>
+<tr><td><strong>Net</strong></td><td class="n"><strong>1,700,587</strong></td><td class="n">1,390,642</td><td class="n pos">+22.3%</td></tr>
+</tbody></table>
+<table>
+<thead><tr><th>Channel</th><th class="n">Current</th><th class="n">Previous</th><th class="n">Change</th></tr></thead>
+<tbody>
+<tr><td>Brokerage</td><td class="n">1,360,611</td><td class="n">997,553</td><td class="n pos">+36.4%</td></tr>
+<tr><td>Advisers</td><td class="n">549,670</td><td class="n">504,475</td><td class="n pos">+9.0%</td></tr>
+<tr><td>Bank</td><td class="n">534,388</td><td class="n">814,264</td><td class="n neg">&minus;34.4%</td></tr>
+<tr><td>Online</td><td class="n">455,995</td><td class="n">230,780</td><td class="n pos">+97.6%</td></tr>
 </tbody></table>
 
-<h2>How bad rows are rejected</h2>
-<pre>VALIDATION_FAILED period=2026-09 errors=1
+<h2>What a rejected source looks like</h2>
+<pre>VALIDATION_FAILED period=2026-09 errors=2
   Premium income row 4 [amount] cannot parse amount: '12O,000'
+  Premium income row 6 [policy_no] duplicate key (first seen row 5)
 
 VALIDATION_FAILED period=2026-09 errors=1
-  Premium income row 6 [policy_no] duplicate key (first seen row 5): P202609003
+  Premium income row 4 [channel] required value is empty or a placeholder (NA/-/null)</pre>
+<p>Exit code 2, no report file, and a fresh <code>LATEST.json</code> marked <code>failed</code>. A previous report is deleted rather than left behind, so a directory that says failed cannot be mistaken for a current report.</p>
 
-VALIDATION_FAILED period=2026-09 errors=1
-  Claims row 7 [date] cannot parse date: '2026-09-31'</pre>
-
-<h2>Self-test: 12 of 12</h2>
-<table><thead><tr><th>Case</th><th>Result</th></tr></thead><tbody>
-<tr><td>Two clean periods</td><td class="up">PASS</td></tr>
-<tr><td>Missing column</td><td class="up">PASS (exit 2)</td></tr>
-<tr><td>Amount containing a letter</td><td class="up">PASS (names row 4)</td></tr>
-<tr><td>Duplicate primary key</td><td class="up">PASS (names first occurrence)</td></tr>
-<tr><td>Impossible date</td><td class="up">PASS</td></tr>
-<tr><td>Empty required cell</td><td class="up">PASS</td></tr>
-<tr><td>Negative amount</td><td class="up">PASS</td></tr>
-<tr><td>Ratio out of range</td><td class="up">PASS</td></tr>
-<tr><td>Full-width digits normalised</td><td class="up">PASS</td></tr>
-<tr><td>UTF-8 BOM header</td><td class="up">PASS</td></tr>
-<tr><td>Two runs, byte-identical output</td><td class="up">PASS</td></tr>
+<h2>Verification</h2>
+<table>
+<thead><tr><th>Suite</th><th class="n">Cases</th><th>What it covers</th></tr></thead>
+<tbody>
+<tr><td>Adjacent period</td><td class="n">12</td><td>Two clean periods, missing column, malformed amount, duplicate key, impossible date, empty cell, negative amount, ratio range, full-width digits, BOM, byte-identical reruns</td></tr>
+<tr><td>Adversarial</td><td class="n">15</td><td>CP950 and BIG5 encodings, header whitespace, placeholder values, 10<sup>15</sup> amounts, column reordering, 10,000 rows, duplicate headers, period gaps, repeated runs, paths with spaces, no stale report after failure</td></tr>
+<tr><td>xlsx</td><td class="n">10</td><td>Shared strings, inline strings, date serials, missing column, placeholder value, legacy .xls refusal, format substitution, trailing blank rows, corrupt archive, mixed formats</td></tr>
 </tbody></table>
+<p>All three suites must pass before any claim of passing is made (<code>tests/gate.py</code> prints <code>CLAIM_ALLOWED</code> or <code>CLAIM_BLOCKED</code>).</p>
 
+<div class="two">
+<div>
 <h2>Boundaries</h2>
-<p>No system integration, no approval workflow, no web back end, no cloud, no accounts. Reads sources, writes only to its own output folder.</p>
+<ul>
+<li>No system integration, no approval workflow, no web back end</li>
+<li>No cloud execution, no accounts, no telemetry</li>
+<li>Reads sources; writes only to its own output folder</li>
+<li>Only the first worksheet of an .xlsx is read; formulas are read as cached values</li>
+</ul>
+</div>
+<div>
+<h2>When this does not apply</h2>
+<ul>
+<li>Two-way writes into an existing system</li>
+<li>A human approval step inside the flow</li>
+<li>Cross-company data exchange</li>
+<li>An interactive dashboard rather than a periodic report</li>
+</ul>
+</div>
+</div>
 
 <h2>Run</h2>
-<pre>python3 pipeline.py --data data/2026-08 --out out
-python3 pipeline.py --data data/2026-09 --out out
-python3 tests/run_tests.py</pre>
+<pre style="border-left-color:var(--navy)">python3 pipeline.py --data data/2026-08 --out out --period 2026-08
+python3 pipeline.py --data data/2026-09 --out out --period 2026-09
+python3 tests/gate.py</pre>
 
-<h2>Status</h2>
-<p class="warn">Author self-test only. Independent review is pending, and until it completes this tool is not described as externally validated. All included data is Sample data generated for demonstration.</p>
+<p class="foot">All data in this work is Sample data generated for illustration. No client data. External review has not been performed; no external validation is claimed.</p>
 </div></body></html>
