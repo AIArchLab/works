@@ -1,0 +1,20 @@
+[PASS] T1 happy path exit=0 done: 50 agents (A), 50 agents (B); summary written to evidence/run-20261031-112415/out_summary.xlsx
+[PASS] T1 merge of 1,000 detail rows took 0.215s (measured, this machine)
+[PASS] T1 column-exact match (50 agents) all match
+[PASS] T1 detail grand total = 5,003,005 computed 5,003,005
+[PASS] T2 missing-key blocks, exit=2 blocked: 3 issue(s) written to evidence/run-20261031-112415/t2_err.csv; no summary produced.
+[PASS] T2 error list has exactly the 3 planted rows got 3
+[PASS] T2 no summary on block 
+[PASS] T3 bad-format blocks, exit=2 blocked: 2 issue(s) written to evidence/run-20261031-112415/t3_err.csv; no summary produced.
+[PASS] T3 error list has exactly the 2 planted rows got 2: ['bad date format', 'bad amount format (incl. non-finite)']
+[PASS] T4 exit=0 with sockets blocked (no network dependency) done: 50 agents (A), 50 agents (B); summary written to evidence/run-20261031-112415/t4_out.xlsx
+[PASS] T5 existing destination refused, exit=1 refused: output destination already exists (evidence/run-20261031-112415/out_sum
+[PASS] T5 old summary not overwritten 
+[PASS] T5 existing error-list path also refused 
+[PASS] T6 duplicate key in A blocks, exit=2 blocked: 1 issue(s) written to evidence/run-20261031-112415/t6_err.csv; no summary produced.
+[PASS] T6 error list names the duplicate key got ['duplicate key (agent_id)']
+[PASS] T7 non-finite amounts block, exit=2 blocked: 3 issue(s) written to evidence/run-20261031-112415/t7_err.csv; no summary produced.
+[PASS] T7 error list has exactly the 3 planted rows got 3: ['bad amount format (incl. non-finite)', 'bad amount format (incl. non-finite)', 'bad amount format (incl. non-finite)']
+
+Output dir: evidence/run-20261031-112415
+ALL PASS
