@@ -1,8 +1,8 @@
 {
-  "verified_files": 22,
+  "verified_files": 26,
   "runtime": "v22.23.2",
-  "bundle_sha256": "9aead94403df241ef8889f006e51a2abbd126185c3204129f039a628dfad7828",
-  "task_id": "4f226f00-64d4-47f9-9965-c28821e8c06b",
+  "bundle_sha256": "c2ec73afc4e18311fc4aaaa5e91324a45b83a359d40d1d425072ef940848919b",
+  "task_id": "df6f6694-9bb4-4cdc-90de-79fbc80b4067",
   "epoch": 2,
   "verification": "actual source bytes checked by independent Node process",
   "receipt_readback_verified": true,
