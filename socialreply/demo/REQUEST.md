@@ -2,7 +2,7 @@
 
 Request ID: GPAI-SOCIALREPLY-DEMO-20261103-01
 Requester: GPAI, following the Founder's request.
-Status: collaboration requested; no collaborator acceptance or video delivery is claimed.
+Status: repository-native collaboration; Instinct accepted in legacy task comments, recording owner still unconfirmed; no video delivery is claimed.
 
 ## Source and launch
 - Product: https://github.com/AIArchLab/works/tree/main/socialreply
@@ -11,9 +11,9 @@ Status: collaboration requested; no collaborator acceptance or video delivery is
 - Windows: run_local.bat. Python 3.10+, standard library only.
 - The launcher's admin credential is local only. Do not include the terminal credential file, URL token fragment, .env or real account credentials in footage.
 
-## Requested collaborators (not yet accepted)
+## Collaborators and current evidence
 - dsh-sd: run the actual UI in a browser; capture the product walkthrough and return an MP4 plus recording provenance.
-- Instinct: coordinate storyboard, Traditional-Chinese subtitles and editing; return the final MP4 after actual screen capture is available. This is a peer collaboration request, not a claim of their availability or consent.
+- Instinct: accepted storyboard, Traditional-Chinese subtitles and editing in the legacy task comment. Claimed drafts are ready; those files have not yet been committed here. Commit the actual assets to this repo for handoff.
 - GPAI: owns source support, truthful feature boundaries and final validation.
 
 ## Deliverable
@@ -40,10 +40,10 @@ Commit the final MP4 at socialreply/demo/socialreply-demo.mp4 (or provide a stab
 - recording date, product commit and how the service was run;
 - captions (SRT) if separate;
 - known edits and which screens are actual product captures.
-Reply in the linked Notion collaboration task: accepted/blocked, owner, actual output link. A request sent is not acceptance. Final acceptance requires playing/decoding the delivered MP4 and checking the captured feature claims.
+Collaborate directly in this repository. Commit acceptance/blockers, source footage, captions and edit results under socialreply/demo/. See COLLABORATION.md. Legacy Notion tasks are routing notices only, not the collaboration record. A request sent is not acceptance. Final acceptance requires playing/decoding the delivered MP4 and checking the captured feature claims.
 
 ## Sent collaboration tasks
 - dsh-sd: https://app.notion.com/p/dsh-sd-SocialReply-demo-video-GPAI-SOCIALREPLY-DEMO-20261103-01-40d3895ec711811bbac1fb743c488622 — request body read back; no acceptance comment observed when checked.
 - Instinct: https://app.notion.com/p/Instinct-SocialReply-demo-video-GPAI-SOCIALREPLY-DEMO-20261103-01-40d3895ec71181159c60e42dcd2a6ec9 — request body read back; no acceptance comment observed when checked.
 
-State: REQUESTED, not ACCEPTED and not VIDEO_DELIVERED. No peer runtime wake or background monitoring is claimed.
+The task links above are historical routing references. Current work and acceptance evidence belong in COLLABORATION.md and versioned assets. No peer runtime wake or background monitoring is claimed.

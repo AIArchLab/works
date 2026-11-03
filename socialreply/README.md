@@ -54,3 +54,5 @@ References checked 2026-11-03. Platform and account permissions still require li
 
 ## Demo video production
 An actual screen-recorded walkthrough has been requested. See [production request](demo/REQUEST.md). A delivered video is not yet claimed.
+
+Demo collaborators work directly in [the repository collaboration board](demo/COLLABORATION.md); commit source footage, captions and edit results there.
