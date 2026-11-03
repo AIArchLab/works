@@ -1,0 +1,23 @@
+<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width"><title>社群自動回覆後台</title>
+<style>body{font:14px system-ui;margin:16px;max-width:1200px}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ccc;padding:4px 6px;vertical-align:top}
+.sent{background:#e6f7e6}.handoff,.held_autoreply_off{background:#fff6dd}[class^=failed],.error{background:#fde6e6}.ignored,.ignored_unsupported{color:#777}
+pre{background:#f4f4f4;padding:6px;overflow:auto;max-height:260px}details{margin:10px 0}.bar{display:flex;gap:16px;align-items:center;flex-wrap:wrap}#sum span{margin-right:12px}</style>
+<h2>社群自動回覆後台</h2>
+<div id=warn style="background:#fff3cd;border:2px solid #e0a800;padding:8px;margin-bottom:10px;font-weight:600">尚無任何真平台實測（A 層全部未測）。下列「sent」若目的地為 127.0.0.1/localhost，只代表本機模擬端收到，不是平台真的送出。</div>
+<div class=bar><label><input type=checkbox id=ar> 自動回覆開啟</label><span id=ver></span><span id=sum></span></div>
+<table id=t><tr><th>#<th>平台<th>類型<th>原文<th>狀態<th>決策者<th>回覆<th>送出ID<th>目的地<th>規則版<th>次數<th>備註<th></table>
+<pre id=au hidden></pre>
+<details><summary>平台能力與驗證明細（由測試結果檔產生）</summary><pre id=ps></pre></details>
+<details><summary>規則（JSON，儲存會產生新版本）</summary><textarea id=rules rows=10 style="width:100%"></textarea><br><button onclick=saveRules()>儲存規則</button> <span id=re></span></details>
+<script>
+async function j(u,o){const r=await fetch(u,{credentials:'same-origin',...o});return {ok:r.ok,d:await r.json().catch(()=>({}))}}
+async function load(){const s=(await j('/api/settings')).d;ar.checked=s.autoreply_enabled;ver.textContent='規則版本 '+s.rule_version;ps.textContent=JSON.stringify(s.platform_status,null,1);const pl=s.platform_status.platforms;warn.innerHTML=Object.entries(pl).map(([k,v])=>k+'：'+v.map(c=>c.capability+(c.default_enabled?'':'(預設停用)')+'=A未測').join('、')).join('<br>')+'<br>下列「sent」若目的地為 MOCK(本機)，只代表本機模擬端收到，不是平台真的送出。';if(!rules.dataset.l){rules.value=JSON.stringify(s.rules,null,1);rules.dataset.l=1}
+const e=(await j('/api/events')).d;const c={};for(const x of e)c[x.status]=(c[x.status]||0)+1;sum.innerHTML=Object.entries(c).map(([k,v])=>`<span>${k}: ${v}</span>`).join('');
+const tb=document.getElementById('t');tb.innerHTML=tb.rows[0].outerHTML;
+for(const x of e){const r=tb.insertRow();r.className=x.status;for(const v of [x.id,x.platform,x.kind,x.text,x.status,(x.decided_by?(x.decided_by.startsWith('rules')?'規則':(x.decided_by.startsWith('local:')||x.decided_by.startsWith('llm')?'AI '+x.decided_by:x.decided_by)):''),x.reply,x.sent_message_id,(x.send_host?((['127.0.0.1','localhost','::1'].includes(x.send_host))?'MOCK(本機) ':'REAL ')+x.send_host:''),x.rule_version,x.attempts,x.error])r.insertCell().textContent=v??'';
+const cell=r.insertCell();const a=document.createElement('a');a.href='#';a.textContent='軌跡 ';a.onclick=async()=>{au.hidden=false;au.textContent=JSON.stringify((await j('/api/audit/'+x.id)).d,null,1);return false};cell.append(a);
+if(x.status.startsWith('failed')||x.status=='error'){const b=document.createElement('a');b.href='#';b.textContent=x.status=='failed_unconfirmed'?'強制重送（可能重複）':'重試';b.onclick=async()=>{if(x.status=='failed_unconfirmed'&&!confirm('對方可能已收到回覆，重送可能造成重複。確定？'))return false;await j('/api/retry/'+x.id,{method:'POST',body:JSON.stringify({force:x.status=='failed_unconfirmed'})});return false};cell.append(b)}}}
+ar.onchange=()=>j('/api/autoreply',{method:'POST',body:JSON.stringify({enabled:ar.checked})});
+async function saveRules(){let b;try{b=JSON.parse(rules.value)}catch(e){re.textContent='JSON 格式錯誤';return}const r=await j('/api/rules',{method:'POST',body:JSON.stringify(b)});re.textContent=r.ok?'已儲存 v'+r.d.version:'拒絕：'+(r.d.error||'');load()}
+load();setInterval(load,2000)
+</script>
