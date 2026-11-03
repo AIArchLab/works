@@ -1,0 +1,55 @@
+[
+  {
+    "id": "RH-01a",
+    "actual": {
+      "create_status": 200,
+      "python_bundle_read": true,
+      "node_parse_exit": 1
+    },
+    "expected": "Reject non-finite values at ingress with a documented 4xx; never emit NaN/Infinity as JSON."
+  },
+  {
+    "id": "RH-01b",
+    "actual": {
+      "source_number": 9007199254740993,
+      "node_number": "9007199254740992",
+      "raw_bytes_digest_valid": true
+    },
+    "expected": "Enforce a documented cross-runtime numeric domain, or preserve large integers through an explicit encoding; no silent rounding."
+  },
+  {
+    "id": "RH-02",
+    "actual": {
+      "receiver_exit": 1,
+      "attachment_error": true,
+      "broker_phase": "ACTIVE",
+      "owner": "target",
+      "ack_event_present": true
+    },
+    "expected": "Receiver validates all required input semantics/capabilities before ACK. Failed validation must produce no ACK and no ACTIVE target."
+  },
+  {
+    "id": "RH-03",
+    "actual": {
+      "create_status": 200,
+      "state_json_bytes": 1100009,
+      "same_state_write": {
+        "status": 413,
+        "body": {
+          "error": "task_snapshot_too_large"
+        }
+      }
+    },
+    "expected": "Apply the same documented 1MiB snapshot quota on create and write; oversized create returns 413."
+  },
+  {
+    "id": "RH-04",
+    "actual": {
+      "status": 400,
+      "body": {
+        "error": "invalid_text"
+      }
+    },
+    "expected": "Allow a zero-byte artifact with matching digest, or explicitly exclude empty artifacts and validate the limitation before handoff."
+  }
+]

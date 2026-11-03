@@ -1,4 +1,8 @@
-# Release acceptance — 0.1.0
+# Release acceptance — 0.1.1
+
+Issue #2 修正驗收入口：`python tests/test_issue_2.py`。包含下列原 18 項，加 RH-01..04 的 10 項回歸；完整對照見 [ISSUE_2_RESOLUTION.md](docs/ISSUE_2_RESOLUTION.md)。當次環境與結果以 `test_report.json` 為準。
+
+# 原 0.1.0 基線驗收
 
 ## 已驗證事實
 

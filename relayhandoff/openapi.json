@@ -2,8 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "RelayHandoff API",
-    "version": "0.1.0",
-    "description": "Single-node cooperative handoff protocol. See PROTOCOL.md for consistency and safety semantics."
+    "version": "0.1.1",
+    "description": "Single-node cooperative handoff protocol. See PROTOCOL.md for consistency and safety semantics. Portable JSON: finite binary64 numbers with absolute value <= 9007199254740991, Unicode scalar strings, depth <= 64; invalid numbers are rejected, never coerced. See PROTOCOL.md."
   },
   "components": {
     "securitySchemes": {

@@ -6,9 +6,32 @@
 <label>狀態 JSON<textarea id="state" rows="5">{"goal":"跨 runtime 交接","steps":[]}</textarea></label>
 <button id="write">寫入 checkpoint</button><button id="prepare">封存並交接</button><button id="receive">接手、驗證、ACK</button><button id="cancel">取消未完成交接</button><pre id="out">就緒</pre>
 <script type="module">
+function validate(value,depth=0,active=new Set()) {
+  if(depth>64)throw Error('json_depth_exceeded');
+  if(value===null||typeof value==='boolean')return value;
+  if(typeof value==='number'){
+    if(!Number.isFinite(value))throw Error('json_non_finite_number');
+    if(Math.abs(value)>Number.MAX_SAFE_INTEGER)throw Error('json_number_out_of_range');
+    return value;
+  }
+  if(typeof value==='string'){
+    for(let i=0;i<value.length;i++){
+      const ch=value.charCodeAt(i);
+      if(ch>=0xD800&&ch<=0xDBFF){const next=value.charCodeAt(++i);if(!(next>=0xDC00&&next<=0xDFFF))throw Error('json_invalid_unicode');}
+      else if(ch>=0xDC00&&ch<=0xDFFF)throw Error('json_invalid_unicode');
+    }
+    return value;
+  }
+  if(typeof value!=='object'||(!Array.isArray(value)&&Object.getPrototypeOf(value)!==Object.prototype&&Object.getPrototypeOf(value)!==null))throw Error('json_unsupported_type');
+  if(active.has(value))throw Error('json_cycle');active.add(value);
+  if(Array.isArray(value)){for(const item of value)validate(item,depth+1,active);}
+  else for(const [key,item] of Object.entries(value)){validate(key,depth+1,active);validate(item,depth+1,active);}
+  active.delete(value);return value;
+}
+
 const $=id=>document.getElementById(id);let lease={},revision=0,handoff;
 if(location.hash){$('key').value=decodeURIComponent(location.hash.slice(1));history.replaceState(null,'',location.pathname)}
-async function call(path,body){const headers={Authorization:'Bearer '+$('key').value};if(body!==undefined){headers['Content-Type']='application/json';headers['Idempotency-Key']=crypto.randomUUID()};const r=await fetch('/v1/tasks'+path,{method:body===undefined?'GET':'POST',headers,body:body===undefined?undefined:JSON.stringify(body)});const d=await r.json();if(!r.ok)throw Error(d.error);return d}
+async function call(path,body){if(body!==undefined)validate(body);const headers={Authorization:'Bearer '+$('key').value};if(body!==undefined){headers['Content-Type']='application/json';headers['Idempotency-Key']=crypto.randomUUID()};const r=await fetch('/v1/tasks'+path,{method:body===undefined?'GET':'POST',headers,body:body===undefined?undefined:JSON.stringify(body)});const d=await r.json();validate(d);if(!r.ok)throw Error(d.error);return d}
 const path=()=>'/'+$('task').value.trim();const show=d=>$('out').textContent=JSON.stringify(d,null,2);
 function action(id,fn){$(id).onclick=async()=>{try{show(await fn())}catch(e){show({error:e.message})}}}
 action('list',()=>call(''));
@@ -18,6 +41,6 @@ action('audit',()=>call(path()+'/events'));
 action('acquire',async()=>lease=await call(path()+'/acquire',{}));
 action('write',async()=>{let d=await call(path()+'/write',{...lease,revision,state:JSON.parse($('state').value)});revision=d.revision;return d});
 action('prepare',async()=>handoff=await call(path()+'/prepare',{...lease,revision,summary:'使用者在控制台明確建立的 checkpoint；狀態與附件為交接依據。'}));
-action('receive',async()=>{const e=await call(path()+'/bundle');const raw=Uint8Array.from(atob(e.bundle_base64),x=>x.charCodeAt(0));const sha=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',raw)),x=>x.toString(16).padStart(2,'0')).join('');if(sha!==e.sha256)throw Error('bundle_digest_mismatch');const b=JSON.parse(new TextDecoder().decode(raw));if(b.task_id!==$('task').value.trim()||b.protocol!=='relayhandoff/1')throw Error('bundle_identity_mismatch');for(const a of Object.values(b.artifacts)){const bytes=Uint8Array.from(atob(a.base64),x=>x.charCodeAt(0));const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),x=>x.toString(16).padStart(2,'0')).join('');if(hash!==a.sha256)throw Error('artifact_digest_mismatch')}lease=await call(path()+'/claim',{handoff_id:e.handoff_id});const d=await call(path()+'/ack',{...lease,sha256:sha});revision=d.revision;$('state').value=JSON.stringify(b.state,null,2);return d});
+action('receive',async()=>{const e=await call(path()+'/bundle');const raw=Uint8Array.from(atob(e.bundle_base64),x=>x.charCodeAt(0));const sha=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',raw)),x=>x.toString(16).padStart(2,'0')).join('');if(sha!==e.sha256)throw Error('bundle_digest_mismatch');const b=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(raw));validate(b);if(b.task_id!==$('task').value.trim()||b.protocol!=='relayhandoff/1')throw Error('bundle_identity_mismatch');for(const a of Object.values(b.artifacts)){const bytes=Uint8Array.from(atob(a.base64),x=>x.charCodeAt(0));const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),x=>x.toString(16).padStart(2,'0')).join('');if(hash!==a.sha256)throw Error('artifact_digest_mismatch')}lease=await call(path()+'/claim',{handoff_id:e.handoff_id});const d=await call(path()+'/ack',{...lease,sha256:sha});revision=d.revision;$('state').value=JSON.stringify(b.state,null,2);return d});
 action('cancel',async()=>{const e=await call(path()+'/bundle');return lease=await call(path()+'/cancel',{handoff_id:e.handoff_id})});
 </script></html>

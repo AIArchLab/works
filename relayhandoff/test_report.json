@@ -1,36 +1,32 @@
 {
   "product": "RelayHandoff",
-  "version": "0.1.0",
-  "tested_at_utc": "2026-11-03T16:17:08.240888+00:00",
+  "version": "0.1.1",
+  "tested_at_utc": "2026-11-03T16:40:49.040945+00:00",
   "platform": "Linux-6.18.56-cloudflare-microvm-2026.10.9-x86_64-with-glibc2.35",
   "python": "3.11.14",
   "node": "v22.23.2",
-  "automated_test_cases": 18,
-  "test_cases_passed": 18,
+  "issue": "https://github.com/AIArchLab/works/issues/2",
+  "automated_test_cases": 28,
+  "original_test_cases": 18,
+  "added_regression_cases": 10,
+  "test_cases_passed": 28,
   "checks": [
     {
-      "name": "unit_http_e2e",
+      "name": "issue_2_acceptance",
       "exit_code": 0,
       "stdout": "",
-      "stderr": "test_01_python_to_node_actual_process (__main__.E2E.test_01_python_to_node_actual_process) ... ok\ntest_02_restart_preserves_handoff_and_idempotency (__main__.E2E.test_02_restart_preserves_handoff_and_idempotency) ... ok\ntest_03_writes_frozen_before_ack (__main__.E2E.test_03_writes_frozen_before_ack) ... ok\ntest_04_cancel_invalidates_claim_and_source_token (__main__.E2E.test_04_cancel_invalidates_claim_and_source_token) ... ok\ntest_05_tenant_isolation_and_reader (__main__.E2E.test_05_tenant_isolation_and_reader) ... ok\ntest_06_acquire_concurrency_single_owner (__main__.E2E.test_06_acquire_concurrency_single_owner) ... ok\ntest_07_idempotency_key_conflict (__main__.E2E.test_07_idempotency_key_conflict) ... ok\ntest_08_expired_lease_rejected (__main__.E2E.test_08_expired_lease_rejected) ... ok\ntest_09_handoff_timeout_recovery (__main__.E2E.test_09_handoff_timeout_recovery) ... ok\ntest_10_artifact_corruption_and_revision (__main__.E2E.test_10_artifact_corruption_and_revision) ... ok\ntest_11_audit_chain (__main__.E2E.test_11_audit_chain) ... ok\ntest_12_dashboard_and_health (__main__.E2E.test_12_dashboard_and_health) ... ok\ntest_13_wrong_owner_and_duplicate_claim (__main__.E2E.test_13_wrong_owner_and_duplicate_claim) ... ok\ntest_14_binary_preservation_and_sdk_hash_rejection (__main__.E2E.test_14_binary_preservation_and_sdk_hash_rejection) ... ok\ntest_15_two_checkpoints_cas_race (__main__.E2E.test_15_two_checkpoints_cas_race) ... ok\ntest_16_task_listing_is_scoped (__main__.E2E.test_16_task_listing_is_scoped) ... ok\ntest_17_ack_and_cancel_race_one_winner (__main__.E2E.test_17_ack_and_cancel_race_one_winner) ... ok\ntest_18_request_validation (__main__.E2E.test_18_request_validation) ... ok\n\n----------------------------------------------------------------------\nRan 18 tests in 7.435s\n\nOK\n"
+      "stderr": "test_01_python_to_node_actual_process (__main__.Issue2.test_01_python_to_node_actual_process) ... ok\ntest_02_restart_preserves_handoff_and_idempotency (__main__.Issue2.test_02_restart_preserves_handoff_and_idempotency) ... ok\ntest_03_writes_frozen_before_ack (__main__.Issue2.test_03_writes_frozen_before_ack) ... ok\ntest_04_cancel_invalidates_claim_and_source_token (__main__.Issue2.test_04_cancel_invalidates_claim_and_source_token) ... ok\ntest_05_tenant_isolation_and_reader (__main__.Issue2.test_05_tenant_isolation_and_reader) ... ok\ntest_06_acquire_concurrency_single_owner (__main__.Issue2.test_06_acquire_concurrency_single_owner) ... ok\ntest_07_idempotency_key_conflict (__main__.Issue2.test_07_idempotency_key_conflict) ... ok\ntest_08_expired_lease_rejected (__main__.Issue2.test_08_expired_lease_rejected) ... ok\ntest_09_handoff_timeout_recovery (__main__.Issue2.test_09_handoff_timeout_recovery) ... ok\ntest_10_artifact_corruption_and_revision (__main__.Issue2.test_10_artifact_corruption_and_revision) ... ok\ntest_11_audit_chain (__main__.Issue2.test_11_audit_chain) ... ok\ntest_12_dashboard_and_health (__main__.Issue2.test_12_dashboard_and_health) ... ok\ntest_13_wrong_owner_and_duplicate_claim (__main__.Issue2.test_13_wrong_owner_and_duplicate_claim) ... ok\ntest_14_binary_preservation_and_sdk_hash_rejection (__main__.Issue2.test_14_binary_preservation_and_sdk_hash_rejection) ... ok\ntest_15_two_checkpoints_cas_race (__main__.Issue2.test_15_two_checkpoints_cas_race) ... ok\ntest_16_task_listing_is_scoped (__main__.Issue2.test_16_task_listing_is_scoped) ... ok\ntest_17_ack_and_cancel_race_one_winner (__main__.Issue2.test_17_ack_and_cancel_race_one_winner) ... ok\ntest_18_request_validation (__main__.Issue2.test_18_request_validation) ... ok\ntest_19_nonportable_numbers_rejected_at_http_create_and_nested_write (__main__.Issue2.test_19_nonportable_numbers_rejected_at_http_create_and_nested_write) ... ok\ntest_20_safe_number_boundaries_roundtrip_to_node (__main__.Issue2.test_20_safe_number_boundaries_roundtrip_to_node) ... ok\ntest_21_python_sdk_rejects_before_network_and_rejects_invalid_bundle (__main__.Issue2.test_21_python_sdk_rejects_before_network_and_rejects_invalid_bundle) ... ok\ntest_22_node_sdk_rejects_before_fetch_and_rejects_legacy_bundle (__main__.Issue2.test_22_node_sdk_rejects_before_fetch_and_rejects_legacy_bundle) ... ok\ntest_23_correct_hash_wrong_semantics_has_no_ack (__main__.Issue2.test_23_correct_hash_wrong_semantics_has_no_ack) ... ok\ntest_24_missing_required_attachment_has_no_ack (__main__.Issue2.test_24_missing_required_attachment_has_no_ack) ... ok\ntest_25_missing_required_state_has_no_ack (__main__.Issue2.test_25_missing_required_state_has_no_ack) ... ok\ntest_26_shared_snapshot_quota_ascii_and_multibyte (__main__.Issue2.test_26_shared_snapshot_quota_ascii_and_multibyte) ... ok\ntest_27_empty_artifact_full_bundle_ack_flow (__main__.Issue2.test_27_empty_artifact_full_bundle_ack_flow) ... ok\ntest_28_release_receiver_missing_inputs_has_no_ack (__main__.Issue2.test_28_release_receiver_missing_inputs_has_no_ack) ... ok\n\n----------------------------------------------------------------------\nRan 28 tests in 11.111s\n\nOK\n"
     },
     {
       "name": "cross_runtime_demo",
       "exit_code": 0,
-      "stdout": "Python checkpoint saved; source writes are frozen.\n{\n  \"task_id\": \"3b13b295-925a-4dbe-8afe-911aabfe99cb\",\n  \"phase\": \"ACTIVE\",\n  \"epoch\": 2,\n  \"state\": {\n    \"completed_by\": \"node\",\n    \"goal\": \"Resume in another runtime\",\n    \"steps\": [\n      \"python-checkpoint\",\n      \"node-resumed\"\n    ]\n  },\n  \"verified_attachment\": true,\n  \"stale_source_rejected\": true,\n  \"audit_events\": 7\n}\nReceipt: /workspace/relayhandoff/demo_receipt.json\n",
+      "stdout": "Python checkpoint saved; source writes are frozen.\n{\n  \"task_id\": \"ab770fff-39c7-4c0e-9840-ffa0fb036ce5\",\n  \"phase\": \"ACTIVE\",\n  \"epoch\": 2,\n  \"state\": {\n    \"completed_by\": \"node\",\n    \"goal\": \"Resume in another runtime\",\n    \"steps\": [\n      \"python-checkpoint\",\n      \"node-resumed\"\n    ]\n  },\n  \"verified_attachment\": true,\n  \"stale_source_rejected\": true,\n  \"audit_events\": 7\n}\nReceipt: /workspace/works/relayhandoff/demo_receipt.json\n",
       "stderr": ""
     },
     {
-      "name": "shipped_launcher_http_smoke",
+      "name": "javascript_syntax",
       "exit_code": 0,
-      "health": {
-        "ok": true,
-        "version": "0.1.0"
-      }
-    },
-    {
-      "name": "node_syntax_check",
-      "exit_code": 0
+      "scope": "dashboard module + SDK + receivers; not browser click E2E"
     }
   ],
   "not_verified": [
@@ -40,6 +36,7 @@
     "Browser click E2E",
     "External runtime integration",
     "Internet production hardening",
-    "External side-effect exactly-once"
+    "External side-effect exactly-once",
+    "Independent peer revalidation of issue #2"
   ]
 }

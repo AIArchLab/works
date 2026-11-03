@@ -108,7 +108,14 @@ python verify_release.py
 
 ## 驗收證據
 
-**已驗證事實**：版本內的 Linux 驗收報告記錄 18/18 自動化案例通過，涵蓋跨程序接力、Broker 重啟續接、tenant 隔離、附件驗證、stale owner 拒寫、租約競態、ACK／cancel 競態、revision 衝突與逾時恢復。來源與執行時間：[test_report.json](test_report.json)；逐項範圍：[ACCEPTANCE.md](ACCEPTANCE.md)。
+**0.1.1 修正批次（[Issue #2](https://github.com/AIArchLab/works/issues/2)）**：跨語言 JSON 子集、語意驗證後才 ACK、create/write 一致配額、零位元組附件。重跑原 18 項與新增 10 項，共 28 項；逐項證據與重現方式見 [修正驗收](docs/ISSUE_2_RESOLUTION.md)。
+
+```sh
+python tests/test_issue_2.py
+```
+
+
+**已驗證事實**：0.1.1 Linux 驗收報告記錄 28/28 自動化案例通過（原 18 項加 10 項 Issue #2 回歸），涵蓋跨程序接力、Broker 重啟續接、tenant 隔離、附件驗證、stale owner 拒寫、租約競態、ACK／cancel 競態、revision 衝突與逾時恢復。來源與執行時間：[test_report.json](test_report.json)；逐項範圍：[ACCEPTANCE.md](ACCEPTANCE.md)。
 
 自行重跑：
 
@@ -147,7 +154,7 @@ python tests/test_e2e.py
 
 ## 本版定位
 
-**0.1.0 是可執行、可驗收的 single-node developer／paid-pilot MVP，不是已上線 SaaS。**
+**0.1.1 是可執行、可驗收的 single-node developer／paid-pilot MVP，不是已上線 SaaS。**
 
 協定設計不依賴特定模型或 runtime；實際適配與平台支援以驗收為準。對外部署仍需 TLS、reverse proxy、timeout、rate limit 與備份等保護，不能把內建 HTTP server 直接裸露到 Internet。
 

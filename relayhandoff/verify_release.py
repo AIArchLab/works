@@ -13,7 +13,7 @@ with tempfile.TemporaryDirectory() as folder:
  t=threading.Thread(target=server.serve_forever,daemon=True);t.start()
  try:
   url='http://127.0.0.1:'+str(server.server_port);c=Client(url,a)
-  task=c.call('',{'state':{'product':'RelayHandoff','version':'0.1.0','stage':'built','acceptance':'Verify all candidate source file hashes before ACK.'}});tid=task['id'];l=c.call('/'+tid+'/acquire',{})
+  task=c.call('',{'state':{'product':'RelayHandoff','version':'0.1.1','stage':'built','acceptance':'Verify all candidate source file hashes before ACK.'}});tid=task['id'];l=c.call('/'+tid+'/acquire',{})
   raw=json.dumps(manifest,ensure_ascii=False,sort_keys=True).encode();c.call('/'+tid+'/write',{**l,'revision':0,'state':task['state'],'artifacts':[{'name':'release-manifest.json','base64':base64.b64encode(raw).decode(),'sha256':hashlib.sha256(raw).hexdigest()}]})
   h=c.call('/'+tid+'/prepare',{**l,'revision':1,'summary':'Review actual release source bytes using the operator-supplied local root. ACK only after all hashes match.'})
   p=subprocess.run(['node',str(ROOT/'examples/release_target.mjs'),url,tid,h['handoff_id'],h['sha256'],str(ROOT)],env={**os.environ,'RH_TARGET_KEY':b},capture_output=True,text=True,timeout=30)

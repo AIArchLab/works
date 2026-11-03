@@ -2,12 +2,13 @@
 """RelayHandoff 0.1 — dependency-free, single-node transactional broker."""
 import argparse, base64, hashlib, hmac, json, os, secrets, sqlite3, time, uuid
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from sdk.portable_json import validate
 
-VERSION = '0.1.0'
+VERSION = '0.1.1'
 MAX_BODY = 2 * 1024 * 1024
 
 def canonical(value):
-    return json.dumps(value, sort_keys=True, separators=(',', ':'), ensure_ascii=False).encode()
+    return json.dumps(value, sort_keys=True, separators=(',', ':'), ensure_ascii=False, allow_nan=False).encode()
 def digest(value):
     return hashlib.sha256(canonical(value)).hexdigest()
 def secret_hash(value):
@@ -24,6 +25,9 @@ def text(value, limit=512):
 def integer(value, low, high):
     require(type(value) is int and low <= value <= high, 400, 'invalid_integer')
     return value
+
+def snapshot_check(state, outputs):
+    require(len(canonical({'state':state,'outputs':outputs})) <= MAX_BODY//2,413,'task_snapshot_too_large')
 
 class Store:
     def __init__(self, path):
@@ -64,6 +68,8 @@ class Store:
     def public(self,t):
         return {k:t[k] for k in ['id','phase','epoch','owner','expires','revision','state','outputs']}
     def dispatch(self, identity, method, path, b, key=None):
+        try: validate(b)
+        except ValueError as e: raise Fault(400,str(e))
         tenant,actor,role=identity['tenant'],identity['actor'],identity['role']
         parts=path.strip('/').split('/')
         require(parts[:2]==['v1','tasks'],404,'route_not_found')
@@ -85,6 +91,7 @@ class Store:
                 tid=str(uuid.uuid4())
                 t={'id':tid,'phase':'ACTIVE','epoch':0,'owner':None,'expires':0,'lease_hash':'','revision':0,'state':b.get('state',{}),'outputs':{},'handoff':None}
                 require(isinstance(t['state'],dict),400,'state_must_be_object')
+                snapshot_check(t['state'],t['outputs'])
                 self.save(c,tenant,t);self.event(c,tenant,tid,'created',actor,0)
                 result=self.public(t)
             else:
@@ -133,14 +140,15 @@ class Store:
             blobs=b.get('artifacts',[]);require(isinstance(blobs,list) and len(blobs)<=20,400,'invalid_artifacts')
             for a in blobs:
                 require(isinstance(a,dict),400,'invalid_artifact')
-                name=text(a.get('name'),256);encoded=text(a.get('base64'),1048576)
+                name=text(a.get('name'),256);encoded=a.get('base64')
+                require(isinstance(encoded,str) and len(encoded)<=1048576,400,'invalid_base64')
                 try: raw=base64.b64decode(encoded,validate=True)
                 except (ValueError,TypeError): raise Fault(400,'invalid_base64')
                 sha=hashlib.sha256(raw).hexdigest()
                 require(a.get('sha256')==sha,400,'artifact_digest_mismatch')
                 additions[name]={'sha256':sha,'base64':encoded}
             outputs=dict(t['outputs']);outputs.update(additions)
-            require(len(canonical({'state':state,'outputs':outputs}))<=MAX_BODY//2,413,'task_snapshot_too_large')
+            snapshot_check(state,outputs)
             t.update(state=state,outputs=outputs,revision=t['revision']+1)
             result=self.public(t)
         elif action=='prepare':
@@ -204,8 +212,11 @@ class Handler(BaseHTTPRequestHandler):
                 try:n=int(self.headers.get('Content-Length','0'))
                 except ValueError:raise Fault(400,'invalid_length')
                 require(0<n<=MAX_BODY,413,'body_too_large')
-                try:b=json.loads(self.rfile.read(n))
-                except (ValueError,UnicodeError):raise Fault(400,'invalid_json')
+                try:
+                    b=json.loads(self.rfile.read(n))
+                except (ValueError,UnicodeError,RecursionError):raise Fault(400,'invalid_json')
+                try: validate(b)
+                except ValueError as e: raise Fault(400,str(e))
                 require(isinstance(b,dict),400,'body_must_be_object')
             result=self.server.store.dispatch(identity,method,self.path,b,self.headers.get('Idempotency-Key'))
             self.reply(200,result)
