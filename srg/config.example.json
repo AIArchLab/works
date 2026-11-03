@@ -1,0 +1,6 @@
+{"port": 8080, "admin_token": "GENERATE-A-LONG-RANDOM-TOKEN", "verify_token": "GENERATE-ANOTHER-LONG-RANDOM",
+ "platforms": {"facebook": {"app_secret": "", "access_token": ""}, "instagram": {"app_secret": "", "access_token": ""},
+               "line": {"channel_secret": "", "access_token": ""}, "tiktok": {"secret": "", "access_token": ""}},
+ "send_bases": {"instagram": "https://graph.instagram.com/v26.0"},
+ "rules": {"faq": [], "kb_entries": [{"id": 1, "title": "營業時間", "examples": ["週末有開嗎"], "answer": "每天 10:00-20:00 營業。"}]},
+ "llm": {"provider": "llama_cpp", "model_path": "models/q15.gguf"}}

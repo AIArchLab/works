@@ -1,0 +1,37 @@
+{
+  "id": "0011",
+  "slug": "srg",
+  "title": "Social Reply Gateway (MVP)",
+  "published": "2026-11-03",
+  "status": "sample",
+  "tags": [
+    "social-reply",
+    "webhooks",
+    "policy-engine",
+    "human-handoff",
+    "local-llm",
+    "stdlib",
+    "mvp"
+  ],
+  "license": "MIT",
+  "language": "en",
+  "deidentification_checklist": {
+    "no_client_names": true,
+    "no_platform_names_in_case_content": true,
+    "no_budgets_or_prices": true,
+    "no_private_strategy_layer": true,
+    "principal_referred_only_as_founder": true,
+    "all_claims_sourced_or_marked_source_missing": true
+  },
+  "verification": {
+    "unit_and_e2e": "python3 tests/run_all.py (standard library only, mock platforms)",
+    "llm_probe": "94 hand-written probes against a local Qwen2.5-1.5B model: 66 must-not-reply queries produced 0 replies; 28 should-reply queries produced 17 correct replies, 11 handoffs, 0 wrong texts",
+    "evidence": "evidence/real_llm_evidence_v8_full.jsonl",
+    "limits": [
+      "No real platform has been connected; all send paths exercised only against a local mock endpoint with test keys",
+      "End-to-end path (real platform, real AI, real customer message) is not complete",
+      "TikTok is a placeholder; Facebook comment-thread replies and DMs are disabled by default; Instagram private reply is not implemented",
+      "No independent cross-review has been performed on this work yet"
+    ]
+  }
+}
