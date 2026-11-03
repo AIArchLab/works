@@ -1,0 +1,14 @@
+services:
+  broker:
+    build: .
+    ports: ["127.0.0.1:8787:8787"]
+    environment:
+      RH_KEYS: ${RH_KEYS:?Set RH_KEYS to scoped credential JSON}
+    volumes: ["broker-data:/data"]
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp"]
+    cap_drop: ["ALL"]
+    security_opt: ["no-new-privileges:true"]
+volumes:
+  broker-data:

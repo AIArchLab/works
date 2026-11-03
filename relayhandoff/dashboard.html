@@ -1,0 +1,23 @@
+<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>RelayHandoff</title>
+<style>body{font:16px system-ui;max-width:960px;margin:40px auto;padding:16px;background:#101b2a;color:#edf4ff}input,textarea,button{font:inherit;padding:10px;margin:6px 0;box-sizing:border-box}input,textarea{width:100%;background:#1b2b40;color:white;border:1px solid #6a819b}button{background:#b9e5ff;cursor:pointer;border:0;border-radius:4px;margin-right:8px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#1b2b40;padding:16px}small{color:#bdd3e6}</style>
+<h1>RelayHandoff <small>0.1 / E2E Console</small></h1><p>跨 runtime 交接控制台。金鑰僅放本頁記憶體；重新整理即清除。不會自動繼承 OS／模型權限。</p>
+<label>API Key<input id="key" type="password" autocomplete="off"></label><label>Task ID<input id="task"></label>
+<button id="list">任務清單</button><button id="create">建立任務</button><button id="load">讀取狀態</button><button id="audit">讀取稽核</button><button id="acquire">取得租約</button>
+<label>狀態 JSON<textarea id="state" rows="5">{"goal":"跨 runtime 交接","steps":[]}</textarea></label>
+<button id="write">寫入 checkpoint</button><button id="prepare">封存並交接</button><button id="receive">接手、驗證、ACK</button><button id="cancel">取消未完成交接</button><pre id="out">就緒</pre>
+<script type="module">
+const $=id=>document.getElementById(id);let lease={},revision=0,handoff;
+if(location.hash){$('key').value=decodeURIComponent(location.hash.slice(1));history.replaceState(null,'',location.pathname)}
+async function call(path,body){const headers={Authorization:'Bearer '+$('key').value};if(body!==undefined){headers['Content-Type']='application/json';headers['Idempotency-Key']=crypto.randomUUID()};const r=await fetch('/v1/tasks'+path,{method:body===undefined?'GET':'POST',headers,body:body===undefined?undefined:JSON.stringify(body)});const d=await r.json();if(!r.ok)throw Error(d.error);return d}
+const path=()=>'/'+$('task').value.trim();const show=d=>$('out').textContent=JSON.stringify(d,null,2);
+function action(id,fn){$(id).onclick=async()=>{try{show(await fn())}catch(e){show({error:e.message})}}}
+action('list',()=>call(''));
+action('create',async()=>{let d=await call('',{state:JSON.parse($('state').value)});$('task').value=d.id;revision=d.revision;lease={};return d});
+action('load',async()=>{let d=await call(path());revision=d.revision;$('state').value=JSON.stringify(d.state,null,2);return d});
+action('audit',()=>call(path()+'/events'));
+action('acquire',async()=>lease=await call(path()+'/acquire',{}));
+action('write',async()=>{let d=await call(path()+'/write',{...lease,revision,state:JSON.parse($('state').value)});revision=d.revision;return d});
+action('prepare',async()=>handoff=await call(path()+'/prepare',{...lease,revision,summary:'使用者在控制台明確建立的 checkpoint；狀態與附件為交接依據。'}));
+action('receive',async()=>{const e=await call(path()+'/bundle');const raw=Uint8Array.from(atob(e.bundle_base64),x=>x.charCodeAt(0));const sha=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',raw)),x=>x.toString(16).padStart(2,'0')).join('');if(sha!==e.sha256)throw Error('bundle_digest_mismatch');const b=JSON.parse(new TextDecoder().decode(raw));if(b.task_id!==$('task').value.trim()||b.protocol!=='relayhandoff/1')throw Error('bundle_identity_mismatch');for(const a of Object.values(b.artifacts)){const bytes=Uint8Array.from(atob(a.base64),x=>x.charCodeAt(0));const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),x=>x.toString(16).padStart(2,'0')).join('');if(hash!==a.sha256)throw Error('artifact_digest_mismatch')}lease=await call(path()+'/claim',{handoff_id:e.handoff_id});const d=await call(path()+'/ack',{...lease,sha256:sha});revision=d.revision;$('state').value=JSON.stringify(b.state,null,2);return d});
+action('cancel',async()=>{const e=await call(path()+'/bundle');return lease=await call(path()+'/cancel',{handoff_id:e.handoff_id})});
+</script></html>

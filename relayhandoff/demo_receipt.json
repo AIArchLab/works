@@ -1,0 +1,16 @@
+{
+  "task_id": "3b13b295-925a-4dbe-8afe-911aabfe99cb",
+  "phase": "ACTIVE",
+  "epoch": 2,
+  "state": {
+    "completed_by": "node",
+    "goal": "Resume in another runtime",
+    "steps": [
+      "python-checkpoint",
+      "node-resumed"
+    ]
+  },
+  "verified_attachment": true,
+  "stale_source_rejected": true,
+  "audit_events": 7
+}

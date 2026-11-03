@@ -1,0 +1,17 @@
+RelayHandoff — Proprietary Evaluation Notice
+Copyright (c) 2026 AIArchLab. All rights reserved.
+
+This package is supplied to its commissioning recipient for internal evaluation,
+review, modification, and validation. No general public license, production-use
+license, redistribution license, or trademark license is granted by publication
+or possession of this package. Commercial deployment or redistribution requires
+written authorization from the applicable rights holder.
+
+The commissioning recipient may negotiate commercial licenses for rights they
+lawfully hold. This notice does not decide ownership of AI-generated material,
+provide a legal opinion, or replace a signed customer agreement. Final commercial
+terms and rights clearance remain subject to rights-holder/legal review.
+
+THE SOFTWARE IS PROVIDED AS IS, WITHOUT WARRANTY, TO THE EXTENT PERMITTED BY LAW.
+This package does not include code from dsh-auto-handoff. System runtimes and any
+base container images remain governed by their respective licenses.

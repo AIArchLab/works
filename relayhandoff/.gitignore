@@ -1,0 +1,6 @@
+.runtime/
+*.db
+*.db-*
+__pycache__/
+.env
+demo_receipt.json

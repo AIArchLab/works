@@ -1,0 +1,10 @@
+{
+  "verified_files": 22,
+  "runtime": "v22.23.2",
+  "bundle_sha256": "9aead94403df241ef8889f006e51a2abbd126185c3204129f039a628dfad7828",
+  "task_id": "4f226f00-64d4-47f9-9965-c28821e8c06b",
+  "epoch": 2,
+  "verification": "actual source bytes checked by independent Node process",
+  "receipt_readback_verified": true,
+  "audit_event_count": 7
+}
