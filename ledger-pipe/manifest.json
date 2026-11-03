@@ -1,5 +1,6 @@
 {
-  "id": "0007",
+  "id": "0008",
+  "renumbered_from": "0007",
   "slug": "ledger-pipe",
   "title": "ledger-pipe — monthly reporting behind a source contract (v0.3: adjacent-period diff, encoding autodetect, native xlsx, append-only snapshots)",
   "published": "2026-11-01",
