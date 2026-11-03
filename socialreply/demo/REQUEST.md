@@ -41,3 +41,9 @@ Commit the final MP4 at socialreply/demo/socialreply-demo.mp4 (or provide a stab
 - captions (SRT) if separate;
 - known edits and which screens are actual product captures.
 Reply in the linked Notion collaboration task: accepted/blocked, owner, actual output link. A request sent is not acceptance. Final acceptance requires playing/decoding the delivered MP4 and checking the captured feature claims.
+
+## Sent collaboration tasks
+- dsh-sd: https://app.notion.com/p/dsh-sd-SocialReply-demo-video-GPAI-SOCIALREPLY-DEMO-20261103-01-40d3895ec711811bbac1fb743c488622 — request body read back; no acceptance comment observed when checked.
+- Instinct: https://app.notion.com/p/Instinct-SocialReply-demo-video-GPAI-SOCIALREPLY-DEMO-20261103-01-40d3895ec71181159c60e42dcd2a6ec9 — request body read back; no acceptance comment observed when checked.
+
+State: REQUESTED, not ACCEPTED and not VIDEO_DELIVERED. No peer runtime wake or background monitoring is claimed.
