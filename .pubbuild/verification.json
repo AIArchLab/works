@@ -1,0 +1,172 @@
+{
+ "artifact": "replybridge",
+ "version": "0.1.0",
+ "generated_at": "2026-11-03T07:06:47Z",
+ "generated_by": "Base44 (LR) / AIArchLab",
+ "agent": "base44",
+ "python": "3.11 stdlib only, zero third-party deps",
+ "file_count": 22,
+ "total_bytes": 217430,
+ "files": [
+  {
+   "path": "BOUNDARIES.md",
+   "bytes": 1591,
+   "sha256": "a011173f0798d697734bd9cb2166f4b1fc757d9825676a8a86a62bd6fd89efd5"
+  },
+  {
+   "path": "Dockerfile",
+   "bytes": 434,
+   "sha256": "caadf6b5346330e44d05ce6df44908496c9b670d7a01996507789f2c2d036fbc"
+  },
+  {
+   "path": "PRODUCT.md",
+   "bytes": 3971,
+   "sha256": "40f42a0f48777e944f86d9e5390edb99c7b9de3d6a3c8b03ad967b5f53e8fbc1"
+  },
+  {
+   "path": "README.md",
+   "bytes": 4937,
+   "sha256": "c04586ae48e8c203bd48911cbd844f5f464056e3d65e318681a4efe4b493a12e"
+  },
+  {
+   "path": "config/kb.json",
+   "bytes": 2151,
+   "sha256": "7706d8ef3d6fdf2546a2a0d44e74806255fe8db1828df13b4b69ae83567b7c5b"
+  },
+  {
+   "path": "config/tenants.json",
+   "bytes": 3270,
+   "sha256": "c32a38a0d00b9ab88cae9c47759d924eff0f7187d66181c0aa9128f3600806f9"
+  },
+  {
+   "path": "rb/__init__.py",
+   "bytes": 112,
+   "sha256": "9af3d50327d3593be78fd1daf11f96336bfca05ba9bf5254d9f7fe73cccb4e38"
+  },
+  {
+   "path": "rb/ai.py",
+   "bytes": 15133,
+   "sha256": "61d344924ff73976e91afda2535a36324c530ccd3bdfda5f5dab572420aa733b"
+  },
+  {
+   "path": "rb/channels.py",
+   "bytes": 27553,
+   "sha256": "dc97ff980cde2da3025c45140bf60226fd4faef8e24aa0abc2c5858effa5c774"
+  },
+  {
+   "path": "rb/contracts.py",
+   "bytes": 3303,
+   "sha256": "69657156734b095325472cd394d95c98a84260cbfb233da91b10c93430997d7c"
+  },
+  {
+   "path": "rb/core.py",
+   "bytes": 8515,
+   "sha256": "7c067e1f7c7a4a749a355649c7a6b2d310d1fda67b1911f789deb32a6ef31d5c"
+  },
+  {
+   "path": "rb/ledger.py",
+   "bytes": 11676,
+   "sha256": "47e8ffb2096e8e12d293a38a7fbb4aa4864829cd53a57f74baf12fb65082df12"
+  },
+  {
+   "path": "rb/policy.py",
+   "bytes": 22485,
+   "sha256": "4c9a252304cc4e799ec83f9cce31723681834676eac925b47b3589faf67a7344"
+  },
+  {
+   "path": "rb/server.py",
+   "bytes": 8797,
+   "sha256": "39cb6d469611090347f7726385b9626bea8f94494d80bf8a3b731d0329436e8b"
+  },
+  {
+   "path": "rb/transport.py",
+   "bytes": 1677,
+   "sha256": "4edc3fcfeed71c58fd17c19ca54188871056acb1e0f9b83c79dfc1b44eeef2ea"
+  },
+  {
+   "path": "tests/e2e.py",
+   "bytes": 13819,
+   "sha256": "e2dc3383e128026a4f25b691e39c207134baf60bb49cfc04abb46173ae3afb1a"
+  },
+  {
+   "path": "tests/test_ai.py",
+   "bytes": 15363,
+   "sha256": "f4ba71bc64d6b29a6d07626918bbca75308e46111688e60eaaf130d89a22b834"
+  },
+  {
+   "path": "tests/test_channels.py",
+   "bytes": 26210,
+   "sha256": "07f938d943986200f79a28734270e41c2da2a9ef0dbf3024d6738dcf2ce555c2"
+  },
+  {
+   "path": "tests/test_ledger.py",
+   "bytes": 12662,
+   "sha256": "69de115bb628d9fc1588335b1e0cbb1ca13bd29bf1534c1fea67101c18674265"
+  },
+  {
+   "path": "tests/test_policy.py",
+   "bytes": 30027,
+   "sha256": "01c80f116bcb1f583a58c584209c3d177525be1cab8d894e35a382de9f3d961e"
+  },
+  {
+   "path": "tools/run_all_tests.sh",
+   "bytes": 756,
+   "sha256": "e9486c5abaf1fd49b8835b14077583a5964254bb8866d4ca858be8d7e9442e3b"
+  },
+  {
+   "path": "tools/validate_tenant.py",
+   "bytes": 2988,
+   "sha256": "b28d1fdf061b2d82d25c85fb043bac2c58f652ee3cf98832b9dd5ab2eaaf5bee"
+  }
+ ],
+ "tests": {
+  "channels": {
+   "total": 131,
+   "pass": 131,
+   "fail": 0
+  },
+  "policy": {
+   "total": "13 cases",
+   "result": "ALL GREEN"
+  },
+  "kb_drafter": {
+   "total": 50,
+   "pass": 50,
+   "fail": 0
+  },
+  "ledger": {
+   "total": 14,
+   "pass": 14,
+   "fail": 0
+  },
+  "e2e": {
+   "total": 33,
+   "pass": 33,
+   "fail": 0,
+   "note": "real HTTP server, signed webhooks for 4 providers, policy+gates+outbound+ledger",
+   "latency_ms": {
+    "p50": 30.68,
+    "p95": 43.47
+   },
+   "throughput_msg_per_s": 48.2
+  }
+ },
+ "verified": [
+  "four provider webhooks normalize into one InboundEvent schema",
+  "signature rejection returns 401 and writes no decision",
+  "idempotent: same message_id handled once",
+  "five escalation paths verified: guardrail, human_request, low_confidence, rate_limit, quiet_hours",
+  "outbound failure is re-classified as escalate, never recorded as replied",
+  "human approval sends for real and is recorded in ledger",
+  "ledger hash chain detects tampering",
+  "50 concurrent webhooks, 48.2 msg/s, p95 43.47 ms"
+ ],
+ "unverified": [
+  "real provider API calls (no platform credentials in this environment)",
+  "webhook registration on Meta / LINE / TikTok",
+  "TikTok comment reply endpoint (no official doc found; marked unverified in code)",
+  "LLM provider wiring (falls back to KB retrieval by design)",
+  "cross-host deployment, TLS termination",
+  "third-party crosscheck by another AIArchLab member: NOT performed yet"
+ ]
+}

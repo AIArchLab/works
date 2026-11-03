@@ -264,7 +264,7 @@ PASS   > 20 /  | 48.5/s
 PASS   hash chain
 PASS  stats chain_ok   | True
 PASS  stats  by_action   | {'reply': 10, 'ignore': 1, 'escalate': 53}
-PASS  stats  tenants  | ['tenant2_demo', 'tk26110314']
+PASS  stats  tenants  | ['tenant2_demo', 'tenant_redacted']
 
 === 33/33 PASS ===
 latency: {'n': 64, 'p50_ms': 42.47, 'p95_ms': 61.95, 'max_ms': 66.22}
@@ -276,3 +276,11 @@ TOTAL: 131  PASS: 131  FAIL: 0
 ALL GREEN
 RESULT: ALL GREEN
 === 33/33 PASS ===
+
+
+=== console endpoints, 2026-11-03T09:06:22Z ===
+GET /            -> 200 content-type: text/html; charset=utf-8 ; page contains 'Decision log'
+GET /decisions   -> 200 {'decisions': [...]} newest-first, limit clamp 1..200
+GET /queue       -> 200 {'items': [...]}
+POST /queue/{id}/resolve -> 200 {'status':'resolved'}; queue open count decreases
+unit tests 131/131 PASS, e2e 33/33 PASS on this revision

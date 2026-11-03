@@ -1,0 +1,29 @@
+{
+  "_comment": "服務知識庫。檢索式草稿的唯一事實來源，每一條都可追溯到報價單或 SOP。",
+  "entries": [
+    { "id": "kb_001", "lang": "zh", "tags": ["平台", "範圍", "串接"],
+      "question": "你們支援哪些平台",
+      "answer": "IG、FB、LINE、TikTok 四個平台的留言與私訊都能接，同一套話術與政策跨平台共用。" },
+    { "id": "kb_002", "lang": "zh", "tags": ["時程", "導入"],
+      "question": "導入要多久",
+      "answer": "標準導入 3 到 5 個工作天：第一天接平台權限，第二天上知識庫與話術，第三天灰度上線並人工複核。" },
+    { "id": "kb_003", "lang": "zh", "tags": ["費用", "價格"],
+      "question": "費用怎麼算",
+      "answer": "月費制，依平台數與月訊息量分級；報價前我們會先確認你現有的粉專數與平均訊息量。" },
+    { "id": "kb_004", "lang": "zh", "tags": ["安全", "權限", "資料"],
+      "question": "會不會碰到我的帳號密碼",
+      "answer": "不會。我們只用平台官方授權（OAuth 或權杖），全程不接觸你的帳號密碼，權限可隨時在平台端撤銷。" },
+    { "id": "kb_005", "lang": "zh", "tags": ["人工", "接手", "品質"],
+      "question": "AI 回錯怎麼辦",
+      "answer": "信心不足或碰到敏感內容時不會硬回，會直接進人工隊列並通知你，由真人決定後送出。" },
+    { "id": "kb_006", "lang": "zh", "tags": ["私訊", "留言"],
+      "question": "私訊也能自動回嗎",
+      "answer": "可以。留言與私訊走同一條管線，但因平台規則不同，私訊有回覆窗口限制，超時會轉人工。" },
+    { "id": "kb_007", "lang": "en", "tags": ["platform", "scope"],
+      "question": "Which platforms do you support",
+      "answer": "Instagram, Facebook, LINE and TikTok comments and direct messages, all through one policy layer." },
+    { "id": "kb_008", "lang": "en", "tags": ["data", "security"],
+      "question": "Do you need my password",
+      "answer": "No. We use official platform authorization only, and you can revoke access at any time." }
+  ]
+}

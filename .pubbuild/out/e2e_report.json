@@ -1,0 +1,207 @@
+{
+ "generated_at": "2026-11-03T09:06:00Z",
+ "total": 33,
+ "passed": 33,
+ "failed": 0,
+ "results": [
+  {
+   "name": "healthz 200",
+   "pass": true,
+   "detail": "{'ok': True, 'service': 'replybridge'}"
+  },
+  {
+   "name": "meta challenge 回傳 hub.challenge",
+   "pass": true,
+   "detail": "200"
+  },
+  {
+   "name": "meta challenge 錯誤 token 被拒 403",
+   "pass": true,
+   "detail": "403"
+  },
+  {
+   "name": "IG 留言走完管線並回覆",
+   "pass": true,
+   "detail": "reply"
+  },
+  {
+   "name": "IG 回覆命中 price_question 規則",
+   "pass": true,
+   "detail": "['rule:price_question', 'persona:signature']"
+  },
+  {
+   "name": "IG 外送到 /replies 端點",
+   "pass": true,
+   "detail": "https://graph.facebook.com/v26.0/igc_1001/replies"
+  },
+  {
+   "name": "FB 留言走完管線並回覆",
+   "pass": true,
+   "detail": "reply"
+  },
+  {
+   "name": "FB 外送帶授權標頭",
+   "pass": true,
+   "detail": "{'Content-Type': 'application/json', 'Authorization': 'Bearer FB_TOKEN_ENV'}"
+  },
+  {
+   "name": "LINE 私訊走完管線",
+   "pass": true,
+   "detail": "reply"
+  },
+  {
+   "name": "LINE 走 KB 檢索模型",
+   "pass": true,
+   "detail": "kb:retrieval"
+  },
+  {
+   "name": "LINE 外送帶 replyToken",
+   "pass": true,
+   "detail": "{'replyToken': 'rt_3001', 'messages': [{'type': 'text', 'text': '標準導入 3 到 5 個工作天：第一天接平台權限，第二天上知識庫與話術，第三天灰度上線並人工複核。\\n— AI 客服（真人接手請回覆「找真人」）'}]}"
+  },
+  {
+   "name": "TikTok 留言走完管線並回覆",
+   "pass": true,
+   "detail": "reply"
+  },
+  {
+   "name": "TikTok 外送打到 business comment reply",
+   "pass": true,
+   "detail": "https://business-api.tiktok.com/open_api/v1.3/business/comment/reply/"
+  },
+  {
+   "name": "簽章錯誤回 401 且不入帳",
+   "pass": true,
+   "detail": "signature_invalid"
+  },
+  {
+   "name": "重複 webhook 判為 duplicate",
+   "pass": true,
+   "detail": "['dedupe']"
+  },
+  {
+   "name": "重複事件不重送外送",
+   "pass": true,
+   "detail": "4->4"
+  },
+  {
+   "name": "敏感詞升級人工不回覆",
+   "pass": true,
+   "detail": "guardrail:(匯款|轉帳|帳號密碼|身分證|信用卡號)"
+  },
+  {
+   "name": "要求真人直接升級",
+   "pass": true,
+   "detail": "user_requested_human"
+  },
+  {
+   "name": "低信心不硬回",
+   "pass": true,
+   "detail": "drafter_declined"
+  },
+  {
+   "name": "同串第 4 則觸發速率上限",
+   "pass": true,
+   "detail": "['reply', 'reply', 'reply', 'escalate']"
+  },
+  {
+   "name": "靜默時段轉人工",
+   "pass": true,
+   "detail": "quiet_hours"
+  },
+  {
+   "name": "外送失敗改判 escalate",
+   "pass": true,
+   "detail": "send_failed:500"
+  },
+  {
+   "name": "未配置帳號標為 unrouted",
+   "pass": true,
+   "detail": "{'message_id': 'fbc_unknown', 'action': 'unrouted'}"
+  },
+  {
+   "name": "自己發的留言不被回覆",
+   "pass": true,
+   "detail": "0"
+  },
+  {
+   "name": "人工隊列有升級案件",
+   "pass": true,
+   "detail": "6"
+  },
+  {
+   "name": "人工核准後真的送出",
+   "pass": true,
+   "detail": "{'queue_id': 1, 'send_status': 200}"
+  },
+  {
+   "name": "50 則併發無例外",
+   "pass": true,
+   "detail": "[]"
+  },
+  {
+   "name": "延遲統計可用",
+   "pass": true,
+   "detail": "{'n': 64, 'p50_ms': 31.45, 'p95_ms': 47.5, 'max_ms': 57.25}"
+  },
+  {
+   "name": "壓測吞吐 > 20 則/秒",
+   "pass": true,
+   "detail": "49.1/s"
+  },
+  {
+   "name": "帳本 hash chain 完整",
+   "pass": true,
+   "detail": "None"
+  },
+  {
+   "name": "stats chain_ok 為真",
+   "pass": true,
+   "detail": "True"
+  },
+  {
+   "name": "stats 有 by_action 分佈",
+   "pass": true,
+   "detail": "{'reply': 10, 'ignore': 1, 'escalate': 53}"
+  },
+  {
+   "name": "stats 有 tenants",
+   "pass": true,
+   "detail": "['tenant2_demo', 'tk26110314']"
+  }
+ ],
+ "latency": {
+  "n": 64,
+  "p50_ms": 31.45,
+  "p95_ms": 47.5,
+  "max_ms": 57.25
+ },
+ "throughput_msg_per_s": 49.1,
+ "stats": {
+  "ledger_entries": 67,
+  "by_action": {
+   "reply": 10,
+   "ignore": 1,
+   "escalate": 53
+  },
+  "by_platform": {
+   "meta_instagram": 10,
+   "meta_facebook": 52,
+   "line": 1,
+   "tiktok": 3
+  },
+  "queue_open": 52,
+  "chain_ok": true,
+  "seen_count": 63,
+  "tenants": [
+   "tenant2_demo",
+   "tk26110314"
+  ],
+  "latency": {
+   "n": 64,
+   "p50_ms": 31.45,
+   "p95_ms": 47.5,
+   "max_ms": 57.25
+  }
+ }
+}

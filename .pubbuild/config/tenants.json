@@ -1,0 +1,74 @@
+{
+  "_comment": "ReplyBridge 多租戶設定。案件 TK26110314FORT69 只是 tenant #1，政策與 KB 全在資料層，換客戶不必改程式。",
+  "tenants": [
+    {
+      "tenant_id": "tk26110314",
+      "name": "社群平台 AI 自動回覆（Tasker TK26110314FORT69）",
+      "accounts": {
+        "meta_instagram": { "account_id": "17841400000000001", "page_access_token": "IG_TOKEN_ENV" },
+        "meta_facebook": { "account_id": "100000000000001", "page_access_token": "FB_TOKEN_ENV" },
+        "line": { "account_id": "U0000000000000000000000000000001", "channel_access_token": "LINE_TOKEN_ENV" },
+        "tiktok": { "account_id": "TT_BIZ_7000001", "access_token": "TT_TOKEN_ENV" }
+      },
+      "policy": {
+        "guardrails": {
+          "min_confidence": 0.65,
+          "max_replies_per_thread_per_hour": 3,
+          "max_reply_chars": 500,
+          "quiet_hours": { "start": 22, "end": 8, "tz_offset_hours": 8 },
+          "blocked_patterns": ["(匯款|轉帳|帳號密碼|身分證|信用卡號)", "(refund now|send me your password)"],
+          "pii_patterns": ["\\b09\\d{8}\\b", "\\b[A-Z][12]\\d{8}\\b", "[\\w.+-]+@[\\w-]+\\.[\\w.]+"]
+        },
+        "persona": { "signature": "— AI 客服（真人接手請回覆「找真人」）" },
+        "rules": [
+          {
+            "id": "human_handoff",
+            "when": { "keywords": ["找真人", "人工", "真人", "客服電話", "human", "agent"] },
+            "action": "escalate",
+            "escalate_reason": "user_requested_human"
+          },
+          {
+            "id": "price_question",
+            "when": { "keywords": ["多少錢", "價格", "費用", "報價", "預算", "price", "cost", "quote"] },
+            "action": "reply_canned",
+            "reply": "嗨 {{author_name}}，回覆服務採月費制，依平台數與訊息量計價；我可以先幫你估一個範圍，方便的話說一下你現在用哪幾個平台？"
+          },
+          {
+            "id": "platform_scope",
+            "when": { "keywords": ["IG", "FB", "LINE", "TikTok", "抖音", "支援哪些"] },
+            "action": "reply_canned",
+            "reply": "IG、FB、LINE、TikTok 四個平台都在支援範圍，同一套政策與話術可以跨平台共用。"
+          },
+          {
+            "id": "spam",
+            "when": { "keywords": ["投資老師", "帶單", "免費送你", "crypto signal"] },
+            "action": "ignore"
+          }
+        ]
+      }
+    },
+    {
+      "tenant_id": "tenant2_demo",
+      "name": "第二個品牌（證明與本案無關也能跑）",
+      "accounts": {
+        "meta_facebook": { "account_id": "200000000000002", "page_access_token": "FB2_TOKEN_ENV" }
+      },
+      "policy": {
+        "guardrails": {
+          "min_confidence": 0.7,
+          "max_replies_per_thread_per_hour": 2,
+          "max_reply_chars": 300
+        },
+        "persona": { "signature": "— 品牌二客服" },
+        "rules": [
+          {
+            "id": "hours",
+            "when": { "keywords": ["營業時間", "幾點開", "open hours"] },
+            "action": "reply_canned",
+            "reply": "我們週一到週五 10:00-19:00 都有真人客服，其他時間由 AI 先回覆。"
+          }
+        ]
+      }
+    }
+  ]
+}

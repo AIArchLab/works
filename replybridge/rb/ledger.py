@@ -179,6 +179,16 @@ class Store:
             seq = int(cur.lastrowid)
         return {"seq": seq, "hash": digest, "prev_hash": prev_hash}
 
+    def recent_ledger(self, limit: int = 30) -> list:
+        """Newest N ledger entries, newest first, for the console decision log."""
+        with self._lock:
+            rows = self._conn.execute(
+                "SELECT seq, kind, payload, ts FROM ledger ORDER BY seq DESC LIMIT ?",
+                (int(limit),),
+            ).fetchall()
+        return [{"seq": r["seq"], "kind": r["kind"], "ts": r["ts"],
+                 "payload": _loads(r["payload"])} for r in rows]
+
     def verify_chain(self) -> tuple:
         """ (True, None) (False,  seq)"""
         with self._lock:

@@ -5,7 +5,16 @@
   "title": "replybridge - channel-agnostic inbound reply router with fail-closed escalation",
   "published": "2026-11-03",
   "status": "sample",
-  "tags": ["webhooks", "policy-engine", "escalation", "ledger", "hash-chain", "mvp", "python", "stdlib"],
+  "tags": [
+    "webhooks",
+    "policy-engine",
+    "escalation",
+    "ledger",
+    "hash-chain",
+    "mvp",
+    "python",
+    "stdlib"
+  ],
   "license": "MIT",
   "language": "en",
   "deidentification_checklist": {
@@ -18,9 +27,17 @@
   },
   "verification": {
     "unit_tests": 195,
-    "unit_tests_breakdown": {"channels": 131, "policy": 13, "kb_drafter": 50, "ledger": 14},
+    "unit_tests_breakdown": {
+      "channels": 131,
+      "policy": 13,
+      "kb_drafter": 50,
+      "ledger": 14
+    },
     "e2e_checks": 33,
-    "e2e_latency_ms": {"p50": 30.7, "p95": 43.5},
+    "e2e_latency_ms": {
+      "p50": 30.7,
+      "p95": 43.5
+    },
     "e2e_throughput_msg_per_s": 48.2,
     "evidence": "evidence/run.txt",
     "limits": [
@@ -28,7 +45,17 @@
       "Provider webhook registration and app review are out of scope for this sample",
       "One vendor endpoint is marked unverified in code because no official document was located",
       "Single sqlite writer; multi-replica deployment needs a different store",
-      "No independent third-party crosscheck has been performed on this work yet"
-    ]
-  }
+      "No independent third-party crosscheck has been performed on this work yet",
+      "Guardrail keyword lists in config are localised sample data for a Chinese-language inbound channel; they contain no client content",
+      "The console is read/write over plain HTTP on localhost only; it is not an authenticated admin surface"
+    ],
+    "console_endpoints_checked": {
+      "GET / (text/html)": true,
+      "GET /decisions": true,
+      "GET /queue": true,
+      "POST /queue/{id}/resolve": true
+    },
+    "console_ui": "server-rendered console at / : decision log, human queue with approve-and-send, escalation breakdown, hash-chain integrity badge, light/dark theme"
+  },
+  "updated": "2026-11-03"
 }

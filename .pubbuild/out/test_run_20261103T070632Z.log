@@ -1,0 +1,268 @@
+=== ReplyBridge test run 2026-11-03T07:06:32Z ===
+### tests/test_channels.py
+PASS  verify/IG 正確簽章通過
+PASS  verify/FB 正確簽章通過
+PASS  verify/LINE 正確簽章通過
+PASS  verify/TikTok t=,s= 正確簽章通過
+PASS  verify 標頭名大小寫不敏感
+PASS  verify LINE 標頭小寫也通
+PASS  verify/TikTok X-Tiktok-Signature 純 hex 通過
+PASS  verify/TikTok sha256=hex 變體通過
+PASS  verify/IG 被篡改 body 失敗
+PASS  verify/FB 被篡改 body 失敗
+PASS  verify/LINE 被篡改 body 失敗
+PASS  verify/TikTok 被篡改 body 失敗
+PASS  verify/缺 meta_app_secret 失敗
+PASS  verify/缺 line_channel_secret 失敗
+PASS  verify/缺 tiktok_client_secret 失敗
+PASS  verify/空 secrets 失敗
+PASS  verify/缺標頭失敗
+PASS  verify/LINE 缺標頭失敗
+PASS  verify/TikTok 缺標頭失敗
+PASS  verify/未知平台失敗
+PASS  verify/空平台失敗
+PASS  verify/壞標頭格式不 raise 且 False
+PASS  verify/錯誤 secret 失敗
+PASS  verify/headers 為 None 不 raise
+PASS  verify/raw_body 為 None 不 raise
+PASS  verify/LINE base64 但錯誤簽章失敗
+PASS  verify_challenge 正確 token 回 challenge
+PASS  verify_challenge FB 也支援
+PASS  verify_challenge 錯 token 回 None
+PASS  verify_challenge mode 非 subscribe 回 None
+PASS  verify_challenge LINE 回 None
+PASS  verify_challenge 缺 challenge 回 None
+PASS  verify_challenge 兩參數版（configure_secrets）
+PASS  parse/IG 產生 1 個事件
+PASS  parse/IG platform
+PASS  parse/IG tenant_id
+PASS  parse/IG account_id
+PASS  parse/IG kind
+PASS  parse/IG message_id
+PASS  parse/IG thread_id(media)
+PASS  parse/IG parent_id 空
+PASS  parse/IG author_id
+PASS  parse/IG author_name
+PASS  parse/IG text
+PASS  parse/IG created_at ISO UTC
+PASS  parse/IG dedupe_key
+PASS  parse/IG raw 保留原始 value
+PASS  parse/FB 產生 1 個事件
+PASS  parse/FB kind
+PASS  parse/FB message_id=comment_id
+PASS  parse/FB thread_id=post_id
+PASS  parse/FB author_name
+PASS  parse/FB text
+PASS  parse/FB created_at
+PASS  parse/FB 私訊產生 1 個事件
+PASS  parse/FB 私訊 kind=dm
+PASS  parse/FB 私訊 message_id=mid
+PASS  parse/FB 私訊 thread_id=對方ID
+PASS  parse/FB 私訊 author_id
+PASS  parse/FB 私訊 created_at(ms→ISO)
+PASS  parse/FB 私訊 raw.peer_id
+PASS  parse/LINE 產生 1 個事件
+PASS  parse/LINE platform
+PASS  parse/LINE kind=dm
+PASS  parse/LINE account_id=destination
+PASS  parse/LINE message_id
+PASS  parse/LINE author_id=userId
+PASS  parse/LINE thread_id
+PASS  parse/LINE text
+PASS  parse/LINE created_at
+PASS  parse/LINE reply_token 存入 raw
+PASS  parse/TikTok 產生 1 個事件
+PASS  parse/TikTok platform
+PASS  parse/TikTok kind=comment
+PASS  parse/TikTok account_id=business_id
+PASS  parse/TikTok message_id=comment_id
+PASS  parse/TikTok thread_id=video_id
+PASS  parse/TikTok author_id=user_id
+PASS  parse/TikTok author_name=username
+PASS  parse/TikTok text
+PASS  parse/TikTok created_at(s→ISO)
+PASS  parse/TikTok comment.reply 也解析
+PASS  parse/TikTok reply parent_id
+PASS  filter/IG 自己帳號的留言被濾掉
+PASS  filter/IG is_echo 被濾掉
+PASS  filter/FB 粉專自己的留言被濾掉
+PASS  filter/FB 私訊 is_echo 被濾掉
+PASS  filter/TikTok 自己留言被濾掉
+PASS  filter/LINE 非文字與非 message 事件被跳過（只剩 1 文字）
+PASS  filter/LINE 剩下的是文字事件
+PASS  filter/IG 非 comments field 被跳過
+PASS  filter/FB item=post 被跳過
+PASS  filter/未知平台回空 list
+PASS  filter/payload 非 dict 不 raise
+PASS  filter/payload 空 dict 不 raise
+PASS  filter/entry 是字串不 raise
+PASS  filter/LINE 缺 text 被跳過
+PASS  build/IG 留言 method
+PASS  build/IG 留言 url
+PASS  build/IG 留言 body
+PASS  build/IG 留言 target
+PASS  build/IG 留言 Authorization
+PASS  build/IG 留言 url 在 ENDPOINTS 內
+PASS  build/FB 留言 method
+PASS  build/FB 留言 url
+PASS  build/FB 留言 body
+PASS  build/FB 私訊 method
+PASS  build/FB 私訊 url
+PASS  build/FB 私訊 body.recipient
+PASS  build/FB 私訊 body.message.text
+PASS  build/LINE method
+PASS  build/LINE url
+PASS  build/LINE Authorization
+PASS  build/LINE replyToken 有帶入
+PASS  build/LINE messages
+PASS  build/TikTok method
+PASS  build/TikTok url
+PASS  build/TikTok Access-Token
+PASS  build/TikTok body.comment_id
+PASS  build/TikTok body.video_id
+PASS  build/TikTok body.text
+PASS  build/回傳 OutRequest
+PASS  build/OutRequest 六欄齊備
+PASS  build/ENDPOINTS 涵蓋 4 平台
+PASS  build/ENDPOINTS 全部 https
+PASS  build/未知平台 raise ValueError
+------------------------------------------------------------
+TOTAL: 126  PASS: 126  FAIL: 0
+ALL GREEN
+
+### tests/test_policy.py
+policy.py = /app/conversations/6ae97ea907d06e3f830d1dd2/replybridge/rb/policy.py
+PIPELINE  = dedupe, quiet_hours, rate, inbound_guardrails, rules, drafter, draft_guardrails, confidence_gate, pass
+contracts = /app/conversations/6ae97ea907d06e3f830d1dd2/replybridge/rb/contracts.py
+------------------------------------------------------------------------------
+PASS  1  重複事件不重複回（不再呼叫 draft_fn / incr_rate）
+PASS  2  跨午夜靜默時段（含邊界、非跨午夜、壞時間戳）
+PASS  3  速率超限升級 + 分 thread 計數
+PASS  4  入站命中敏感詞/PII（含壞 regex）
+PASS  5  canned 規則命中 + {{author_name}} 替換
+PASS  6  低信心升級（門檻 0.65 邊界）
+PASS  7  高信心放行 + 簽名不重複附加
+PASS  8  草稿命中敏感詞 draft_blocked
+PASS  9  答案過長截斷加簽名（長度上限）
+PASS  10 drafter 拋例外 / 自我放棄 / 回 None
+PASS  11 命中的 ignore 規則（不呼叫 drafter）
+PASS  12 policy_hits 內容與順序正確
+PASS  13 任何輸入都不 raise（壞 config/store/事件）
+------------------------------------------------------------------------------
+13/13 PASS, 0 FAIL
+RESULT: ALL GREEN
+
+### tests/test_ai.py
+PASS  zh_hit_text
+PASS  zh_hit_sources
+PASS  zh_hit_model
+PASS  zh_hit_no_escalate
+PASS  zh_hit_placeholder_gone
+PASS  zh_hit_second_entry
+PASS  en_hit_sources
+PASS  en_hit_text
+PASS  en_hit_no_escalate
+PASS  en_case_punct_insensitive
+PASS  unrelated_escalate
+PASS  unrelated_empty_text
+PASS  unrelated_note
+PASS  unrelated_model
+PASS  unrelated_confidence_is_score
+PASS  empty_text_escalate
+PASS  empty_kb_escalate
+PASS  boundary_probe_score
+PASS  boundary_exact_score_hits
+PASS  boundary_above_score_escalates
+PASS  boundary_strict_threshold
+PASS  default_min_score
+PASS  provider_model
+PASS  provider_confidence_080
+PASS  provider_text_used
+PASS  provider_not_escalated
+PASS  provider_prompt_has_ev_text
+PASS  provider_prompt_has_kb_answer
+PASS  provider_default_name
+PASS  provider_without_kb_hit
+PASS  provider_exception_not_raised
+PASS  provider_exception_falls_back
+PASS  provider_exception_same_as_retrieval
+PASS  provider_exception_confidence_not_080
+PASS  provider_exception_nomatch_escalate
+PASS  provider_empty_falls_back
+PASS  provider_empty_confidence_not_080
+PASS  provider_nonstring_falls_back
+PASS  confidence_in_range
+PASS  confidence_cap_095
+PASS  env_provider_unconfigured_raises
+PASS  env_provider_name_default
+PASS  env_provider_complete
+PASS  env_provider_via_drafter
+PASS  env_provider_transport_error_falls_back
+PASS  tokenize_zh_bigram
+PASS  tokenize_en_lower_split
+PASS  tokenize_mixed
+PASS  score_self_is_one
+PASS  score_disjoint_zero
+
+50 passed, 0 failed
+RESULT: PASS
+
+### tests/test_ledger.py
+PASS test_dedupe_second_seen_true_and_no_duplicate_row
+PASS test_incr_rate_accumulates_in_same_window
+PASS test_incr_rate_resets_across_window
+PASS test_incr_rate_purges_windows_older_than_three
+PASS test_chain_hash_matches_documented_formula
+PASS test_verify_chain_true_after_appends
+PASS test_verify_chain_detects_tampered_payload_at_seq
+PASS test_verify_chain_detects_tampered_prev_hash
+PASS test_enqueue_list_resolve_flow
+PASS test_resolve_missing_id_raises_keyerror
+PASS test_stats_fields_and_aggregation
+PASS test_concurrent_appends_keep_chain_intact
+PASS test_store_creates_directory_and_reopens_persistently
+PASS test_parameter_binding_survives_hostile_strings
+--- 14 passed, 0 failed, 14 total ---
+
+### tests/e2e.py
+server on 127.0.0.1:18795
+
+PASS  healthz 200  | {'ok': True, 'service': 'replybridge'}
+PASS  meta challenge 回傳 hub.challenge  | 200
+PASS  meta challenge 錯誤 token 被拒 403  | 403
+PASS  IG 留言走完管線並回覆  | reply
+PASS  IG 回覆命中 price_question 規則  | ['rule:price_question', 'persona:signature']
+PASS  IG 外送到 /replies 端點  | https://graph.facebook.com/v26.0/igc_1001/replies
+PASS  FB 留言走完管線並回覆  | reply
+PASS  FB 外送帶授權標頭  | {'Content-Type': 'application/json', 'Authorization': 'Bearer FB_TOKEN_ENV'}
+PASS  LINE 私訊走完管線  | reply
+PASS  LINE 走 KB 檢索模型  | kb:retrieval
+PASS  LINE 外送帶 replyToken  | {'replyToken': 'rt_3001', 'messages': [{'type': 'text', 'text': '標準導入 3 到 5 個工作天：第一天接平台權限，第二天上知識庫與話術，第三天灰度上線並人工複核。\n— AI 客服（真人接手請回覆「找真人」）'}]}
+PASS  TikTok 留言走完管線並回覆  | reply
+PASS  TikTok 外送打到 business comment reply  | https://business-api.tiktok.com/open_api/v1.3/business/comment/reply/
+PASS  簽章錯誤回 401 且不入帳  | signature_invalid
+PASS  重複 webhook 判為 duplicate  | ['dedupe']
+PASS  重複事件不重送外送  | 4->4
+PASS  敏感詞升級人工不回覆  | guardrail:(匯款|轉帳|帳號密碼|身分證|信用卡號)
+PASS  要求真人直接升級  | user_requested_human
+PASS  低信心不硬回  | drafter_declined
+PASS  同串第 4 則觸發速率上限  | ['reply', 'reply', 'reply', 'escalate']
+PASS  靜默時段轉人工  | quiet_hours
+PASS  外送失敗改判 escalate  | send_failed:500
+PASS  未配置帳號標為 unrouted  | {'message_id': 'fbc_unknown', 'action': 'unrouted'}
+PASS  自己發的留言不被回覆
+PASS  人工隊列有升級案件  | 6
+PASS  人工核准後真的送出  | {'queue_id': 1, 'send_status': 200}
+PASS  50 則併發無例外
+PASS  延遲統計可用  | {'n': 64, 'p50_ms': 25.6, 'p95_ms': 46.31, 'max_ms': 46.67}
+PASS  壓測吞吐 > 20 則/秒  | 47.7/s
+PASS  帳本 hash chain 完整
+PASS  stats chain_ok 為真  | True
+PASS  stats 有 by_action 分佈  | {'reply': 10, 'ignore': 1, 'escalate': 53}
+PASS  stats 有 tenants  | ['tenant2_demo', 'tk26110314']
+
+=== 33/33 PASS ===
+latency: {'n': 64, 'p50_ms': 25.6, 'p95_ms': 46.31, 'max_ms': 46.67}
+throughput: 47.7 msg/s on 50 concurrent
+report -> out/e2e_report.json
+
