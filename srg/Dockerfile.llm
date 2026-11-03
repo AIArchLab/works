@@ -1,0 +1,8 @@
+FROM python:3.10-slim
+RUN pip install --no-cache-dir llama-cpp-python --prefer-binary --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+WORKDIR /app
+COPY srg /app/srg
+# Model downloaded at build time from the official Qwen repo (Apache-2.0):
+ADD https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/qwen2.5-1.5b-instruct-q4_k_m.gguf /models/q15.gguf
+ENV PYTHONUNBUFFERED=1
+CMD ["python", "-m", "srg"]
