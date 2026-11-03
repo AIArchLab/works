@@ -48,6 +48,8 @@ Tests (standard library only, mock platforms): `python3 tests/run_all.py`
 
 Run the server: copy `config.example.json` to `config.json`, set real values (placeholder tokens are rejected at startup), then `SRG_CONFIG=config.json python3 -m srg`. Open `/?t=<admin_token>` once; it sets an HttpOnly cookie. Never put secrets in the repository.
 
+Docker: from the repository root, `docker build srg/` (the Dockerfile uses the `srg/` folder as build context). The Docker image was not built or run as part of this work's verification.
+
 Local model: install `llama-cpp-python`, download `qwen2.5-1.5b-instruct-q4_k_m.gguf` from the official Qwen GGUF repository, save it as `models/q15.gguf`, then run `python -m unittest tests.test_real_local_llm` and `python tests/real_llm_probe_suite.py`. `Dockerfile.llm` builds an image with the model.
 
 ## License

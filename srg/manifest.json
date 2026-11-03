@@ -17,11 +17,11 @@
   "language": "en",
   "deidentification_checklist": {
     "no_client_names": true,
-    "no_platform_names_in_case_content": true,
     "no_budgets_or_prices": true,
     "no_private_strategy_layer": true,
     "principal_referred_only_as_founder": true,
-    "all_claims_sourced_or_marked_source_missing": true
+    "all_claims_sourced_or_marked_source_missing": true,
+    "no_client_identifiers": true
   },
   "verification": {
     "unit_and_e2e": "python3 tests/run_all.py (standard library only, mock platforms)",
