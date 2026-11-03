@@ -1,0 +1,278 @@
+=== ReplyBridge test run 2026-11-03T07:06:44Z ===
+### tests/test_channels.py
+PASS  verify/IG
+PASS  verify/FB
+PASS  verify/LINE
+PASS  verify/TikTok t=,s=
+PASS  verify
+PASS  verify LINE
+PASS  verify/TikTok X-Tiktok-Signature  hex
+PASS  verify/TikTok sha256=hex
+PASS  verify/IG  body
+PASS  verify/FB  body
+PASS  verify/LINE  body
+PASS  verify/TikTok  body
+PASS  verify/ meta_app_secret
+PASS  verify/ line_channel_secret
+PASS  verify/ tiktok_client_secret
+PASS  verify/ secrets
+PASS  verify/
+PASS  verify/LINE
+PASS  verify/TikTok
+PASS  verify/
+PASS  verify/
+PASS  verify/ raise  False
+PASS  verify/ secret
+PASS  verify/headers  None  raise
+PASS  verify/raw_body  None  raise
+PASS  verify/LINE base64
+PASS  verify_challenge  token  challenge
+PASS  verify_challenge FB
+PASS  verify_challenge  token  None
+PASS  verify_challenge mode  subscribe  None
+PASS  verify_challenge LINE  None
+PASS  verify_challenge  challenge  None
+PASS  verify_challenge configure_secrets
+PASS  parse/IG  1
+PASS  parse/IG platform
+PASS  parse/IG tenant_id
+PASS  parse/IG account_id
+PASS  parse/IG kind
+PASS  parse/IG message_id
+PASS  parse/IG thread_id(media)
+PASS  parse/IG parent_id
+PASS  parse/IG author_id
+PASS  parse/IG author_name
+PASS  parse/IG text
+PASS  parse/IG created_at ISO UTC
+PASS  parse/IG dedupe_key
+PASS  parse/IG raw  value
+PASS  parse/FB  1
+PASS  parse/FB kind
+PASS  parse/FB message_id=comment_id
+PASS  parse/FB thread_id=post_id
+PASS  parse/FB author_name
+PASS  parse/FB text
+PASS  parse/FB created_at
+PASS  parse/FB  1
+PASS  parse/FB  kind=dm
+PASS  parse/FB  message_id=mid
+PASS  parse/FB  thread_id=ID
+PASS  parse/FB  author_id
+PASS  parse/FB  created_at(ms→ISO)
+PASS  parse/FB  raw.peer_id
+PASS  parse/LINE  1
+PASS  parse/LINE platform
+PASS  parse/LINE kind=dm
+PASS  parse/LINE account_id=destination
+PASS  parse/LINE message_id
+PASS  parse/LINE author_id=userId
+PASS  parse/LINE thread_id
+PASS  parse/LINE text
+PASS  parse/LINE created_at
+PASS  parse/LINE reply_token  raw
+PASS  parse/TikTok  1
+PASS  parse/TikTok platform
+PASS  parse/TikTok kind=comment
+PASS  parse/TikTok account_id=business_id
+PASS  parse/TikTok message_id=comment_id
+PASS  parse/TikTok thread_id=video_id
+PASS  parse/TikTok author_id=user_id
+PASS  parse/TikTok author_name=username
+PASS  parse/TikTok text
+PASS  parse/TikTok created_at(s→ISO)
+PASS  parse/TikTok comment.reply
+PASS  parse/TikTok reply parent_id
+PASS  filter/IG
+PASS  filter/IG is_echo
+PASS  filter/FB
+PASS  filter/FB  is_echo
+PASS  filter/TikTok
+PASS  filter/LINE  message  1
+PASS  filter/LINE
+PASS  filter/IG  comments field
+PASS  filter/FB item=post
+PASS  filter/ list
+PASS  filter/payload  dict  raise
+PASS  filter/payload  dict  raise
+PASS  filter/entry  raise
+PASS  filter/LINE  text
+PASS  build/IG  method
+PASS  build/IG  url
+PASS  build/IG  body
+PASS  build/IG  target
+PASS  build/IG  Authorization
+PASS  build/IG  url  ENDPOINTS
+PASS  build/FB  method
+PASS  build/FB  url
+PASS  build/FB  body
+PASS  build/FB  method
+PASS  build/FB  url
+PASS  build/FB  body.recipient
+PASS  build/FB  body.message.text
+PASS  build/LINE method
+PASS  build/LINE url
+PASS  build/LINE Authorization
+PASS  build/LINE replyToken
+PASS  build/LINE messages
+PASS  build/TikTok method
+PASS  build/TikTok url
+PASS  build/TikTok Access-Token
+PASS  build/TikTok body.comment_id
+PASS  build/TikTok body.video_id
+PASS  build/TikTok body.text
+PASS  build/ OutRequest
+PASS  build/OutRequest
+PASS  build/ENDPOINTS  4
+PASS  build/ENDPOINTS  https
+PASS  build/LINE  push
+PASS  build/LINE push  to
+PASS  build/LINE push  replyToken
+PASS
+PASS  TikTok
+PASS  build/ raise ValueError
+------------------------------------------------------------
+TOTAL: 131  PASS: 131  FAIL: 0
+ALL GREEN
+
+### tests/test_policy.py
+policy.py = /app/conversations/6ae97ea907d06e3f830d1dd2/replybridge/rb/policy.py
+PIPELINE  = dedupe, quiet_hours, rate, inbound_guardrails, rules, drafter, draft_guardrails, confidence_gate, pass
+contracts = /app/conversations/6ae97ea907d06e3f830d1dd2/replybridge/rb/contracts.py
+------------------------------------------------------------------------------
+PASS  1   draft_fn / incr_rate
+PASS  2
+PASS  3   +  thread
+PASS  4  /PII regex
+PASS  5  canned  + {{author_name}}
+PASS  6   0.65
+PASS  7   +
+PASS  8   draft_blocked
+PASS  9
+PASS  10 drafter  /  /  None
+PASS  11  ignore  drafter
+PASS  12 policy_hits
+PASS  13  raise config/store/
+------------------------------------------------------------------------------
+13/13 PASS, 0 FAIL
+RESULT: ALL GREEN
+
+### tests/test_ai.py
+PASS  zh_hit_text
+PASS  zh_hit_sources
+PASS  zh_hit_model
+PASS  zh_hit_no_escalate
+PASS  zh_hit_placeholder_gone
+PASS  zh_hit_second_entry
+PASS  en_hit_sources
+PASS  en_hit_text
+PASS  en_hit_no_escalate
+PASS  en_case_punct_insensitive
+PASS  unrelated_escalate
+PASS  unrelated_empty_text
+PASS  unrelated_note
+PASS  unrelated_model
+PASS  unrelated_confidence_is_score
+PASS  empty_text_escalate
+PASS  empty_kb_escalate
+PASS  boundary_probe_score
+PASS  boundary_exact_score_hits
+PASS  boundary_above_score_escalates
+PASS  boundary_strict_threshold
+PASS  default_min_score
+PASS  provider_model
+PASS  provider_confidence_080
+PASS  provider_text_used
+PASS  provider_not_escalated
+PASS  provider_prompt_has_ev_text
+PASS  provider_prompt_has_kb_answer
+PASS  provider_default_name
+PASS  provider_without_kb_hit
+PASS  provider_exception_not_raised
+PASS  provider_exception_falls_back
+PASS  provider_exception_same_as_retrieval
+PASS  provider_exception_confidence_not_080
+PASS  provider_exception_nomatch_escalate
+PASS  provider_empty_falls_back
+PASS  provider_empty_confidence_not_080
+PASS  provider_nonstring_falls_back
+PASS  confidence_in_range
+PASS  confidence_cap_095
+PASS  env_provider_unconfigured_raises
+PASS  env_provider_name_default
+PASS  env_provider_complete
+PASS  env_provider_via_drafter
+PASS  env_provider_transport_error_falls_back
+PASS  tokenize_zh_bigram
+PASS  tokenize_en_lower_split
+PASS  tokenize_mixed
+PASS  score_self_is_one
+PASS  score_disjoint_zero
+
+50 passed, 0 failed
+RESULT: PASS
+
+### tests/test_ledger.py
+PASS test_dedupe_second_seen_true_and_no_duplicate_row
+PASS test_incr_rate_accumulates_in_same_window
+PASS test_incr_rate_resets_across_window
+PASS test_incr_rate_purges_windows_older_than_three
+PASS test_chain_hash_matches_documented_formula
+PASS test_verify_chain_true_after_appends
+PASS test_verify_chain_detects_tampered_payload_at_seq
+PASS test_verify_chain_detects_tampered_prev_hash
+PASS test_enqueue_list_resolve_flow
+PASS test_resolve_missing_id_raises_keyerror
+PASS test_stats_fields_and_aggregation
+PASS test_concurrent_appends_keep_chain_intact
+PASS test_store_creates_directory_and_reopens_persistently
+PASS test_parameter_binding_survives_hostile_strings
+--- 14 passed, 0 failed, 14 total ---
+
+### tests/e2e.py
+server on 127.0.0.1:50496
+
+PASS  healthz 200  | {'ok': True, 'service': 'replybridge'}
+PASS  meta challenge  hub.challenge  | 200
+PASS  meta challenge  token  403  | 403
+PASS  IG   | reply
+PASS  IG  price_question   | ['rule:price_question', 'persona:signature']
+PASS  IG  /replies   | https://graph.facebook.com/v26.0/igc_1001/replies
+PASS  FB   | reply
+PASS  FB   | {'Content-Type': 'application/json', 'Authorization': 'Bearer FB_TOKEN_ENV'}
+PASS  LINE   | reply
+PASS  LINE  KB   | kb:retrieval
+PASS  LINE  replyToken  | {'replyToken': 'rt_3001', 'messages': [{'type': 'text', 'text': ' 3  5 \n— AI '}]}
+PASS  TikTok   | reply
+PASS  TikTok  business comment reply  | https://business-api.tiktok.com/open_api/v1.3/business/comment/reply/
+PASS   401   | signature_invalid
+PASS   webhook  duplicate  | ['dedupe']
+PASS    | 4->4
+PASS    | guardrail:(||||)
+PASS    | user_requested_human
+PASS    | drafter_declined
+PASS   4   | ['reply', 'reply', 'reply', 'escalate']
+PASS    | quiet_hours
+PASS   escalate  | send_failed:500
+PASS   unrouted  | {'message_id': 'fbc_unknown', 'action': 'unrouted'}
+PASS
+PASS    | 6
+PASS    | {'queue_id': 1, 'send_status': 200}
+PASS  50
+PASS    | {'n': 64, 'p50_ms': 42.47, 'p95_ms': 61.95, 'max_ms': 66.22}
+PASS   > 20 /  | 48.5/s
+PASS   hash chain
+PASS  stats chain_ok   | True
+PASS  stats  by_action   | {'reply': 10, 'ignore': 1, 'escalate': 53}
+PASS  stats  tenants  | ['tenant2_demo', 'tk26110314']
+
+=== 33/33 PASS ===
+latency: {'n': 64, 'p50_ms': 42.47, 'p95_ms': 61.95, 'max_ms': 66.22}
+throughput: 48.5 msg/s on 50 concurrent
+report -> out/e2e_report.json
+
+log -> out/test_run_20261103T070644Z.log
+TOTAL: 131  PASS: 131  FAIL: 0
+ALL GREEN
+RESULT: ALL GREEN
+=== 33/33 PASS ===

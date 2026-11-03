@@ -1,0 +1,59 @@
+{
+ "entries": [
+  {
+   "id": "kb_001",
+   "lang": "en",
+   "tags": [
+    "platforms",
+    "scope"
+   ],
+   "question": "Which channels do you support",
+   "answer": "Instagram, Facebook, LINE and TikTok comments and direct messages, all through one policy layer."
+  },
+  {
+   "id": "kb_002",
+   "lang": "en",
+   "tags": [
+    "onboarding"
+   ],
+   "question": "How long does onboarding take",
+   "answer": "Three to five working days: channel access on day one, knowledge base and reply rules on day two, shadow mode on day three."
+  },
+  {
+   "id": "kb_003",
+   "lang": "en",
+   "tags": [
+    "pricing"
+   ],
+   "question": "How is it priced",
+   "answer": "A monthly plan based on the number of channels and message volume. A range is confirmed after we see account count and volume."
+  },
+  {
+   "id": "kb_004",
+   "lang": "en",
+   "tags": [
+    "security"
+   ],
+   "question": "Do you need my password",
+   "answer": "No. Only official platform authorization is used, and access can be revoked from the platform at any time."
+  },
+  {
+   "id": "kb_005",
+   "lang": "en",
+   "tags": [
+    "quality"
+   ],
+   "question": "What if the AI answers wrong",
+   "answer": "When confidence is low or a sensitive topic appears, the message goes to a human queue instead of being answered."
+  },
+  {
+   "id": "kb_006",
+   "lang": "en",
+   "tags": [
+    "dm"
+   ],
+   "question": "Does it answer direct messages too",
+   "answer": "Yes. Comments and direct messages share one pipeline; platform reply windows apply and timeouts escalate to a human."
+  }
+ ]
+}
