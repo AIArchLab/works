@@ -1,0 +1,27 @@
+{
+  "id": "0009",
+  "slug": "socialreply",
+  "title": "SocialReply",
+  "published": "2026-11-03",
+  "status": "sanitized-example",
+  "language": "en",
+  "ui_language": "zh-TW",
+  "tags": [
+    "social-reply",
+    "multi-workspace",
+    "webhooks",
+    "durable-outbox"
+  ],
+  "evidence": {
+    "local_http_e2e_tests": 17,
+    "real_model_inference_verified": false,
+    "live_social_accounts_verified": false,
+    "tiktok_native_connector_included": false
+  },
+  "deidentification_checklist": {
+    "no_client_names": true,
+    "no_budgets_or_prices": true,
+    "no_case_numbers": true,
+    "no_private_credentials": true
+  }
+}

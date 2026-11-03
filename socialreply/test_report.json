@@ -1,0 +1,15 @@
+{
+  "tested_at_utc": "2026-11-03T06:39:02.977745+00:00",
+  "tests_passed": 17,
+  "tests_failed": 0,
+  "python_http_e2e_exit_code": 0,
+  "javascript_syntax_exit_code": 0,
+  "actual_process_restart_test": true,
+  "real_external_llm_inference_tested": false,
+  "real_social_accounts_tested": false,
+  "tiktok_native_connector_included": false,
+  "provider_transport": "local HTTP fixture",
+  "docker_tested": false,
+  "browser_click_tested": false,
+  "test_output": "test_01_admin_auth_and_frontend (test_e2e.E2E.test_01_admin_auth_and_frontend) ... ok\ntest_02_four_demo_channels_reach_simulated_delivery (test_e2e.E2E.test_02_four_demo_channels_reach_simulated_delivery) ... ok\ntest_03_redelivery_deduplicates (test_e2e.E2E.test_03_redelivery_deduplicates) ... ok\ntest_04_real_http_llm_protocol_to_all_four_outbound_adapters (test_e2e.E2E.test_04_real_http_llm_protocol_to_all_four_outbound_adapters) ... ok\ntest_05_forged_webhooks_are_rejected (test_e2e.E2E.test_05_forged_webhooks_are_rejected) ... ok\ntest_06_sensitive_input_review_and_approval (test_e2e.E2E.test_06_sensitive_input_review_and_approval) ... ok\ntest_07_unknown_question_review_then_reject (test_e2e.E2E.test_07_unknown_question_review_then_reject) ... ok\ntest_08_model_invented_source_is_blocked (test_e2e.E2E.test_08_model_invented_source_is_blocked) ... ok\ntest_09_prompt_injection_does_not_call_model (test_e2e.E2E.test_09_prompt_injection_does_not_call_model) ... ok\ntest_10_workspace_isolation (test_e2e.E2E.test_10_workspace_isolation) ... ok\ntest_11_meta_verification_and_own_echo_guard (test_e2e.E2E.test_11_meta_verification_and_own_echo_guard) ... ok\ntest_12_unknown_send_is_not_automatically_retried (test_e2e.E2E.test_12_unknown_send_is_not_automatically_retried) ... ok\ntest_13_generation_lease_recovery (test_e2e.E2E.test_13_generation_lease_recovery) ... ok\ntest_14_live_auto_disabled_queues_review (test_e2e.E2E.test_14_live_auto_disabled_queues_review) ... ok\ntest_15_native_webhook_redelivery_has_one_send (test_e2e.E2E.test_15_native_webhook_redelivery_has_one_send) ... ok\ntest_16_no_secret_leaks_in_admin_events_or_status (test_e2e.E2E.test_16_no_secret_leaks_in_admin_events_or_status) ... ok\ntest_17_actual_process_restart_preserves_jobs_and_delivery (test_e2e.E2E.test_17_actual_process_restart_preserves_jobs_and_delivery) ... ok\n\n----------------------------------------------------------------------\nRan 17 tests in 3.409s\n\nOK\n"
+}

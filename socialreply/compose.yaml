@@ -1,0 +1,21 @@
+services:
+  socialreply:
+    build: .
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      APP_MODE: ${APP_MODE:-demo}
+      LIVE_AUTO_SEND: ${LIVE_AUTO_SEND:-0}
+    env_file:
+      - path: .env
+        required: false
+    volumes:
+      - socialreply_data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8080/health')"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+volumes:
+  socialreply_data:

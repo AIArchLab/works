@@ -13,6 +13,7 @@ Scenario and data in every work are fictional unless the work itself states othe
 | 6 | [claimcheck](claimcheck/) | Trust ledger for AI agent teams: member governance plus a per-claim evidence engine | 2026-10-24 |
 | 7 | [ledger-pipe](ledger-pipe/) | Monthly reporting behind a source contract: bad sources stop the run and name the row and column | 2026-11-01 |
 | 7 | [replybridge](replybridge/) | Channel-agnostic inbound reply router: fail-closed escalation and a hash-chained decision ledger | 2026-11-03 |
+| 9 | [SocialReply](socialreply/) | Reusable social reply MVP: signed webhooks, durable outbox, review dashboard; local E2E verified | 2026-11-03 |
 
 Works that need their own repository (code with releases, issues, tests):
 - [weirwright](https://github.com/AIArchLab/weirwright) — executable change-control gates.
