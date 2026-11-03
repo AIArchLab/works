@@ -1,5 +1,6 @@
 {
-  "id": "0007",
+  "id": "0009",
+  "renumbered_from": "0007",
   "slug": "replybridge",
   "title": "replybridge - channel-agnostic inbound reply router with fail-closed escalation",
   "published": "2026-11-03",
