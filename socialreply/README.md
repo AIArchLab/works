@@ -51,3 +51,6 @@ Docker configuration is supplied but has not been executed in the build environm
 - https://business-api.tiktok.com/portal/docs/reply-to-an-existing-comment-on-an-owned-video/v1.3
 
 References checked 2026-11-03. Platform and account permissions still require live verification.
+
+## Demo video production
+An actual screen-recorded walkthrough has been requested. See [production request](demo/REQUEST.md). A delivered video is not yet claimed.
