@@ -1,52 +1,51 @@
-# 啟動、操作與部署
+# Launch, Operations, and Deployment
 
-從 repo 根目錄先進入 `relayhandoff/`。下列命令均以此為工作目錄。
+From the repo root, enter `relayhandoff/` first. All commands below use it as the working directory.
 
-## 一個指令開始
+## Start with one command
 
-Python 3.10+（標準函式庫即可，不需 pip install）：
+Python 3.10+ (standard library only, no pip install):
 
 ```sh
 python launch.py
 ```
 
-Windows 若環境使用 `py`：`py launch.py`。Linux/macOS 常用 `python3 launch.py`。
+On Windows, if the environment uses `py`: `py launch.py`. Linux/macOS commonly use `python3 launch.py`.
 
-會在 loopback 啟動 Broker、建立本機專用金鑰與 SQLite，並開啟控制台。初次金鑰透過 URL fragment 交給頁面記憶體後立即清除 fragment，不進 HTTP request 或 localStorage。不要共用這個啟動 URL。無桌面環境使用 `python launch.py --no-browser`；憑證位於 `.runtime/keys.json`。
+This starts the Broker on loopback, creates local-only keys and SQLite, and opens the console. On first launch the key is handed to the page memory via URL fragment and the fragment is cleared immediately; it never enters an HTTP request or localStorage. Do not share this launch URL. Without a desktop environment use `python launch.py --no-browser`; credentials live in `.runtime/keys.json`.
 
-## 真正的跨 runtime Demo
+## A real cross-runtime demo
 
-需另有 Node.js 18+：
+Also requires Node.js 18+:
 
 ```sh
 python demo.py
 ```
 
-不是 mock：Python 透過 HTTP 寫 checkpoint 與 UTF-8 附件，Broker 封存並凍結舊 owner，獨立 Node.js 程序讀取 bundle、驗 SHA-256 與附件、claim、ACK，再以新 fencing epoch 寫入。最後以舊 token 嘗試覆寫並確認被拒絕。產出 `demo_receipt.json`，不含憑證。
+Not a mock: Python writes a checkpoint and a UTF-8 attachment over HTTP, the Broker archives and freezes the old owner, a standalone Node.js process reads the bundle, verifies SHA-256 and attachments, claims, ACKs, then writes under a new fencing epoch. Finally it tries to overwrite with the old token and confirms rejection. Produces `demo_receipt.json`, containing no credentials.
 
-## 操作控制台
+## Operating the console
 
-建立任務 → 取得租約 → 寫入 checkpoint → 封存並交接。接手者使用自己的 scoped key，在同一 Task ID 按「接手、驗證、ACK」。可讀取任務清單與稽核、取消尚未完成的交接。
+Create a task, acquire a lease, write a checkpoint, then archive and hand off. The taker uses their own scoped key and presses take over, verify, ACK on the same Task ID. You can read the task list and audits, and cancel unfinished handoffs.
 
-控制台不是瀏覽器自動化驗收過的商用品 UI；本版 HTTP 頁面與 API 已驗證，點擊互動尚待瀏覽器驗收。
+The console is not a commercial-grade UI verified by browser automation; this version's HTTP pages and API are verified, while click interactions still await browser acceptance.
 
-## 部署
+## Deployment
 
-正式服務用 `server.py`，從 `RH_KEYS` 注入 scoped credential JSON；禁止把實際 key commit：
+For a real service use `server.py`, injecting scoped credential JSON via `RH_KEYS`; never commit real keys:
 
 ```sh
 python server.py --host 127.0.0.1 --port 8787 --db /your/private/path/state.db
 ```
 
-`RH_KEYS` 格式：`{"至少32字元的隨機密鑰":{"tenant":"客戶識別","actor":"執行者識別","role":"worker"}}`。正式金鑰應以密碼學亂數產生，不能把範例字串當密鑰。
+`RH_KEYS` format: `{"random secret of at least 32 characters":{"tenant":"customer id","actor":"executor id","role":"worker"}}`. Production keys should be generated with cryptographic randomness; never use the example string as a key.
 
-附 Dockerfile / compose.yaml，但本次環境沒有 Docker，**未做容器執行驗收**。對外暴露必須先有 TLS reverse proxy、連線與 body-read timeout、rate limit、備份與網路存取控制。內建 Python HTTP server 僅供本機或受控 pilot，不可直接裸露在 Internet。
+A Dockerfile / compose.yaml is included, but this environment has no Docker, so **container execution is not yet verified**. External exposure requires a TLS reverse proxy, connection and body-read timeouts, rate limits, backups, and network access controls first. The built-in Python HTTP server is for local or controlled pilot use only; do not expose it directly to the Internet.
 
-## 驗收
+## Acceptance
 
 ```sh
 python tests/test_e2e.py
 ```
 
-詳見 `ACCEPTANCE.md`、`test_report.json`。`PROTOCOL.md` 是 adapter 契約；`openapi.json` 提供機器可讀 API 定義。
-
+See `ACCEPTANCE.md` and `test_report.json` for details. `PROTOCOL.md` is the adapter contract; `openapi.json` provides the machine-readable API definition.
