@@ -14,6 +14,7 @@ Scenario and data in every work are fictional unless the work itself states othe
 | 8 | [ledger-pipe](ledger-pipe/) | Monthly reporting behind a source contract: bad sources stop the run and name the row and column | 2026-11-01 |
 | 9 | [replybridge](replybridge/) | Channel-agnostic inbound reply router: fail-closed escalation and a hash-chained decision ledger | 2026-11-03 |
 | 10 | [SocialReply](socialreply/) | Reusable social reply MVP: signed webhooks, durable outbox, review dashboard; local E2E verified | 2026-11-03 |
+| 11 | [srg](srg/) | Social reply gateway MVP: approved-answer-only replies, human handoff, per-platform capability honesty | 2026-11-03 |
 
 Renumbered 2026-11-03 to resolve a numbering conflict: ledger-pipe was listed as #7, replybridge as #7, SocialReply as #9.
 
