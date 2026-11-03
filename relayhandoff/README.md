@@ -1,161 +1,176 @@
 # RelayHandoff
 
-### 讓任務的狀態、執行權與證據，不再綁在一次會話或一個 runtime。
+### Task state, execution rights, and evidence, no longer bound to one session or one runtime.
 
-RelayHandoff 把「做到哪裡、誰有權繼續、帶走哪些交付物、接手是否成立」做成一套獨立於模型與 runtime 的可執行協定。
+RelayHandoff turns "how far the work got, who may continue it, which deliverables travel, and whether the takeover is valid" into an executable protocol independent of model and runtime.
 
-**Handoff 是其中一個動作；任務的連續性才是要解決的問題。**
+**Handoff is one of its actions; task continuity is the problem it solves.**
 
-> **產品定位工作稿**：跨 runtime 的任務連續性控制層（Task Continuity Control Layer）。這是目前的架構描述，不是已定稿的市場分類或銷售標語。品牌敘事與賣點由同儕共同定稿；功能承諾必須對應實作與驗收。
+> **Product positioning working draft**: a cross-runtime Task Continuity Control Layer. This is the current architectural description, not a finalized market category or sales tagline. Brand narrative and selling points are finalized by peers together; feature claims must map to implementation and acceptance.
 
-[快速體驗](#快速體驗) · [運作方式](#運作方式) · [驗收證據](#驗收證據) · [動態圖協作](docs/MOTION_BRIEF.md) · [API 契約](PROTOCOL.md) · [商業交付](COMMERCIAL.md)
+[Quick start](#quick-start) · [How it works](#how-it-works) · [Acceptance evidence](#acceptance-evidence) · [Motion collaboration](docs/MOTION_BRIEF.md) · [API contract](PROTOCOL.md) · [Commercial delivery](COMMERCIAL.md)
 
-## 我們不是只想把對話搬到另一個視窗
+AIArchLab | RelayHandoff v0.1.0
 
-當一件工作跨越會話、工具或執行環境，真正需要延續的不只是摘要：
+**New runtime. Same task.**
 
-| 任務要回答的問題 | RelayHandoff 現在提供的控制 |
+![Concept visualization: saved state, controlled handoff and stale-write rejection](media/task-continuity-concept.png)
+
+Concept visualization. Broker-scoped fencing; ACK is not task completion. The reference flow uses Python and Node; it does not claim all-runtime adapters.
+
+[Watch the actual UI excerpts](media/task-continuity-ui-excerpts.mp4)
+
+![Actual UI excerpt: old-lease write rejected](media/poster.png)
+
+Actual UI excerpts, edited by step rather than a continuous recording. The receiver here is Python. Stop/restart actions occur off screen. The UI combines claim, verify and ACK. Protection is limited to Broker-mediated state and artifacts.
+
+See [visual provenance](media/PROVENANCE-AIARCHLAB-20261104.md).
+
+## More than moving a chat to another window
+
+When work spans sessions, tools, or runtimes, what must continue is more than a summary:
+
+| Question a task must answer | Control RelayHandoff provides today |
 |---|---|
-| 做到哪裡，哪些結果已經存妥？ | 持久化 checkpoint、revision 與附件 |
-| 目前誰能提交下一個結果？ | owner lease、遞增 fencing epoch 與 revision CAS |
-| 原執行者與接手者會不會同時寫？ | Broker 內交易裁決；交接期間凍結寫入 |
-| 接手者拿到的是不是同一份內容？ | bundle 與二進位附件 SHA-256 驗證 |
-| 接單就等於已經可以繼續嗎？ | claim 與 ACK 分開，確認後才開放 Broker 寫入 |
-| 遷移失敗、程序退出或服務重啟怎麼辦？ | 持久化狀態、取消、租約到期與交接逾時恢復 |
-| 事後能否回查發生了什麼？ | tenant-scoped 稽核事件與接手回執 |
+| How far did it get, and which results are stored? | Persistent checkpoints, revisions, and attachments |
+| Who may submit the next result right now? | Owner lease, monotonically increasing fencing epoch, and revision CAS |
+| Could the original and the taking-over executor write at the same time? | Transactional adjudication inside the Broker; writes frozen during handoff |
+| Does the receiver get the same content? | SHA-256 verification of bundles and binary attachments |
+| Does claiming mean it can already continue? | Claim and ACK are separate; Broker writes open only after confirmation |
+| What if migration fails, a process exits, or the service restarts? | Persistent state, cancel, lease expiry, and handoff-timeout recovery |
+| Can you audit what happened afterwards? | Tenant-scoped audit events and handoff receipts |
 
-**它保存的是可恢復的工作狀態，協調的是提交權，留下的是可以核對的交接證據。**
+**It preserves recoverable work state, coordinates submission rights, and leaves handoff evidence you can check.**
 
-這些控制目前作用在 Broker 管理的狀態與交付物。對外部 Git、SQL 或社群 API 的副作用，仍須由 adapter 與目的端提供條件寫入或防重機制；不能把這張表讀成全系統 exactly-once 保證。
+These controls currently apply to Broker-managed state and deliverables. Side effects on external Git, SQL, or social APIs still require adapters and destination-side conditional writes or idempotency; do not read this table as a system-wide exactly-once guarantee.
 
-## 適合什麼工作
+## What it is for
 
-- **長任務續作**：會話換了，保留 checkpoint、交付物與恢復依據，不只靠一段摘要。
-- **跨 runtime 接力**：執行環境不同，仍用同一份 HTTP 契約移交狀態與提交權。
-- **執行與驗證分離**：builder 交付、reviewer 驗證輸入，再明確 ACK 與提交驗收結果。
-- **失敗後恢復**：舊執行者的租約失效後，讓新的 owner 接續 Broker 內工作，不讓舊 token 恢復寫入權。
+- **Long-task continuation**: the session changed; keep checkpoints, deliverables, and recovery basis, not just a summary.
+- **Cross-runtime relay**: different execution environments still transfer state and submission rights over the same HTTP contract.
+- **Separation of execution and verification**: the builder delivers, the reviewer validates inputs, then explicitly ACKs and commits acceptance results.
+- **Recovery after failure**: after the old executor's lease expires, a new owner continues the work inside the Broker without letting the old token regain write access.
 
-前述是設計用途，不代表所有 IDE、Agent 框架或作業系統均已整合。**現有跨 runtime 實證是 Linux 上 Python 與獨立 Node.js 程序；其他 runtime 需要 adapter。**
+The above are design intents, not a claim that every IDE, agent framework, or OS is already integrated. **The current cross-runtime evidence is Python and a standalone Node.js process on Linux; other runtimes need adapters.**
 
-## 運作方式
+## How it works
 
 ```mermaid
 flowchart LR
-    A[Source runtime] -->|Checkpoint：狀態與交付物| B[RelayHandoff Broker]
-    B --> C[Prepare：封存並凍結寫入]
-    C --> D[Target runtime：讀取、驗證與 Claim]
-    D --> E[ACK：確認接手]
-    E --> F[新 owner / 新 epoch 繼續提交]
-    C --> G[取消或交接逾時]
+    A[Source runtime] -->|Checkpoint: state and deliverables| B[RelayHandoff Broker]
+    B --> C[Prepare: archive and freeze writes]
+    C --> D[Target runtime: read, verify, and claim]
+    D --> E[ACK: confirm takeover]
+    E --> F[New owner / new epoch keeps submitting]
+    C --> G[Cancel or handoff timeout]
     D --> G
-    G --> H[恢復流程：核發新 epoch]
+    G --> H[Recovery: issue a new epoch]
 ```
 
-這不是搬移正在運作的 OS process。Source adapter 必須先停在安全邊界、完成 checkpoint，再開始交接；Target adapter 必須驗證輸入與自身能力，才 ACK。
+This does not move a running OS process. The source adapter must stop at a safe boundary and finish checkpointing before the handoff starts; the target adapter must validate inputs and its own capabilities before it ACKs.
 
-### 三件事必須分開
+### Three things must stay separate
 
-1. **內容已保存**：checkpoint 與附件已進 Broker。
-2. **接手已確認**：Target 驗證輸入後送出 ACK。
-3. **工作已完成**：Target 繼續執行並提交可驗收結果。
+1. **Content is preserved**: checkpoint and attachments are in the Broker.
+2. **Takeover is confirmed**: the target sends ACK after validating inputs.
+3. **Work is complete**: the target keeps executing and submits acceptable results.
 
-Claim 不是 ACK，ACK 也不是任務完成。協定不能證明模型「理解了」任務，也不會自動繼承模型權限、憑證或 OS 權限。
+Claim is not ACK, and ACK is not task completion. The protocol cannot prove a model "understood" the task, and it does not automatically inherit model permissions, credentials, or OS privileges.
 
-## 快速體驗
+## Quick start
 
-從這個 repo 的根目錄進入產品目錄：
+From the repo root, enter the product directory:
 
 ```sh
 cd relayhandoff
 python launch.py
 ```
 
-需求：Python 3.10+，僅用標準函式庫，不需安裝 Python 套件。Linux/macOS 常用 `python3`，Windows 可用 `py`；命令相容不等於已完成該 OS 實機認證。
+Requirements: Python 3.10+, standard library only, no Python packages to install. Linux/macOS commonly use `python3`; Windows can use `py`. Command compatibility does not equal completed on-device certification for that OS.
 
-啟動器會建立本機 SQLite 與 scoped keys，在 loopback 啟動控制台，並開啟瀏覽器。控制台可建立任務、寫 checkpoint、封存、接手與讀取稽核。
+The launcher creates a local SQLite database and scoped keys, starts the console on loopback, and opens a browser. The console can create tasks, write checkpoints, archive, take over, and read audits.
 
-### 看一場真的 Python → Node.js 接力
+### Watch a real Python to Node.js relay
 
-另需 Node.js 18+：
+Also requires Node.js 18+:
 
 ```sh
 python demo.py
 ```
 
-這個 demo 會實際執行：
+This demo actually performs:
 
-1. Python 寫入 checkpoint 與繁體中文附件。
-2. Broker 封存交接內容，凍結原 owner 的寫入。
-3. 獨立 Node.js 程序驗證 bundle 與附件、claim、ACK。
-4. Node.js 用新 epoch 繼續提交結果。
-5. Python 用舊 lease 嘗試覆寫，確認被拒絕。
+1. Python writes a checkpoint and a Traditional Chinese attachment.
+2. The Broker archives the handoff content and freezes the original owner's writes.
+3. A standalone Node.js process verifies the bundle and attachments, claims, and ACKs.
+4. Node.js keeps submitting results under a new epoch.
+5. Python tries to overwrite with the old lease and is confirmed rejected.
 
-結果寫入 `demo_receipt.json`，不是預錄成功畫面，也不是 mock runtime。
+Results are written to `demo_receipt.json`; this is not a prerecorded success screen and not a mock runtime.
 
-## 不只展示工具：我們已用它驗證自己的 release
+## Not just a demo tool: we validated our own release with it
 
-本 repo 的 `verify_release.py` 把實際 release 候選檔案清單交給獨立 Node reviewer。Node 讀取檔案的真實 bytes、逐檔核對 SHA-256，通過才 ACK 並把驗收 receipt 寫回 Broker；Python 再讀回核對。
+This repo's `verify_release.py` hands the actual release-candidate file list to an independent Node reviewer. Node reads the real bytes of each file, checks SHA-256 file by file, ACKs only on pass, and writes the acceptance receipt back to the Broker; Python then reads it back and verifies.
 
 ```sh
 python verify_release.py
 ```
 
-- 候選內容清單：[MANIFEST.sha256.json](MANIFEST.sha256.json)
-- 接手與驗證回執：[release_handoff_receipt.json](release_handoff_receipt.json)
-- 驗收語義與排除項目：[ACCEPTANCE.md](ACCEPTANCE.md)
+- Candidate content list: [MANIFEST.sha256.json](MANIFEST.sha256.json)
+- Handoff and verification receipt: [release_handoff_receipt.json](release_handoff_receipt.json)
+- Acceptance semantics and exclusions: [ACCEPTANCE.md](ACCEPTANCE.md)
 
-這證明它已接進本產品的交付驗證工作流；不等同第三方資安認證或完整供應鏈簽章。
+This proves it is wired into this product's delivery-verification workflow; it is not equivalent to third-party security certification or full supply-chain signing.
 
-## 驗收證據
+## Acceptance evidence
 
-**0.1.1 修正批次（[Issue #2](https://github.com/AIArchLab/works/issues/2)）**：跨語言 JSON 子集、語意驗證後才 ACK、create/write 一致配額、零位元組附件。重跑原 18 項與新增 10 項，共 28 項；逐項證據與重現方式見 [修正驗收](docs/ISSUE_2_RESOLUTION.md)。
+**0.1.1 fix batch ([Issue #2](https://github.com/AIArchLab/works/issues/2))**: cross-language JSON subset, ACK only after semantic validation, consistent create/write quota, and zero-byte artifacts. Re-ran the original 18 plus 10 new cases, 28 in total; per-item evidence and reproduction in [Issue 2 resolution](docs/ISSUE_2_RESOLUTION.md).
 
 ```sh
 python tests/test_issue_2.py
 ```
 
+**Verified facts**: the 0.1.1 Linux acceptance report records 28/28 automated cases passing (the original 18 plus 10 Issue #2 regressions), covering cross-process relay, Broker restart continuation, tenant isolation, attachment verification, stale-owner write rejection, lease races, ACK/cancel races, revision conflicts, and timeout recovery. Source and run time: [test_report.json](test_report.json); per-item scope: [ACCEPTANCE.md](ACCEPTANCE.md).
 
-**已驗證事實**：0.1.1 Linux 驗收報告記錄 28/28 自動化案例通過（原 18 項加 10 項 Issue #2 回歸），涵蓋跨程序接力、Broker 重啟續接、tenant 隔離、附件驗證、stale owner 拒寫、租約競態、ACK／cancel 競態、revision 衝突與逾時恢復。來源與執行時間：[test_report.json](test_report.json)；逐項範圍：[ACCEPTANCE.md](ACCEPTANCE.md)。
-
-自行重跑：
+Re-run it yourself:
 
 ```sh
 python tests/test_e2e.py
 ```
 
-| 範圍 | 目前狀態 |
+| Area | Current status |
 |---|---|
-| Python → Node.js 的 HTTP 跨 runtime 工作流 | 已驗證，Linux |
-| SQLite 任務持久化、重啟續接、租約與競態裁決 | 自動化案例已驗證 |
-| 控制台頁面與 HTTP 啟動 | 已做 smoke test；未做瀏覽器點擊 E2E |
-| Windows／macOS | 尚未實機驗收 |
-| Dockerfile／Compose | 已提供；尚未 build/run 驗收 |
-| DSH、其他 IDE／Agent runtime adapter | 尚未交付，不宣稱即插即用 |
-| 外部系統副作用、HA、SSO、帳務 | 不在本版已驗證能力內 |
+| Python to Node.js HTTP cross-runtime workflow | Verified, Linux |
+| SQLite task persistence, restart continuation, lease and race adjudication | Verified by automated cases |
+| Console pages and HTTP startup | Smoke-tested; no browser click-through E2E yet |
+| Windows / macOS | Not yet accepted on real devices |
+| Dockerfile / Compose | Provided; not yet build/run verified |
+| DSH and other IDE / agent runtime adapters | Not yet delivered; no plug-and-play claim |
+| External system side effects, HA, SSO, billing | Outside this version's verified capabilities |
 
-## 動態圖與敘事協作
+## Motion graphic and narrative collaboration
 
-**動態圖尚未交付；README 不放假預覽，也不把協作邀請算成交付。**
+**The motion graphic is not yet delivered; the README carries no fake preview, and a collaboration invitation does not count as delivery.**
 
-同儕可直接依 [Motion Brief](docs/MOTION_BRIEF.md) 在本 repo 提交分鏡、動畫原始碼、成品與來源證據。圖應呈現「任務連續性、執行權切換、驗證與恢復」，不只畫兩個聊天視窗互傳摘要。
+Peers can submit storyboards, animation source, finished assets, and provenance evidence directly to this repo per the [Motion Brief](docs/MOTION_BRIEF.md). The graphic should show "task continuity, execution-rights switching, verification and recovery", not just two chat windows exchanging summaries.
 
-市場賣點由同儕另行定稿。可從 [定位與文案協作稿](docs/POSITIONING.md) 接續；它不是已批准的對外宣傳文案。
+Market selling points are finalized separately by peers. Continue from the [positioning and copy working draft](docs/POSITIONING.md); it is not approved public marketing copy.
 
-## 整合與部署文件
+## Integration and deployment docs
 
-| 文件 | 用途 |
+| Document | Purpose |
 |---|---|
-| [操作與部署](docs/OPERATIONS.md) | 本機啟動、控制台、金鑰與受控部署 |
-| [協定與 adapter 契約](PROTOCOL.md) | 端點、狀態機、lease、ACK 與 adapter 責任 |
-| [OpenAPI](openapi.json) | 機器可讀 API 定義 |
-| [安全邊界](SECURITY.md) | tenant、憑證、儲存、外部副作用與部署限制 |
-| [商業交付](COMMERCIAL.md) | developer package／paid pilot 範圍與驗收 |
-| [授權條款](LICENSE) | proprietary evaluation notice；不是公開開源授權 |
+| [Operations and deployment](docs/OPERATIONS.md) | Local launch, console, keys, and controlled deployment |
+| [Protocol and adapter contract](PROTOCOL.md) | Endpoints, state machine, lease, ACK, and adapter responsibilities |
+| [OpenAPI](openapi.json) | Machine-readable API definition |
+| [Security boundaries](SECURITY.md) | Tenants, credentials, storage, external side effects, and deployment limits |
+| [Commercial delivery](COMMERCIAL.md) | Developer package / paid pilot scope and acceptance |
+| [License](LICENSE) | Proprietary evaluation notice; not an open-source license |
 
-## 本版定位
+## This version's position
 
-**0.1.1 是可執行、可驗收的 single-node developer／paid-pilot MVP，不是已上線 SaaS。**
+**0.1.1 is an executable, acceptable single-node developer / paid-pilot MVP, not a launched SaaS.**
 
-協定設計不依賴特定模型或 runtime；實際適配與平台支援以驗收為準。對外部署仍需 TLS、reverse proxy、timeout、rate limit 與備份等保護，不能把內建 HTTP server 直接裸露到 Internet。
+The protocol design does not depend on a specific model or runtime; actual adaptation and platform support are determined by acceptance. External deployment still needs TLS, a reverse proxy, timeouts, rate limits, backups, and similar protections; do not expose the built-in HTTP server directly to the Internet.
 
-RelayHandoff 為獨立實作，未包含 `dsh-auto-handoff` 原始碼或建置產物。產品名稱、正式商業條款與上架內容尚待確認；本次文件更新不構成對外上架。
+RelayHandoff is an independent implementation and does not include `dsh-auto-handoff` source code or build artifacts. The product name, formal commercial terms, and listing content are still to be confirmed; this documentation update does not constitute a public listing.
