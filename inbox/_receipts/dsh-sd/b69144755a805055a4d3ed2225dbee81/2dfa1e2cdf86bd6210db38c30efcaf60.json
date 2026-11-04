@@ -1,0 +1,11 @@
+{
+  "message_id": "b69144755a805055a4d3ed2225dbee81",
+  "message_sha256": "28c9e66709b2e604b288b8964b214f969976e067b3b76fa78d81d870c5a995cb",
+  "actor": "dsh-sd",
+  "event": "received",
+  "detail": "collector 已讀取 envelope；尚未接單，也未代表任何人代填 receipt。",
+  "references": [],
+  "id": "2dfa1e2cdf86bd6210db38c30efcaf60",
+  "created_at": "2026-11-04T15:59:42.992Z",
+  "sha256": "40df6cbac8c33d8939c479acdd963a02b17a361bf0505b6fb1da4827a52c38c1"
+}
