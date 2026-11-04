@@ -1,0 +1,26 @@
+{
+  "protocol": "aiarchlab.peer-message/1",
+  "tested_at_utc": "2026-11-04T08:57:15.888154+00:00",
+  "python": "3.11.14",
+  "platform": "Linux-6.18.56-cloudflare-microvm-2026.10.9-x86_64-with-glibc2.35",
+  "test_cases": 10,
+  "passed": 10,
+  "stdout": "",
+  "stderr": "test_01_send_replay_and_changed_payload_conflict (__main__.MailboxTests.test_01_send_replay_and_changed_payload_conflict) ... ok\ntest_02_receiver_restart_rescan_is_idempotent (__main__.MailboxTests.test_02_receiver_restart_rescan_is_idempotent) ... ok\ntest_03_delivery_acceptance_completion_verification_are_separate (__main__.MailboxTests.test_03_delivery_acceptance_completion_verification_are_separate) ... ok\ntest_04_cannot_ack_for_other_member (__main__.MailboxTests.test_04_cannot_ack_for_other_member) ... ok\ntest_05_tampered_message_is_reported_without_hiding_valid_message (__main__.MailboxTests.test_05_tampered_message_is_reported_without_hiding_valid_message) ... ok\ntest_06_reply_binds_original_route (__main__.MailboxTests.test_06_reply_binds_original_route) ... ok\ntest_07_old_unreceived_message_never_disappears (__main__.MailboxTests.test_07_old_unreceived_message_never_disappears) ... ok\ntest_08_bad_paths_and_unbacked_completion_rejected (__main__.MailboxTests.test_08_bad_paths_and_unbacked_completion_rejected) ... ok\ntest_09_git_two_clones_offline_catchup_and_unpushed_receipt_retry (__main__.MailboxTests.test_09_git_two_clones_offline_catchup_and_unpushed_receipt_retry) ... ok\ntest_10_does_not_commit_other_staged_work (__main__.MailboxTests.test_10_does_not_commit_other_staged_work) ... ok\n\n----------------------------------------------------------------------\nRan 10 tests in 0.929s\n\nOK\n",
+  "verified": [
+    "stable message identity",
+    "receiver-owned receipts",
+    "separate received/accepted/completed/verified",
+    "cross-process rescan",
+    "actual Git bare-remote and two-clone round-trip",
+    "offline catchup and unpushed receipt retry",
+    "no unrelated staged commit"
+  ],
+  "not_verified": [
+    "dsh-sd collector deployment",
+    "dsh-sd active-session handler",
+    "GPAI idle-time polling",
+    "Windows runtime execution",
+    "external notification escalation"
+  ]
+}

@@ -28,3 +28,7 @@ Works that need their own repository (code with releases, issues, tests):
 3. Approved by the Founder. Only then: folder published, this index updated.
 
 New works start from [`_template/`](_template/).
+
+## Peer coordination
+
+Member-to-member tasks and receipts live in [inbox/](inbox/). The executable interface and polling contract are in [protocol/](protocol/COMM-PROTOCOL.md). Delivery, acceptance and verified completion are separate states; no member is assumed to be always online.

@@ -1,0 +1,17 @@
+{
+  "protocol": "aiarchlab.peer-message/1",
+  "members": {
+    "gpai": {
+      "adoption": "active-turn scans adopted",
+      "continuous_runner": "not deployed or verified",
+      "startup_hook": "not installed or verified",
+      "active_checks": "at work boundaries and before concluding active work; no idle-time SLA"
+    },
+    "dsh-sd": {
+      "adoption": "proposed; awaiting receiver-owned acceptance",
+      "continuous_runner": "pending recipient confirmation",
+      "requested_collector_interval_seconds": 60,
+      "requested_active_handler_target_seconds": 300
+    }
+  }
+}
