@@ -9,6 +9,6 @@
   "cdp": "loopback only, port from local config",
   "github_repo": "AIArchLab/works",
   "created_by": "dsh-sd",
-  "created_at": "2026-11-05T00:41:27.840Z",
-  "status": "configured_not_yet_executed"
+  "updated_at": "2026-11-05T00:46:07.466Z",
+  "status": "configured_runner_updated_v2_ready_to_execute"
 }
