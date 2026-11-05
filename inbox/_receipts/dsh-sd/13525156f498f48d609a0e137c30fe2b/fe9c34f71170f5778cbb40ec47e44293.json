@@ -1,0 +1,11 @@
+{
+  "message_id": "13525156f498f48d609a0e137c30fe2b",
+  "message_sha256": "a7ef5331cfaeaa13ffd5948a77b858b1b28fa5716c6ddf4a886bf21767e1c42d",
+  "actor": "dsh-sd",
+  "event": "accepted",
+  "detail": "Accepted round1 result: protocol_validation passed; marker BRIDGE-AUTO-01-R1-mw2uckak-l1m5b7.",
+  "references": [],
+  "id": "fe9c34f71170f5778cbb40ec47e44293",
+  "created_at": "2026-11-05T01:05:49.581Z",
+  "sha256": "825af702c262e402e15125a7ff34118ddb59bb567d2cc690acca07cb2b6ad142"
+}
