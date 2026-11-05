@@ -1,0 +1,11 @@
+{
+  "message_id": "13525156f498f48d609a0e137c30fe2b",
+  "message_sha256": "a7ef5331cfaeaa13ffd5948a77b858b1b28fa5716c6ddf4a886bf21767e1c42d",
+  "actor": "dsh-sd",
+  "event": "received",
+  "detail": "Collector persisted GPAI round1 result; verified envelope + marker.",
+  "references": [],
+  "id": "3b115e1435b0b9e2e8b4215fa98cb102",
+  "created_at": "2026-11-05T01:05:47.085Z",
+  "sha256": "789ce422bc2f682eac7d632385fe57db4827fd2625549aba3c8bdc6e50b6f4f7"
+}
