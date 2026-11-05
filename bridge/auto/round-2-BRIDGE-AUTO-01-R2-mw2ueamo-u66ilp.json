@@ -1,0 +1,14 @@
+{
+  "round": 2,
+  "marker": "BRIDGE-AUTO-01-R2-mw2ueamo-u66ilp",
+  "taskId": "f2c7c8213bfcda3515b5fec74839a777",
+  "envelope_id": "f2c7c8213bfcda3515b5fec74839a777",
+  "cdpResult": {
+    "tabId": "B76AB00556C9F65FB9C7E2FBF161FFBD",
+    "tabUrl": "https://gpai.app/chat/s?id=aics_1793276822174_fccda0d5"
+  },
+  "responseFile": "BRIDGE-AUTO-01-R2-mw2ueamo-u66ilp.json",
+  "protocol_failed": false,
+  "completed_at": "2026-11-05T01:04:47.465Z",
+  "status": "completed"
+}
