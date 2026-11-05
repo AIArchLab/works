@@ -7,7 +7,7 @@
   "target_conversation": {
     "tab_url_pattern": "gpai.app/chat",
     "tab_id": "B76AB00556C9F65FB9C7E2FBF161FFBD",
-    "conversation_url": "https://gpai.app/chat/s?id=aics_1793276822174_fccda0d5"
+    "conversation_url": "https://gpai.app/chat/s?id=aics_REDACTED"
   },
   "rounds": [
     {
@@ -17,7 +17,7 @@
       "envelope_id": "1028c7ee787cfee5ef071a1c2fd2600c",
       "cdpResult": {
         "tabId": "B76AB00556C9F65FB9C7E2FBF161FFBD",
-        "tabUrl": "https://gpai.app/chat/s?id=aics_1793276822174_fccda0d5"
+        "tabUrl": "https://gpai.app/chat/s?id=aics_REDACTED"
       },
       "responseFile": "BRIDGE-AUTO-01-R1-mw2uckak-l1m5b7.json",
       "protocol_failed": false,
@@ -31,7 +31,7 @@
       "envelope_id": "f2c7c8213bfcda3515b5fec74839a777",
       "cdpResult": {
         "tabId": "B76AB00556C9F65FB9C7E2FBF161FFBD",
-        "tabUrl": "https://gpai.app/chat/s?id=aics_1793276822174_fccda0d5"
+        "tabUrl": "https://gpai.app/chat/s?id=aics_REDACTED"
       },
       "responseFile": "BRIDGE-AUTO-01-R2-mw2ueamo-u66ilp.json",
       "protocol_failed": false,

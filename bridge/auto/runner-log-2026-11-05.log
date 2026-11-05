@@ -7,9 +7,9 @@
 [2026-11-05T00:42:38.371Z] Input length after send: 155
 [2026-11-05T00:42:38.373Z] FATAL ERROR: Message may not have been sent (input not cleared)
 [2026-11-05T00:42:38.373Z] Error: Message may not have been sent (input not cleared)
-    at sendToGpai (file:///D:/DSH_Data/work/dsh-sd/_ops/bridge-auto-runner.mjs:157:29)
-    at async runRound (file:///D:/DSH_Data/work/dsh-sd/_ops/bridge-auto-runner.mjs:236:21)
-    at async main (file:///D:/DSH_Data/work/dsh-sd/_ops/bridge-auto-runner.mjs:267:16)
+    at sendToGpai (file:///<HOST_PATH>/bridge-auto-runner.mjs:157:29)
+    at async runRound (file:///<HOST_PATH>/bridge-auto-runner.mjs:236:21)
+    at async main (file:///<HOST_PATH>/bridge-auto-runner.mjs:267:16)
 [2026-11-05T00:46:14.939Z] === Starting Round 1 ===
 [2026-11-05T00:46:14.941Z] Marker: BRIDGE-AUTO-01-R1-mw2trmhp-74vzqb
 [2026-11-05T00:46:16.508Z] Created gpai task: bridge-auto-01-r1-mw2trmhp-74vzqb (status 201)
@@ -27,9 +27,9 @@
 [2026-11-05T00:46:23.187Z] Send button status: undefined, waiting...
 [2026-11-05T00:46:23.689Z] FATAL ERROR: Send button not ready after 5s
 [2026-11-05T00:46:23.689Z] Error: Send button not ready after 5s
-    at sendToGpai (file:///D:/DSH_Data/work/dsh-sd/_ops/bridge-auto-runner.mjs:145:28)
-    at async runRound (file:///D:/DSH_Data/work/dsh-sd/_ops/bridge-auto-runner.mjs:239:21)
-    at async main (file:///D:/DSH_Data/work/dsh-sd/_ops/bridge-auto-runner.mjs:266:16)
+    at sendToGpai (file:///<HOST_PATH>/bridge-auto-runner.mjs:145:28)
+    at async runRound (file:///<HOST_PATH>/bridge-auto-runner.mjs:239:21)
+    at async main (file:///<HOST_PATH>/bridge-auto-runner.mjs:266:16)
 [2026-11-05T00:48:57.054Z] === Starting Round 1 ===
 [2026-11-05T00:48:57.056Z] Marker: BRIDGE-AUTO-01-R1-mw2tv3kw-19vnm8
 [2026-11-05T00:48:59.267Z] Created gpai task: bridge-auto-01-r1-mw2tv3kw-19vnm8 (status 201)
@@ -57,9 +57,9 @@
 [2026-11-05T00:49:05.937Z] Send button status: undefined, waiting...
 [2026-11-05T00:49:06.449Z] FATAL ERROR: Send button not ready after 5s
 [2026-11-05T00:49:06.451Z] Error: Send button not ready after 5s
-    at sendToGpai (file:///D:/DSH_Data/work/dsh-sd/_ops/bridge-auto-runner.mjs:146:28)
-    at async runRound (file:///D:/DSH_Data/work/dsh-sd/_ops/bridge-auto-runner.mjs:240:21)
-    at async main (file:///D:/DSH_Data/work/dsh-sd/_ops/bridge-auto-runner.mjs:267:16)
+    at sendToGpai (file:///<HOST_PATH>/bridge-auto-runner.mjs:146:28)
+    at async runRound (file:///<HOST_PATH>/bridge-auto-runner.mjs:240:21)
+    at async main (file:///<HOST_PATH>/bridge-auto-runner.mjs:267:16)
 [2026-11-05T00:50:37.593Z] === Starting Round 1 ===
 [2026-11-05T00:50:37.596Z] Marker: BRIDGE-AUTO-01-R1-mw2tx95n-cldp1w
 [2026-11-05T00:50:39.359Z] Created gpai task: bridge-auto-01-r1-mw2tx95n-cldp1w (status 201)
@@ -67,7 +67,7 @@
 [2026-11-05T00:50:41.407Z] CDP insert result: inserted: true len=155
 [2026-11-05T00:50:42.018Z] CDP click result: clicked
 [2026-11-05T00:50:43.148Z] Input length after send: 0
-[2026-11-05T00:50:43.149Z] CDP send result: {"tabId":"B76AB00556C9F65FB9C7E2FBF161FFBD","tabUrl":"https://gpai.app/chat/s?id=aics_1793276822174_fccda0d5"}
+[2026-11-05T00:50:43.149Z] CDP send result: {"tabId":"B76AB00556C9F65FB9C7E2FBF161FFBD","tabUrl":"https://gpai.app/chat/s?id=aics_REDACTED"}
 [2026-11-05T00:50:46.359Z] Polling for response to BRIDGE-AUTO-01-R1-mw2tx95n-cldp1w... (3s elapsed)
 [2026-11-05T00:50:59.345Z] Polling for response to BRIDGE-AUTO-01-R1-mw2tx95n-cldp1w... (16s elapsed)
 [2026-11-05T00:51:12.480Z] Polling for response to BRIDGE-AUTO-01-R1-mw2tx95n-cldp1w... (29s elapsed)
@@ -84,7 +84,7 @@
 [2026-11-05T00:52:41.883Z] CDP insert result: inserted: true len=155
 [2026-11-05T00:52:42.076Z] CDP click result: clicked
 [2026-11-05T00:52:42.619Z] Input length after send: 0
-[2026-11-05T00:52:42.619Z] CDP send result: {"tabId":"B76AB00556C9F65FB9C7E2FBF161FFBD","tabUrl":"https://gpai.app/chat/s?id=aics_1793276822174_fccda0d5"}
+[2026-11-05T00:52:42.619Z] CDP send result: {"tabId":"B76AB00556C9F65FB9C7E2FBF161FFBD","tabUrl":"https://gpai.app/chat/s?id=aics_REDACTED"}
 [2026-11-05T00:52:46.546Z] Polling for response to BRIDGE-AUTO-01-R2-mw2tzudw-1bp57q... (4s elapsed)
 [2026-11-05T00:53:00.467Z] Polling for response to BRIDGE-AUTO-01-R2-mw2tzudw-1bp57q... (18s elapsed)
 [2026-11-05T00:53:14.146Z] Polling for response to BRIDGE-AUTO-01-R2-mw2tzudw-1bp57q... (32s elapsed)
@@ -114,9 +114,9 @@
 [2026-11-05T01:02:01.368Z] BLOCKED: CDP send failed: Send button not ready after 5s
 [2026-11-05T01:02:01.369Z] FATAL ERROR: Send button not ready after 5s
 [2026-11-05T01:02:01.370Z] Error: Send button not ready after 5s
-    at sendToGpai (file:///D:/DSH_Data/work/dsh-sd/_ops/bridge-auto-runner.mjs:153:28)
-    at async runRound (file:///D:/DSH_Data/work/dsh-sd/_ops/bridge-auto-runner.mjs:302:17)
-    at async main (file:///D:/DSH_Data/work/dsh-sd/_ops/bridge-auto-runner.mjs:348:5)
+    at sendToGpai (file:///<HOST_PATH>/bridge-auto-runner.mjs:153:28)
+    at async runRound (file:///<HOST_PATH>/bridge-auto-runner.mjs:302:17)
+    at async main (file:///<HOST_PATH>/bridge-auto-runner.mjs:348:5)
 [2026-11-05T01:02:31.866Z] === Starting Round 1 ===
 [2026-11-05T01:02:31.868Z] Marker: BRIDGE-AUTO-01-R1-mw2uckak-l1m5b7
 [2026-11-05T01:02:33.954Z] Created gpai task: 1028c7ee787cfee5ef071a1c2fd2600c (status 201) marker=BRIDGE-AUTO-01-R1-mw2uckak-l1m5b7
@@ -124,7 +124,7 @@
 [2026-11-05T01:02:35.999Z] CDP insert result: inserted: true len=155
 [2026-11-05T01:02:36.702Z] CDP click result: clicked
 [2026-11-05T01:02:38.864Z] Input length after send: 0
-[2026-11-05T01:02:38.865Z] CDP send result: {"tabId":"B76AB00556C9F65FB9C7E2FBF161FFBD","tabUrl":"https://gpai.app/chat/s?id=aics_1793276822174_fccda0d5"}
+[2026-11-05T01:02:38.865Z] CDP send result: {"tabId":"B76AB00556C9F65FB9C7E2FBF161FFBD","tabUrl":"https://gpai.app/chat/s?id=aics_REDACTED"}
 [2026-11-05T01:02:42.841Z] Polling for response to BRIDGE-AUTO-01-R1-mw2uckak-l1m5b7... (4s elapsed)
 [2026-11-05T01:02:56.669Z] Polling for response to BRIDGE-AUTO-01-R1-mw2uckak-l1m5b7... (18s elapsed)
 [2026-11-05T01:03:10.840Z] Polling for response to BRIDGE-AUTO-01-R1-mw2uckak-l1m5b7... (32s elapsed)
@@ -141,7 +141,7 @@
 [2026-11-05T01:03:58.335Z] CDP insert result: inserted: true len=155
 [2026-11-05T01:03:58.522Z] CDP click result: clicked
 [2026-11-05T01:03:59.621Z] Input length after send: 0
-[2026-11-05T01:03:59.622Z] CDP send result: {"tabId":"B76AB00556C9F65FB9C7E2FBF161FFBD","tabUrl":"https://gpai.app/chat/s?id=aics_1793276822174_fccda0d5"}
+[2026-11-05T01:03:59.622Z] CDP send result: {"tabId":"B76AB00556C9F65FB9C7E2FBF161FFBD","tabUrl":"https://gpai.app/chat/s?id=aics_REDACTED"}
 [2026-11-05T01:04:04.544Z] Polling for response to BRIDGE-AUTO-01-R2-mw2ueamo-u66ilp... (5s elapsed)
 [2026-11-05T01:04:18.565Z] Polling for response to BRIDGE-AUTO-01-R2-mw2ueamo-u66ilp... (19s elapsed)
 [2026-11-05T01:04:32.844Z] Polling for response to BRIDGE-AUTO-01-R2-mw2ueamo-u66ilp... (33s elapsed)

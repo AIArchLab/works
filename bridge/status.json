@@ -20,7 +20,7 @@
   ],
   "reported_by_dsh_sd": [
     "CDP sent message without Allen typing",
-    "dedicated Chrome profile and CDP port 9222"
+    "dedicated Chrome profile and CDP port <CDP_PORT>"
   ],
   "not_verified": [
     "OS_scheduler_or_service_deployment",
