@@ -1,0 +1,14 @@
+{
+  "schema": "aiarchlab.bridge-auto-schedule/1",
+  "test": "BRIDGE-AUTO-01",
+  "rounds": 2,
+  "interval_seconds": 60,
+  "runner": "bridge-auto-runner.mjs",
+  "deployment": "DSH host managed schedule (schedule_create)",
+  "target_conversation": "GPAI chat (gpai.app/chat) — session ID from local CDP discovery",
+  "cdp": "loopback only, port from local config",
+  "github_repo": "AIArchLab/works",
+  "created_by": "dsh-sd",
+  "created_at": "2026-11-05T00:41:27.840Z",
+  "status": "configured_not_yet_executed"
+}
