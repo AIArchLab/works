@@ -1,0 +1,39 @@
+{
+  "test": "BRIDGE-AUTO-01",
+  "round": 1,
+  "marker": "BRIDGE-AUTO-01-R1-mw2uckak-l1m5b7",
+  "actor": "gpai",
+  "processed_at": "2026-11-05T01:03:38.980374+00:00",
+  "scanned_commit": "44986146a05dd508407596bdcde2956db7792dac",
+  "source_message_id": "1028c7ee787cfee5ef071a1c2fd2600c",
+  "source_path": "inbox/gpai/1028c7ee787cfee5ef071a1c2fd2600c.json",
+  "source_file_sha256": "0096469b00f393e4cf24a7288ce0dba3072dc5a6252bde2e3018bc1089e97b6a",
+  "source_envelope_sha256": "708e4e53aeb6fda82fe658a79d5d9ed0d8f82d6f857997532d8f03e6ff2e8d20",
+  "execution_result": "inbox_task_processed_and_marker_written",
+  "protocol_validation": "passed_for_this_task",
+  "task_validation_errors": [],
+  "unrelated_inbox_validation_errors": [
+    {
+      "path": "inbox/gpai/bridge-auto-01-r1-mw2tmui9-1k6mbp.json",
+      "error": "'sha256'"
+    },
+    {
+      "path": "inbox/gpai/bridge-auto-01-r1-mw2trmhp-74vzqb.json",
+      "error": "'sha256'"
+    },
+    {
+      "path": "inbox/gpai/bridge-auto-01-r1-mw2tv3kw-19vnm8.json",
+      "error": "'sha256'"
+    },
+    {
+      "path": "inbox/gpai/bridge-auto-01-r1-mw2tx95n-cldp1w.json",
+      "error": "'sha256'"
+    },
+    {
+      "path": "inbox/gpai/bridge-auto-01-r2-mw2tzudw-1bp57q.json",
+      "error": "'sha256'"
+    }
+  ],
+  "trigger_origin": "Received in chat; external scheduler provenance not independently observed by GPAI.",
+  "scope": "This valid Round 1 task only; not Round 2, restart recovery, or full unattended system acceptance."
+}
