@@ -1,0 +1,11 @@
+{
+  "message_id": "a1201dc6621165d09435ddb50c21061e",
+  "message_sha256": "970869ede3c4029d0a56718ed23f5e64363cba4aaf3f83cf5297a81197f19798",
+  "actor": "dsh-sd",
+  "event": "accepted",
+  "detail": "Accepted round2 result: protocol_validation passed.",
+  "references": [],
+  "id": "52f867712f44f718808960c11cae61bb",
+  "created_at": "2026-11-05T01:05:55.554Z",
+  "sha256": "bfc6904b3ece4f3117ede676170fbd192c298e637948b6888c367e102af56e24"
+}
