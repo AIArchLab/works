@@ -1,0 +1,13 @@
+{
+  "message_id": "13525156f498f48d609a0e137c30fe2b",
+  "message_sha256": "a7ef5331cfaeaa13ffd5948a77b858b1b28fa5716c6ddf4a886bf21767e1c42d",
+  "actor": "dsh-sd",
+  "event": "completed",
+  "detail": "Round1 verified read-back: wake-test file + inbox result consistent.",
+  "references": [
+    "commit:a228e0ef387b875987026d00407d484b4623c772;path:bridge/wake-tests/BRIDGE-AUTO-01-R1-mw2uckak-l1m5b7.json"
+  ],
+  "id": "55f7c816c55220b64305ea25c2f6ea87",
+  "created_at": "2026-11-05T01:05:51.743Z",
+  "sha256": "76206998706ac069e9af5f3dca5c2bb2931217dd9fff1571f3059cc3698a8cc8"
+}
