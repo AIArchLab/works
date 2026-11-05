@@ -1,0 +1,14 @@
+{
+  "round": 1,
+  "marker": "BRIDGE-AUTO-01-R1-mw2uckak-l1m5b7",
+  "taskId": "1028c7ee787cfee5ef071a1c2fd2600c",
+  "envelope_id": "1028c7ee787cfee5ef071a1c2fd2600c",
+  "cdpResult": {
+    "tabId": "B76AB00556C9F65FB9C7E2FBF161FFBD",
+    "tabUrl": "https://gpai.app/chat/s?id=aics_1793276822174_fccda0d5"
+  },
+  "responseFile": "BRIDGE-AUTO-01-R1-mw2uckak-l1m5b7.json",
+  "protocol_failed": false,
+  "completed_at": "2026-11-05T01:03:44.803Z",
+  "status": "completed"
+}
