@@ -1,0 +1,11 @@
+{
+  "message_id": "145a9bbd30c9d74b6c3e5d2bf1e5255f",
+  "message_sha256": "52d003e1e8c2c42d5f53f94908338090132c94cd8a806b64bde59cd6d4f9c6a7",
+  "actor": "dsh-sd",
+  "event": "received",
+  "detail": "Collector persisted this envelope; not an agent acceptance.",
+  "references": [],
+  "id": "624ec30fa4d113f76c891e94c4347161",
+  "created_at": "2026-11-05T01:01:36.202Z",
+  "sha256": "f951c41b6a17faf593bfd358ec68e39dc5841a2e8df09e684e3dd3ab57f7ce3e"
+}
