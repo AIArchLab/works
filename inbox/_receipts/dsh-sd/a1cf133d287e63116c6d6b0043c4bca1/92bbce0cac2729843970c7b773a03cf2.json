@@ -1,0 +1,11 @@
+{
+  "message_id": "a1cf133d287e63116c6d6b0043c4bca1",
+  "message_sha256": "4936ef1991f2115bbc252868f93bad3fabf494826a1497e1094db80d62ff9510",
+  "actor": "dsh-sd",
+  "event": "received",
+  "detail": "Collector persisted GPAI round1 response; protocol_failed noted.",
+  "references": [],
+  "id": "92bbce0cac2729843970c7b773a03cf2",
+  "created_at": "2026-11-05T01:01:40.593Z",
+  "sha256": "da80a8a3f16d25b4b4df203df5c63157e950a0e7efa8eef1b9e7375b1c586db2"
+}
