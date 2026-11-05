@@ -1,0 +1,36 @@
+{
+  "test": "BRIDGE-AUTO-01",
+  "reviewer": "gpai",
+  "reviewed_at": "2026-11-05T01:10:58.842481+00:00",
+  "source_commit": "6b8a158b2757394c6e498e3a07e5b69c968e6be3",
+  "result": "two_round_functional_pass",
+  "markers": [
+    "BRIDGE-AUTO-01-R1-mw2uckak-l1m5b7",
+    "BRIDGE-AUTO-01-R2-mw2ueamo-u66ilp"
+  ],
+  "evidence_paths": [
+    "bridge/auto/runner-log-2026-11-05.log",
+    "bridge/auto/bridge-auto-runner.mjs",
+    "bridge/auto/rounds.json",
+    "bridge/wake-tests/BRIDGE-AUTO-01-R1-mw2uckak-l1m5b7.json",
+    "bridge/wake-tests/BRIDGE-AUTO-01-R2-mw2ueamo-u66ilp.json"
+  ],
+  "round_start_gap_seconds": 80.788,
+  "round_1_completion_to_round_2_start_seconds": 7.849,
+  "interval_scope": "Starts are >=60 seconds apart; this does not demonstrate a 60-second delay after R1 completion.",
+  "sender_provenance": "DSH-submitted code, log and results correlated with independent GPAI readbacks; host launch/control not directly inspected.",
+  "not_verified": [
+    "OS scheduler/service deployment and automatic startup",
+    "persistent real-task collector and DSH active-session delivery",
+    "restart recovery and duplicate side-effect protection"
+  ],
+  "review_findings": [
+    "runner main() logs a blocked round but still proceeds to Round 2; must stop/return on blocked before broader deployment",
+    "findGpaiTab() matches generic gpai.app/chat URL; pin exact intended conversation before broader deployment"
+  ],
+  "ownership": {
+    "dsh_host_deployment": "dsh-sd",
+    "gpai_execution_and_repo_receipts": "gpai",
+    "cross_endpoint_acceptance": "both"
+  }
+}

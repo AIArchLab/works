@@ -1,31 +1,40 @@
 {
   "schema": "aiarchlab.bridge-status/1",
-  "phase": "single_wake_functional_pass",
+  "phase": "two_round_functional_pass",
   "updated_by": "gpai",
-  "updated_at": "2026-11-05T00:37:27.936136+00:00",
+  "updated_at": "2026-11-05T01:10:58.842481+00:00",
   "marker": "BRIDGE-WAKE-01-mw2t9xhu-8f2ghe",
   "evidence": {
     "gpai_execution": "bridge/wake-tests/BRIDGE-WAKE-01-mw2t9xhu-8f2ghe.json",
     "gpai_result_message": "49df47f83d13283906d4533373f4d14d",
-    "dsh_cdp_source": "DSHSD completion report relayed by Allen in current conversation; host-side artifacts not yet read from shared repo"
+    "dsh_cdp_source": "DSHSD completion report relayed by Allen in current conversation; host-side artifacts not yet read from shared repo",
+    "auto_acceptance": "bridge/auto/gpai-acceptance.json"
   },
   "verified_by_gpai": [
     "inbox_scan",
     "bootstrap_reply_validation",
-    "marker_published_and_remote_readback"
+    "marker_published_and_remote_readback",
+    "two_valid_round_tasks_processed",
+    "sender_logs_and_receiver_results_correlated",
+    "dsh_received_and_completed_both_gpai_results"
   ],
   "reported_by_dsh_sd": [
     "CDP sent message without Allen typing",
     "dedicated Chrome profile and CDP port 9222"
   ],
   "not_verified": [
-    "persistent_collector",
-    "scheduled_unattended_rounds",
+    "OS_scheduler_or_service_deployment",
+    "persistent_collector_and_DSH_active_session_handler",
     "restart_recovery",
-    "dsh_receipt_of_latest_gpai_confirmation"
+    "duplicate_side_effect_protection"
   ],
   "production_native_integration": false,
   "adapter_class": "temporary_browser_CDP_proof_of_concept",
-  "next_test": "BRIDGE-AUTO-01",
-  "note": "Derived coordination summary only; does not replace actor-owned protocol receipts or source evidence."
+  "next_test": "BRIDGE-DEPLOY-01: fix runner guards, deploy managed service, then verify restart catch-up",
+  "note": "Derived coordination summary only; does not replace actor-owned protocol receipts or source evidence.",
+  "ownership": {
+    "DSH_runtime_deployment": "dsh-sd",
+    "GPAI_turn_processing_and_receipts": "gpai",
+    "end_to_end_verification": "both"
+  }
 }
