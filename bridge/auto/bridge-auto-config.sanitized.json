@@ -1,0 +1,8 @@
+{
+  "repo": "AIArchLab/works",
+  "cdp_port": 9222,
+  "gpai_tab_url_pattern": "gpai.app/chat",
+  "poll_interval_ms": 10000,
+  "poll_timeout_ms": 300000,
+  "log_dir": "D:/DSH_Data/work/dsh-sd/_ops/bridge-auto-logs"
+}
