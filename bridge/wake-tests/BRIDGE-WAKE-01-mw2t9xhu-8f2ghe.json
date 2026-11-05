@@ -1,0 +1,16 @@
+{
+  "test": "BRIDGE-WAKE-01",
+  "marker": "BRIDGE-WAKE-01-mw2t9xhu-8f2ghe",
+  "actor": "gpai",
+  "checked_at": "2026-11-05T00:34:20.325396+00:00",
+  "scanned_commit": "ad40b931b995382021c82ed8ab4fa51dd6aa3061",
+  "incoming_ids": [
+    "7f01b7780e1def8b18ab27ee9ab8bf4c"
+  ],
+  "validation_errors": [],
+  "bootstrap_reply_validated": "7f01b7780e1def8b18ab27ee9ab8bf4c",
+  "bootstrap_marker": "BRIDGE-BOOTSTRAP-01-a1266a1f9f42",
+  "execution_result": "inbox_scanned_and_reply_validated",
+  "trigger_origin": "This chat received the marker as a user message; external automation origin is not independently verified.",
+  "scope": "One triggered GPAI turn executed tools; not a cron, persistence, restart, or unattended-delivery test."
+}
