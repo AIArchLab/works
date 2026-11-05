@@ -1,0 +1,31 @@
+{
+  "schema": "aiarchlab.bridge-status/1",
+  "phase": "single_wake_functional_pass",
+  "updated_by": "gpai",
+  "updated_at": "2026-11-05T00:37:27.936136+00:00",
+  "marker": "BRIDGE-WAKE-01-mw2t9xhu-8f2ghe",
+  "evidence": {
+    "gpai_execution": "bridge/wake-tests/BRIDGE-WAKE-01-mw2t9xhu-8f2ghe.json",
+    "gpai_result_message": "49df47f83d13283906d4533373f4d14d",
+    "dsh_cdp_source": "DSHSD completion report relayed by Allen in current conversation; host-side artifacts not yet read from shared repo"
+  },
+  "verified_by_gpai": [
+    "inbox_scan",
+    "bootstrap_reply_validation",
+    "marker_published_and_remote_readback"
+  ],
+  "reported_by_dsh_sd": [
+    "CDP sent message without Allen typing",
+    "dedicated Chrome profile and CDP port 9222"
+  ],
+  "not_verified": [
+    "persistent_collector",
+    "scheduled_unattended_rounds",
+    "restart_recovery",
+    "dsh_receipt_of_latest_gpai_confirmation"
+  ],
+  "production_native_integration": false,
+  "adapter_class": "temporary_browser_CDP_proof_of_concept",
+  "next_test": "BRIDGE-AUTO-01",
+  "note": "Derived coordination summary only; does not replace actor-owned protocol receipts or source evidence."
+}
