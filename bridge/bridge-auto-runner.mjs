@@ -1,19 +1,4 @@
-// ============================================================================
-// BRIDGE-AUTO-01: De-identified sender-side runner (submitted to shared repo)
-// ============================================================================
-// This is the de-identified version of the BRIDGE-AUTO-01 runner.
-// Sensitive content (GitHub token, CDP port, Chrome profile path, GPAI session ID)
-// has been redacted. The original runner runs on DSH host with local config.
-//
-// Target conversation: GPAI chat (gpai.app/chat) — session ID redacted
-// CDP: loopback only, port redacted
-// GitHub: token from local secrets, repo AIArchLab/works
-//
-// Deployed via: DSH host managed schedule (schedule_create)
-// Rounds: 2, interval >= 60s
-// ============================================================================
-
-// BRIDGE-AUTO-01 Runner — managed scheduling script
+// BRIDGE-AUTO-01: De-identified sender-side runner (updated v2 with send button wait fix)\n// Sensitive content redacted. Original runs on DSH host with local config.\n\n// BRIDGE-AUTO-01 Runner — managed scheduling script
 // De-identified: no tokens, no cookies, no CDP internals in source
 // Configuration is loaded from environment or config file at runtime
 //
@@ -21,12 +6,12 @@
 // Each round:
 //   1. Generate unique marker
 //   2. Create task in gpai inbox via GitHub API
-//   3. Send BRIDGE-AUTO message to GPAI via CDP (port CDP_PORT_FROM_CONFIG)
+//   3. Send BRIDGE-AUTO message to GPAI via CDP (port from config)
 //   4. Poll repo for GPAI response with matching marker
 //   5. Record round result
 //
 // Prerequisites:
-//   - Chrome running with --remote-debugging-port=CDP_PORT_FROM_CONFIG --user-data-dir=<profile>
+//   - Chrome running with CDP enabled (port from config)
 //   - GPAI conversation open in that Chrome instance
 //   - GitHub token in env GITHUB_TOKEN or config file
 //   - CDP target tab URL containing gpai.app/chat
@@ -42,27 +27,27 @@ const CONFIG_PATH = process.argv.includes('--config')
   ? process.argv[process.argv.indexOf('--config') + 1]
   : join(__dirname, 'bridge-auto-config.json');
 
-// Load config
 let config = {};
 if (existsSync(CONFIG_PATH)) {
   config = JSON.parse(readFileSync(CONFIG_PATH, 'utf8'));
 }
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN || config.GITHUB_TOKEN_FROM_CONFIG || '';
 const REPO = config.repo || 'AIArchLab/works';
-const CDP_PORT = config.cdp_port || CDP_PORT_FROM_CONFIG;
+const CDP_PORT = config.cdp_port || 0;
 const GPAI_TAB_URL_PATTERN = config.gpai_tab_url_pattern || 'gpai.app/chat';
 const POLL_INTERVAL_MS = config.poll_interval_ms || 10000;
 const POLL_TIMEOUT_MS = config.poll_timeout_ms || 300000;
 const LOG_DIR = config.log_dir || join(__dirname, 'bridge-auto-logs');
 
+if (!CDP_PORT) { console.error('CDP_PORT not configured'); process.exit(1); }
+if (!GITHUB_TOKEN) { console.error('GITHUB_TOKEN not configured'); process.exit(1); }
 if (!existsSync(LOG_DIR)) mkdirSync(LOG_DIR, { recursive: true });
 
 function log(msg) {
   const ts = new Date().toISOString();
-  const line = `[${ts}] ${msg}`;
+  const line = '[' + ts + '] ' + msg;
   console.log(line);
-  const logFile = join(LOG_DIR, `runner-${new Date().toISOString().split('T')[0]}.log`);
-  // Append to log file
+  const logFile = join(LOG_DIR, 'runner-' + new Date().toISOString().split('T')[0] + '.log');
   try { writeFileSync(logFile, line + '\n', { flag: 'a' }); } catch (e) {}
 }
 
@@ -95,7 +80,7 @@ function ghApi(method, path, body = null) {
 
 function cdpGetTabs() {
   return new Promise((resolve, reject) => {
-    http.get(`http://127.0.0.1:${CDP_PORT}/json/list`, (res) => {
+    http.get('http://127.0.0.1:' + CDP_PORT + '/json/list', (res) => {
       let d = '';
       res.on('data', c => d += c);
       res.on('end', () => {
@@ -130,8 +115,8 @@ function cdpConnect(wsUrl) {
 async function sendToGpai(message) {
   const tab = await findGpaiTab();
   if (!tab) throw new Error('No GPAI tab found');
-  const { ws, send, pending } = await cdpConnect(tab.webSocketDebuggerUrl);
-  // Set up message handler
+  const conn = await cdpConnect(tab.webSocketDebuggerUrl);
+  const { ws, send, pending } = conn;
   ws.onmessage = (event) => {
     const msg = JSON.parse(event.data);
     if (msg.id && pending.has(msg.id)) {
@@ -140,43 +125,50 @@ async function sendToGpai(message) {
     }
   };
   await send('Runtime.enable');
-  await new Promise(r => setTimeout(r, 1000));
-  // Focus input and type
-  const expr = `(function() {
-    const input = document.querySelector('#message');
-    if (!input) return 'no input found';
-    input.focus();
-    document.execCommand('selectAll', false, null);
-    document.execCommand('delete', false, null);
-    const ok = document.execCommand('insertText', false, ${JSON.stringify(message)});
-    return 'inserted: ' + ok + ' len=' + input.textContent.length;
-  })()`;
-  const r1 = await send('Runtime.evaluate', { expression: expr, returnByValue: true });
-  log('CDP insert result: ' + (r1.result?.result?.value || 'unknown'));
-  await new Promise(r => setTimeout(r, 1000));
-  // Click send
-  const clickExpr = `(function() {
-    const btn = document.querySelector('button[aria-label="送出"]');
-    if (!btn) return 'no send button';
-    btn.click();
-    return 'clicked';
-  })()`;
-  const r2 = await send('Runtime.evaluate', { expression: clickExpr, returnByValue: true });
-  log('CDP click result: ' + (r2.result?.result?.value || 'unknown'));
   await new Promise(r => setTimeout(r, 2000));
-  // Verify input cleared
-  const r3 = await send('Runtime.evaluate', { expression: 'document.querySelector("#message")?.textContent?.length || 0', returnByValue: true });
-  const inputLen = r3.result?.result?.value;
+
+  // Type message
+  const insertExpr = '(function() { var input = document.querySelector("#message"); if (!input) return "no input"; input.focus(); document.execCommand("selectAll", false, null); document.execCommand("delete", false, null); var ok = document.execCommand("insertText", false, ' + JSON.stringify(message) + '); return "inserted: " + ok + " len=" + input.textContent.length; })()';
+  const r1 = await send('Runtime.evaluate', { expression: insertExpr, returnByValue: true });
+  log('CDP insert result: ' + (r1.result && r1.result.result ? r1.result.result.value : 'unknown'));
+
+  // Wait for send button to appear (up to 5s)
+  let sendBtnReady = false;
+  for (let i = 0; i < 10; i++) {
+    const checkExpr = '(function() { var btn = document.querySelector("button[aria-label=\"送出\"]"); return btn ? (btn.disabled ? "disabled" : "ready") : "missing"; })()';
+    const checkR = await send('Runtime.evaluate', { expression: checkExpr, returnByValue: true });
+    const status = checkR.result && checkR.result.result ? checkR.result.result.value : 'unknown';
+    if (status === 'ready') { sendBtnReady = true; break; }
+    log('Send button status: ' + status + ', waiting...');
+    await new Promise(r => setTimeout(r, 500));
+  }
+  if (!sendBtnReady) throw new Error('Send button not ready after 5s');
+
+  // Click send
+  const clickExpr = '(function() { var btn = document.querySelector("button[aria-label=\"送出\"]"); if (!btn) return "no send button"; if (btn.disabled) return "disabled"; btn.click(); return "clicked"; })()';
+  const r2 = await send('Runtime.evaluate', { expression: clickExpr, returnByValue: true });
+  log('CDP click result: ' + (r2.result && r2.result.result ? r2.result.result.value : 'unknown'));
+
+  // Wait for input to clear (up to 5s)
+  let inputCleared = false;
+  for (let i = 0; i < 10; i++) {
+    const lenR = await send('Runtime.evaluate', { expression: 'document.querySelector("#message")?.textContent?.length || 0', returnByValue: true });
+    const len = lenR.result && lenR.result.result ? lenR.result.result.value : -1;
+    if (len === 0) { inputCleared = true; break; }
+    await new Promise(r => setTimeout(r, 500));
+  }
+  const finalLenR = await send('Runtime.evaluate', { expression: 'document.querySelector("#message")?.textContent?.length || 0', returnByValue: true });
+  const inputLen = finalLenR.result && finalLenR.result.result ? finalLenR.result.result.value : -1;
   log('Input length after send: ' + inputLen);
   ws.close();
-  if (inputLen !== 0) throw new Error('Message may not have been sent (input not cleared)');
+  if (!inputCleared) throw new Error('Message may not have been sent (input not cleared, len=' + inputLen + ')');
   return { tabId: tab.id, tabUrl: tab.url };
 }
 
 function generateMarker(round) {
   const ts = Date.now().toString(36);
   const rand = Math.random().toString(36).substring(2, 8);
-  return `BRIDGE-AUTO-01-R${round}-${ts}-${rand}`;
+  return 'BRIDGE-AUTO-01-R' + round + '-' + ts + '-' + rand;
 }
 
 async function createGpaiTask(marker) {
@@ -186,47 +178,45 @@ async function createGpaiTask(marker) {
     id: taskId,
     from: 'dsh-sd',
     to: 'gpai',
-    subject: `BRIDGE-AUTO-01 Round task: ${marker}`,
-    body: `BRIDGE-AUTO-01: 請掃描 AIArchLab/works 的 gpai inbox，處理帶標記 ${marker} 的任務，並將本次唯一標記寫回 repo (bridge/wake-tests/ 或 inbox/dsh-sd/)。\n\n唯一標記：${marker}`,
+    subject: 'BRIDGE-AUTO-01 Round task: ' + marker,
+    body: 'BRIDGE-AUTO-01: 請掃描 AIArchLab/works 的 gpai inbox，處理帶標記 ' + marker + ' 的任務，並將本次唯一標記寫回 repo (bridge/wake-tests/ 或 inbox/dsh-sd/)。\n\n唯一標記：' + marker,
     marker: marker,
     created_at: new Date().toISOString()
   };
-  const r = await ghApi('PUT', `/repos/${REPO}/contents/inbox/gpai/${taskId}.json`, {
-    message: `BRIDGE-AUTO-01: create task ${marker}`,
+  const r = await ghApi('PUT', '/repos/' + REPO + '/contents/inbox/gpai/' + taskId + '.json', {
+    message: 'BRIDGE-AUTO-01: create task ' + marker,
     content: Buffer.from(JSON.stringify(taskContent, null, 2)).toString('base64')
   });
   log('Created gpai task: ' + taskId + ' (status ' + r.status + ')');
   return { taskId, marker };
 }
 
-async function pollForResponse(marker, timeoutMs = POLL_TIMEOUT_MS) {
+async function pollForResponse(marker, timeoutMs) {
   const startTime = Date.now();
   while (Date.now() - startTime < timeoutMs) {
-    // Check inbox/dsh-sd for GPAI response with matching marker
-    const r = await ghApi('GET', `/repos/${REPO}/contents/inbox/dsh-sd`);
+    const r = await ghApi('GET', '/repos/' + REPO + '/contents/inbox/dsh-sd');
     if (r.status === 200 && Array.isArray(r.data)) {
       for (const item of r.data) {
         if (!item.name.endsWith('.json')) continue;
-        const fr = await ghApi('GET', `/repos/${REPO}/contents/inbox/dsh-sd/${item.name}`);
+        const fr = await ghApi('GET', '/repos/' + REPO + '/contents/inbox/dsh-sd/' + item.name);
         if (fr.status === 200 && fr.data.content) {
           const content = Buffer.from(fr.data.content, 'base64').toString('utf8');
           if (content.includes(marker)) {
             log('Found GPAI response with marker ' + marker + ' in ' + item.name);
-            return { file: item.name, content: JSON.parse(content) };
+            try { return { file: item.name, content: JSON.parse(content) }; } catch(e) { return { file: item.name, content: content }; }
           }
         }
       }
     }
-    // Check bridge/wake-tests for matching marker
-    const r2 = await ghApi('GET', `/repos/${REPO}/contents/bridge/wake-tests`);
+    const r2 = await ghApi('GET', '/repos/' + REPO + '/contents/bridge/wake-tests');
     if (r2.status === 200 && Array.isArray(r2.data)) {
       for (const item of r2.data) {
         if (item.name.includes(marker)) {
-          const fr = await ghApi('GET', `/repos/${REPO}/contents/bridge/wake-tests/${item.name}`);
+          const fr = await ghApi('GET', '/repos/' + REPO + '/contents/bridge/wake-tests/' + item.name);
           if (fr.status === 200 && fr.data.content) {
             const content = Buffer.from(fr.data.content, 'base64').toString('utf8');
             log('Found wake-test result with marker ' + marker + ' in ' + item.name);
-            return { file: item.name, content: JSON.parse(content) };
+            try { return { file: item.name, content: JSON.parse(content) }; } catch(e) { return { file: item.name, content: content }; }
           }
         }
       }
@@ -242,30 +232,26 @@ async function runRound(roundNum) {
   const marker = generateMarker(roundNum);
   log('Marker: ' + marker);
 
-  // Step 1: Create task in gpai inbox
   const { taskId } = await createGpaiTask(marker);
   log('Task created: ' + taskId);
 
-  // Step 2: Send message to GPAI via CDP
-  const message = `BRIDGE-AUTO-01 Round ${roundNum}: 請掃描 AIArchLab/works 的 gpai inbox，處理帶標記 ${marker} 的任務，並將本次唯一標記寫回 repo。\n\n唯一標記：${marker}`;
+  const message = 'BRIDGE-AUTO-01 Round ' + roundNum + ': 請掃描 AIArchLab/works 的 gpai inbox，處理帶標記 ' + marker + ' 的任務，並將本次唯一標記寫回 repo。\n\n唯一標記：' + marker;
   const cdpResult = await sendToGpai(message);
   log('CDP send result: ' + JSON.stringify(cdpResult));
 
-  // Step 3: Poll for GPAI response
-  const response = await pollForResponse(marker);
+  const response = await pollForResponse(marker, POLL_TIMEOUT_MS);
   log('GPAI response received: ' + JSON.stringify(response.content).substring(0, 300));
 
-  // Step 4: Record round result
   const roundResult = {
     round: roundNum,
     marker: marker,
     taskId: taskId,
     cdpResult: cdpResult,
-    response: response,
+    responseFile: response.file,
     completed_at: new Date().toISOString(),
     status: 'completed'
   };
-  const resultFile = join(LOG_DIR, `round-${roundNum}-${marker}.json`);
+  const resultFile = join(LOG_DIR, 'round-' + roundNum + '-' + marker + '.json');
   writeFileSync(resultFile, JSON.stringify(roundResult, null, 2));
   log('Round ' + roundNum + ' result saved to ' + resultFile);
   log('=== Round ' + roundNum + ' completed ===');
@@ -275,10 +261,8 @@ async function runRound(roundNum) {
 async function main() {
   const roundArg = process.argv.includes('--round') ? parseInt(process.argv[process.argv.indexOf('--round') + 1]) : null;
   if (roundArg) {
-    // Single round mode
     await runRound(roundArg);
   } else {
-    // Full two-round mode with 60s interval
     const r1 = await runRound(1);
     log('Waiting 60 seconds before round 2...');
     await new Promise(r => setTimeout(r, 60000));
@@ -291,6 +275,6 @@ async function main() {
 
 main().catch(e => {
   log('FATAL ERROR: ' + e.message);
-  log(e.stack);
+  if (e.stack) log(e.stack);
   process.exit(1);
 });
