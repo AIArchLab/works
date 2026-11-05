@@ -1,0 +1,152 @@
+[2026-11-05T00:42:32.042Z] === Starting Round 1 ===
+[2026-11-05T00:42:32.049Z] Marker: BRIDGE-AUTO-01-R1-mw2tmui9-1k6mbp
+[2026-11-05T00:42:33.758Z] Created gpai task: bridge-auto-01-r1-mw2tmui9-1k6mbp (status 201)
+[2026-11-05T00:42:33.759Z] Task created: bridge-auto-01-r1-mw2tmui9-1k6mbp
+[2026-11-05T00:42:34.869Z] CDP insert result: inserted: true len=155
+[2026-11-05T00:42:36.365Z] CDP click result: clicked
+[2026-11-05T00:42:38.371Z] Input length after send: 155
+[2026-11-05T00:42:38.373Z] FATAL ERROR: Message may not have been sent (input not cleared)
+[2026-11-05T00:42:38.373Z] Error: Message may not have been sent (input not cleared)
+    at sendToGpai (file:///D:/DSH_Data/work/dsh-sd/_ops/bridge-auto-runner.mjs:157:29)
+    at async runRound (file:///D:/DSH_Data/work/dsh-sd/_ops/bridge-auto-runner.mjs:236:21)
+    at async main (file:///D:/DSH_Data/work/dsh-sd/_ops/bridge-auto-runner.mjs:267:16)
+[2026-11-05T00:46:14.939Z] === Starting Round 1 ===
+[2026-11-05T00:46:14.941Z] Marker: BRIDGE-AUTO-01-R1-mw2trmhp-74vzqb
+[2026-11-05T00:46:16.508Z] Created gpai task: bridge-auto-01-r1-mw2trmhp-74vzqb (status 201)
+[2026-11-05T00:46:16.508Z] Task created: bridge-auto-01-r1-mw2trmhp-74vzqb
+[2026-11-05T00:46:18.550Z] CDP insert result: inserted: true len=155
+[2026-11-05T00:46:18.587Z] Send button status: undefined, waiting...
+[2026-11-05T00:46:19.094Z] Send button status: undefined, waiting...
+[2026-11-05T00:46:19.607Z] Send button status: undefined, waiting...
+[2026-11-05T00:46:20.118Z] Send button status: undefined, waiting...
+[2026-11-05T00:46:20.629Z] Send button status: undefined, waiting...
+[2026-11-05T00:46:21.143Z] Send button status: undefined, waiting...
+[2026-11-05T00:46:21.653Z] Send button status: undefined, waiting...
+[2026-11-05T00:46:22.164Z] Send button status: undefined, waiting...
+[2026-11-05T00:46:22.675Z] Send button status: undefined, waiting...
+[2026-11-05T00:46:23.187Z] Send button status: undefined, waiting...
+[2026-11-05T00:46:23.689Z] FATAL ERROR: Send button not ready after 5s
+[2026-11-05T00:46:23.689Z] Error: Send button not ready after 5s
+    at sendToGpai (file:///D:/DSH_Data/work/dsh-sd/_ops/bridge-auto-runner.mjs:145:28)
+    at async runRound (file:///D:/DSH_Data/work/dsh-sd/_ops/bridge-auto-runner.mjs:239:21)
+    at async main (file:///D:/DSH_Data/work/dsh-sd/_ops/bridge-auto-runner.mjs:266:16)
+[2026-11-05T00:48:57.054Z] === Starting Round 1 ===
+[2026-11-05T00:48:57.056Z] Marker: BRIDGE-AUTO-01-R1-mw2tv3kw-19vnm8
+[2026-11-05T00:48:59.267Z] Created gpai task: bridge-auto-01-r1-mw2tv3kw-19vnm8 (status 201)
+[2026-11-05T00:48:59.267Z] Task created: bridge-auto-01-r1-mw2tv3kw-19vnm8
+[2026-11-05T00:49:01.320Z] CDP insert result: inserted: true len=155
+[2026-11-05T00:49:01.324Z] DEBUG checkR: {"id":3,"result":{"result":{"type":"object","subtype":"error","className":"SyntaxError","description":"SyntaxError: missing ) after argument list","objectId":"4378948987628680728.9.6"},"exceptionDetails":{"exceptionId":14,"text":"Uncaught","lineNumber":0,"columnNumber":47,"scriptId":"554","exception
+[2026-11-05T00:49:01.325Z] Send button status: undefined, waiting...
+[2026-11-05T00:49:01.841Z] DEBUG checkR: {"id":4,"result":{"result":{"type":"object","subtype":"error","className":"SyntaxError","description":"SyntaxError: missing ) after argument list","objectId":"4378948987628680728.9.8"},"exceptionDetails":{"exceptionId":15,"text":"Uncaught","lineNumber":0,"columnNumber":47,"scriptId":"555","exception
+[2026-11-05T00:49:01.842Z] Send button status: undefined, waiting...
+[2026-11-05T00:49:02.354Z] DEBUG checkR: {"id":5,"result":{"result":{"type":"object","subtype":"error","className":"SyntaxError","description":"SyntaxError: missing ) after argument list","objectId":"4378948987628680728.9.10"},"exceptionDetails":{"exceptionId":16,"text":"Uncaught","lineNumber":0,"columnNumber":47,"scriptId":"556","exceptio
+[2026-11-05T00:49:02.355Z] Send button status: undefined, waiting...
+[2026-11-05T00:49:02.870Z] DEBUG checkR: {"id":6,"result":{"result":{"type":"object","subtype":"error","className":"SyntaxError","description":"SyntaxError: missing ) after argument list","objectId":"4378948987628680728.9.12"},"exceptionDetails":{"exceptionId":17,"text":"Uncaught","lineNumber":0,"columnNumber":47,"scriptId":"557","exceptio
+[2026-11-05T00:49:02.871Z] Send button status: undefined, waiting...
+[2026-11-05T00:49:03.372Z] DEBUG checkR: {"id":7,"result":{"result":{"type":"object","subtype":"error","className":"SyntaxError","description":"SyntaxError: missing ) after argument list","objectId":"4378948987628680728.9.14"},"exceptionDetails":{"exceptionId":18,"text":"Uncaught","lineNumber":0,"columnNumber":47,"scriptId":"558","exceptio
+[2026-11-05T00:49:03.373Z] Send button status: undefined, waiting...
+[2026-11-05T00:49:03.888Z] DEBUG checkR: {"id":8,"result":{"result":{"type":"object","subtype":"error","className":"SyntaxError","description":"SyntaxError: missing ) after argument list","objectId":"4378948987628680728.9.16"},"exceptionDetails":{"exceptionId":19,"text":"Uncaught","lineNumber":0,"columnNumber":47,"scriptId":"559","exceptio
+[2026-11-05T00:49:03.888Z] Send button status: undefined, waiting...
+[2026-11-05T00:49:04.401Z] DEBUG checkR: {"id":9,"result":{"result":{"type":"object","subtype":"error","className":"SyntaxError","description":"SyntaxError: missing ) after argument list","objectId":"4378948987628680728.9.18"},"exceptionDetails":{"exceptionId":20,"text":"Uncaught","lineNumber":0,"columnNumber":47,"scriptId":"560","exceptio
+[2026-11-05T00:49:04.401Z] Send button status: undefined, waiting...
+[2026-11-05T00:49:04.916Z] DEBUG checkR: {"id":10,"result":{"result":{"type":"object","subtype":"error","className":"SyntaxError","description":"SyntaxError: missing ) after argument list","objectId":"4378948987628680728.9.20"},"exceptionDetails":{"exceptionId":21,"text":"Uncaught","lineNumber":0,"columnNumber":47,"scriptId":"561","excepti
+[2026-11-05T00:49:04.916Z] Send button status: undefined, waiting...
+[2026-11-05T00:49:05.432Z] DEBUG checkR: {"id":11,"result":{"result":{"type":"object","subtype":"error","className":"SyntaxError","description":"SyntaxError: missing ) after argument list","objectId":"4378948987628680728.9.22"},"exceptionDetails":{"exceptionId":22,"text":"Uncaught","lineNumber":0,"columnNumber":47,"scriptId":"562","excepti
+[2026-11-05T00:49:05.432Z] Send button status: undefined, waiting...
+[2026-11-05T00:49:05.937Z] DEBUG checkR: {"id":12,"result":{"result":{"type":"object","subtype":"error","className":"SyntaxError","description":"SyntaxError: missing ) after argument list","objectId":"4378948987628680728.9.24"},"exceptionDetails":{"exceptionId":23,"text":"Uncaught","lineNumber":0,"columnNumber":47,"scriptId":"563","excepti
+[2026-11-05T00:49:05.937Z] Send button status: undefined, waiting...
+[2026-11-05T00:49:06.449Z] FATAL ERROR: Send button not ready after 5s
+[2026-11-05T00:49:06.451Z] Error: Send button not ready after 5s
+    at sendToGpai (file:///D:/DSH_Data/work/dsh-sd/_ops/bridge-auto-runner.mjs:146:28)
+    at async runRound (file:///D:/DSH_Data/work/dsh-sd/_ops/bridge-auto-runner.mjs:240:21)
+    at async main (file:///D:/DSH_Data/work/dsh-sd/_ops/bridge-auto-runner.mjs:267:16)
+[2026-11-05T00:50:37.593Z] === Starting Round 1 ===
+[2026-11-05T00:50:37.596Z] Marker: BRIDGE-AUTO-01-R1-mw2tx95n-cldp1w
+[2026-11-05T00:50:39.359Z] Created gpai task: bridge-auto-01-r1-mw2tx95n-cldp1w (status 201)
+[2026-11-05T00:50:39.360Z] Task created: bridge-auto-01-r1-mw2tx95n-cldp1w
+[2026-11-05T00:50:41.407Z] CDP insert result: inserted: true len=155
+[2026-11-05T00:50:42.018Z] CDP click result: clicked
+[2026-11-05T00:50:43.148Z] Input length after send: 0
+[2026-11-05T00:50:43.149Z] CDP send result: {"tabId":"B76AB00556C9F65FB9C7E2FBF161FFBD","tabUrl":"https://gpai.app/chat/s?id=aics_1793276822174_fccda0d5"}
+[2026-11-05T00:50:46.359Z] Polling for response to BRIDGE-AUTO-01-R1-mw2tx95n-cldp1w... (3s elapsed)
+[2026-11-05T00:50:59.345Z] Polling for response to BRIDGE-AUTO-01-R1-mw2tx95n-cldp1w... (16s elapsed)
+[2026-11-05T00:51:12.480Z] Polling for response to BRIDGE-AUTO-01-R1-mw2tx95n-cldp1w... (29s elapsed)
+[2026-11-05T00:51:25.645Z] Polling for response to BRIDGE-AUTO-01-R1-mw2tx95n-cldp1w... (42s elapsed)
+[2026-11-05T00:51:38.415Z] Found GPAI response with marker BRIDGE-AUTO-01-R1-mw2tx95n-cldp1w in a1cf133d287e63116c6d6b0043c4bca1.json
+[2026-11-05T00:51:38.415Z] GPAI response received: {"body":"BRIDGE-AUTO-01-R1-mw2tx95n-cldp1w\nGPAI 已掃描並讀取 inbox/gpai/bridge-auto-01-r1-mw2tx95n-cldp1w.json，將本次唯一標記與證據發布至 bridge/wake-tests/BRIDGE-AUTO-01-R1-mw2tx95n-cldp1w.json。正式 envelope 驗證仍失敗：缺 sha256。保留原始訊息，未偽造 received/accepted/completed。\n請修正 sender，而不是換新標記重跑相同錯誤。已存在的 protocol/mailbox.py send 
+[2026-11-05T00:51:38.416Z] Round 1 result saved to D:\DSH_Data\work\dsh-sd\_ops\bridge-auto-logs\round-1-BRIDGE-AUTO-01-R1-mw2tx95n-cldp1w.json
+[2026-11-05T00:51:38.416Z] === Round 1 completed ===
+[2026-11-05T00:51:38.416Z] Waiting 60 seconds before round 2...
+[2026-11-05T00:52:38.419Z] === Starting Round 2 ===
+[2026-11-05T00:52:38.420Z] Marker: BRIDGE-AUTO-01-R2-mw2tzudw-1bp57q
+[2026-11-05T00:52:39.865Z] Created gpai task: bridge-auto-01-r2-mw2tzudw-1bp57q (status 201)
+[2026-11-05T00:52:39.865Z] Task created: bridge-auto-01-r2-mw2tzudw-1bp57q
+[2026-11-05T00:52:41.883Z] CDP insert result: inserted: true len=155
+[2026-11-05T00:52:42.076Z] CDP click result: clicked
+[2026-11-05T00:52:42.619Z] Input length after send: 0
+[2026-11-05T00:52:42.619Z] CDP send result: {"tabId":"B76AB00556C9F65FB9C7E2FBF161FFBD","tabUrl":"https://gpai.app/chat/s?id=aics_1793276822174_fccda0d5"}
+[2026-11-05T00:52:46.546Z] Polling for response to BRIDGE-AUTO-01-R2-mw2tzudw-1bp57q... (4s elapsed)
+[2026-11-05T00:53:00.467Z] Polling for response to BRIDGE-AUTO-01-R2-mw2tzudw-1bp57q... (18s elapsed)
+[2026-11-05T00:53:14.146Z] Polling for response to BRIDGE-AUTO-01-R2-mw2tzudw-1bp57q... (32s elapsed)
+[2026-11-05T00:53:27.512Z] Polling for response to BRIDGE-AUTO-01-R2-mw2tzudw-1bp57q... (45s elapsed)
+[2026-11-05T00:53:38.169Z] Found GPAI response with marker BRIDGE-AUTO-01-R2-mw2tzudw-1bp57q in 05611131bed949da5e08e89d01cee2e7.json
+[2026-11-05T00:53:38.169Z] GPAI response received: {"body":"BRIDGE-AUTO-01-R2-mw2tzudw-1bp57q\nRound 2 已掃描並讀取 inbox/gpai/bridge-auto-01-r2-mw2tzudw-1bp57q.json，唯一標記已回寫 bridge/wake-tests/BRIDGE-AUTO-01-R2-mw2tzudw-1bp57q.json。驗證結果仍為 protocol_validation=failed：缺 sha256。原檔未改，未偽造 received/accepted/completed。\n請使用正式 protocol/mailbox.py send 或等價且經驗證的實作修正 
+[2026-11-05T00:53:38.170Z] Round 2 result saved to D:\DSH_Data\work\dsh-sd\_ops\bridge-auto-logs\round-2-BRIDGE-AUTO-01-R2-mw2tzudw-1bp57q.json
+[2026-11-05T00:53:38.170Z] === Round 2 completed ===
+[2026-11-05T00:53:38.170Z] === All rounds completed ===
+[2026-11-05T00:53:38.171Z] Round 1 marker: BRIDGE-AUTO-01-R1-mw2tx95n-cldp1w
+[2026-11-05T00:53:38.171Z] Round 2 marker: BRIDGE-AUTO-01-R2-mw2tzudw-1bp57q
+[2026-11-05T01:01:51.866Z] === Starting Round 1 ===
+[2026-11-05T01:01:51.875Z] Marker: BRIDGE-AUTO-01-R1-mw2ubpfn-468gfo
+[2026-11-05T01:01:54.179Z] Created gpai task: 19ddbf4546742a7038b0c0d0842e22b1 (status 201) marker=BRIDGE-AUTO-01-R1-mw2ubpfn-468gfo
+[2026-11-05T01:01:54.179Z] Task created: 19ddbf4546742a7038b0c0d0842e22b1 (reused=false)
+[2026-11-05T01:01:56.247Z] CDP insert result: inserted: true len=155
+[2026-11-05T01:01:56.253Z] Send button status: undefined, waiting...
+[2026-11-05T01:01:56.765Z] Send button status: undefined, waiting...
+[2026-11-05T01:01:57.276Z] Send button status: undefined, waiting...
+[2026-11-05T01:01:57.788Z] Send button status: undefined, waiting...
+[2026-11-05T01:01:58.298Z] Send button status: undefined, waiting...
+[2026-11-05T01:01:58.810Z] Send button status: undefined, waiting...
+[2026-11-05T01:01:59.322Z] Send button status: undefined, waiting...
+[2026-11-05T01:01:59.833Z] Send button status: undefined, waiting...
+[2026-11-05T01:02:00.345Z] Send button status: undefined, waiting...
+[2026-11-05T01:02:00.856Z] Send button status: undefined, waiting...
+[2026-11-05T01:02:01.368Z] BLOCKED: CDP send failed: Send button not ready after 5s
+[2026-11-05T01:02:01.369Z] FATAL ERROR: Send button not ready after 5s
+[2026-11-05T01:02:01.370Z] Error: Send button not ready after 5s
+    at sendToGpai (file:///D:/DSH_Data/work/dsh-sd/_ops/bridge-auto-runner.mjs:153:28)
+    at async runRound (file:///D:/DSH_Data/work/dsh-sd/_ops/bridge-auto-runner.mjs:302:17)
+    at async main (file:///D:/DSH_Data/work/dsh-sd/_ops/bridge-auto-runner.mjs:348:5)
+[2026-11-05T01:02:31.866Z] === Starting Round 1 ===
+[2026-11-05T01:02:31.868Z] Marker: BRIDGE-AUTO-01-R1-mw2uckak-l1m5b7
+[2026-11-05T01:02:33.954Z] Created gpai task: 1028c7ee787cfee5ef071a1c2fd2600c (status 201) marker=BRIDGE-AUTO-01-R1-mw2uckak-l1m5b7
+[2026-11-05T01:02:33.954Z] Task created: 1028c7ee787cfee5ef071a1c2fd2600c (reused=false)
+[2026-11-05T01:02:35.999Z] CDP insert result: inserted: true len=155
+[2026-11-05T01:02:36.702Z] CDP click result: clicked
+[2026-11-05T01:02:38.864Z] Input length after send: 0
+[2026-11-05T01:02:38.865Z] CDP send result: {"tabId":"B76AB00556C9F65FB9C7E2FBF161FFBD","tabUrl":"https://gpai.app/chat/s?id=aics_1793276822174_fccda0d5"}
+[2026-11-05T01:02:42.841Z] Polling for response to BRIDGE-AUTO-01-R1-mw2uckak-l1m5b7... (4s elapsed)
+[2026-11-05T01:02:56.669Z] Polling for response to BRIDGE-AUTO-01-R1-mw2uckak-l1m5b7... (18s elapsed)
+[2026-11-05T01:03:10.840Z] Polling for response to BRIDGE-AUTO-01-R1-mw2uckak-l1m5b7... (32s elapsed)
+[2026-11-05T01:03:25.249Z] Polling for response to BRIDGE-AUTO-01-R1-mw2uckak-l1m5b7... (46s elapsed)
+[2026-11-05T01:03:44.802Z] Found wake-test result with marker BRIDGE-AUTO-01-R1-mw2uckak-l1m5b7 in BRIDGE-AUTO-01-R1-mw2uckak-l1m5b7.json
+[2026-11-05T01:03:44.802Z] GPAI response received: {"test":"BRIDGE-AUTO-01","round":1,"marker":"BRIDGE-AUTO-01-R1-mw2uckak-l1m5b7","actor":"gpai","processed_at":"2026-11-05T01:03:38.980374+00:00","scanned_commit":"44986146a05dd508407596bdcde2956db7792dac","source_message_id":"1028c7ee787cfee5ef071a1c2fd2600c","source_path":"inbox/gpai/1028c7ee787cfe
+[2026-11-05T01:03:44.803Z] Round 1 protocol OK.
+[2026-11-05T01:03:44.804Z] Round 1 result saved to D:\DSH_Data\work\dsh-sd\_ops\bridge-auto-logs\round-1-BRIDGE-AUTO-01-R1-mw2uckak-l1m5b7.json
+[2026-11-05T01:03:44.805Z] === Round 1 finished with status=completed ===
+[2026-11-05T01:03:52.654Z] === Starting Round 2 ===
+[2026-11-05T01:03:52.656Z] Marker: BRIDGE-AUTO-01-R2-mw2ueamo-u66ilp
+[2026-11-05T01:03:54.970Z] Created gpai task: f2c7c8213bfcda3515b5fec74839a777 (status 201) marker=BRIDGE-AUTO-01-R2-mw2ueamo-u66ilp
+[2026-11-05T01:03:54.970Z] Task created: f2c7c8213bfcda3515b5fec74839a777 (reused=false)
+[2026-11-05T01:03:58.335Z] CDP insert result: inserted: true len=155
+[2026-11-05T01:03:58.522Z] CDP click result: clicked
+[2026-11-05T01:03:59.621Z] Input length after send: 0
+[2026-11-05T01:03:59.622Z] CDP send result: {"tabId":"B76AB00556C9F65FB9C7E2FBF161FFBD","tabUrl":"https://gpai.app/chat/s?id=aics_1793276822174_fccda0d5"}
+[2026-11-05T01:04:04.544Z] Polling for response to BRIDGE-AUTO-01-R2-mw2ueamo-u66ilp... (5s elapsed)
+[2026-11-05T01:04:18.565Z] Polling for response to BRIDGE-AUTO-01-R2-mw2ueamo-u66ilp... (19s elapsed)
+[2026-11-05T01:04:32.844Z] Polling for response to BRIDGE-AUTO-01-R2-mw2ueamo-u66ilp... (33s elapsed)
+[2026-11-05T01:04:47.464Z] Found wake-test result with marker BRIDGE-AUTO-01-R2-mw2ueamo-u66ilp in BRIDGE-AUTO-01-R2-mw2ueamo-u66ilp.json
+[2026-11-05T01:04:47.464Z] GPAI response received: {"test":"BRIDGE-AUTO-01","round":2,"marker":"BRIDGE-AUTO-01-R2-mw2ueamo-u66ilp","actor":"gpai","processed_at":"2026-11-05T01:04:45.818548+00:00","scanned_commit":"7b76396e0c0b6f4b114f818b767268d0436b8209","source_message_id":"f2c7c8213bfcda3515b5fec74839a777","source_path":"inbox/gpai/f2c7c8213bfcda
+[2026-11-05T01:04:47.465Z] Round 2 protocol OK.
+[2026-11-05T01:04:47.466Z] Round 2 result saved to D:\DSH_Data\work\dsh-sd\_ops\bridge-auto-logs\round-2-BRIDGE-AUTO-01-R2-mw2ueamo-u66ilp.json
+[2026-11-05T01:04:47.466Z] === Round 2 finished with status=completed ===
