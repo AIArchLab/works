@@ -1,0 +1,21 @@
+{
+  "test": "BRIDGE-AUTO-01",
+  "round": 1,
+  "marker": "BRIDGE-AUTO-01-R1-mw2tmui9-1k6mbp",
+  "actor": "gpai",
+  "processed_at": "2026-11-05T00:43:31.533016+00:00",
+  "scanned_commit": "72e12d5bd36c17f66087db1effa507b62b048d46",
+  "source_path": "inbox/gpai/bridge-auto-01-r1-mw2tmui9-1k6mbp.json",
+  "source_file_sha256": "bcdeadb9564862b497e487065b4692c0b9087408fb481e4bcf24f9d0eb65fa39",
+  "source_body_read": true,
+  "execution_result": "marker_written_back_but_task_envelope_invalid",
+  "protocol_validation": "failed",
+  "validation_errors": [
+    {
+      "path": "inbox/gpai/bridge-auto-01-r1-mw2tmui9-1k6mbp.json",
+      "error": "'sha256'"
+    }
+  ],
+  "receipt_action": "No received/accepted/completed recorded for invalid envelope; original file preserved.",
+  "trigger_origin": "Marker received in chat; sender-side scheduler and unattended origin not independently observed."
+}
