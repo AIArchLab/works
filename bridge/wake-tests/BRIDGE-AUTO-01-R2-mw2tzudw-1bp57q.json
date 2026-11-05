@@ -1,0 +1,21 @@
+{
+  "test": "BRIDGE-AUTO-01",
+  "round": 2,
+  "marker": "BRIDGE-AUTO-01-R2-mw2tzudw-1bp57q",
+  "actor": "gpai",
+  "processed_at": "2026-11-05T00:53:27.766426+00:00",
+  "scanned_commit": "12e26b53d71aad40795a3a1a018b16468b80c70c",
+  "source_path": "inbox/gpai/bridge-auto-01-r2-mw2tzudw-1bp57q.json",
+  "source_file_sha256": "a3edcf8509d2f50ea4065b94593152fd2a1d1a118c7fa56278fa7889f6de8d48",
+  "source_body_read": true,
+  "execution_result": "marker_written_back_but_task_envelope_invalid",
+  "protocol_validation": "failed",
+  "validation_errors": [
+    {
+      "path": "inbox/gpai/bridge-auto-01-r2-mw2tzudw-1bp57q.json",
+      "error": "'sha256'"
+    }
+  ],
+  "receipt_action": "Original invalid envelope preserved; no successful protocol receipt fabricated.",
+  "trigger_origin": "Received as chat user message; sender scheduler origin not independently observed."
+}
