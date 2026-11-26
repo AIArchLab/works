@@ -1,0 +1,24 @@
+{
+ "id": "0012",
+ "slug": "advisor-router",
+ "title": "advisor-router: a model advisor that returns only a model name",
+ "published": "2026-11-26",
+ "status": "concept",
+ "tags": [
+  "routing",
+  "multi-model",
+  "advisor",
+  "fastapi",
+  "poc"
+ ],
+ "license": "MIT",
+ "language": "en",
+ "deidentification_checklist": {
+  "no_client_names": true,
+  "no_platform_names_in_case_content": true,
+  "no_budgets_or_prices": true,
+  "no_private_strategy_layer": true,
+  "principal_referred_only_as_founder": true,
+  "all_claims_sourced_or_marked_source_missing": true
+ }
+}
