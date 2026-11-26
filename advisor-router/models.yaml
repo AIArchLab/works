@@ -1,0 +1,19 @@
+# Model registry (illustrative). The advisor reads tier + name only.
+# endpoint and api_key_env are for the RUNTIME. The advisor never sends or reads keys.
+models:
+  cheap:
+    name: example-small
+    provider: example-provider
+    endpoint: https://api.example.invalid
+    api_key_env: EXAMPLE_API_KEY
+  mid:
+    name: example-medium
+    provider: example-provider
+    endpoint: https://api.example.invalid
+    api_key_env: EXAMPLE_API_KEY
+  strong:
+    name: example-large
+    provider: example-provider
+    endpoint: https://api.example.invalid
+    api_key_env: EXAMPLE_API_KEY
+# Names are placeholders. Cost accounting is the runtime's job and is not modelled here.
