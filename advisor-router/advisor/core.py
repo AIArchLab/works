@@ -12,8 +12,7 @@ class Advisor:
         if self.rules.default != self.reg.strongest():
             raise ValueError("default_model must be the strongest tier "
                              f"({self.reg.strongest()!r}), got {self.rules.default!r}")
-        with open(rules, "rb") as f:
-            self.rules_version = hashlib.sha256(f.read()).hexdigest()
+        self.rules_version = self.rules.version   # same bytes that were parsed
         self.clf = classifier or NullClassifier()
         self.log = DecisionLog(log)
 
@@ -40,9 +39,14 @@ class Advisor:
             cur = self.reg.rank(current_tier) if current_tier else -1
             nxt = min(cur + 1, len(self.reg.tiers) - 1)
             if self.reg.rank(tier) <= cur:
-                tier, clamp = self.reg.tiers[nxt], "upgrade"
-        elif current_tier and self.reg.rank(tier) < self.reg.rank(current_tier):
-            tier, clamp = current_tier, "sticky"   # never downgrade
+                tier = self.reg.tiers[nxt]
+                # At the top tier there is nowhere to go: say so instead of "upgrade".
+                clamp = "ceiling" if nxt == cur else "upgrade"
+        elif current_tier:
+            if self.reg.rank(tier) < self.reg.rank(current_tier):
+                tier, clamp = current_tier, "sticky"   # never downgrade
+            elif self.reg.rank(tier) > self.reg.rank(current_tier):
+                clamp = "upgrade"   # result is above the caller's tier; the log says so
 
         out = {"tier": tier, "model": self.reg.name(tier), "source": source,
                "matched_rule": matched, "clamp": clamp}

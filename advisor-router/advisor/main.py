@@ -23,12 +23,14 @@ class DecideResp(BaseModel):
     model: str
     source: str                          # rule | classifier | default
     matched_rule: Optional[str] = None   # rule name when source=rule, else null
-    clamp: Literal["sticky", "upgrade", "none"]
+    clamp: Literal["sticky", "upgrade", "ceiling", "none"]
 
 @app.post("/decide", response_model=DecideResp)
 def decide(req: DecideReq):
     if req.current_tier is not None and req.current_tier not in advisor.reg.tiers:
         raise HTTPException(422, f"current_tier must be one of {advisor.reg.tiers}")
+    if req.phase == "reask" and req.current_tier is None:
+        raise HTTPException(422, "current_tier is required when phase=reask")
     if req.phase == "reask" and not req.struggle:
         raise HTTPException(422, "struggle is required when phase=reask")
     return advisor.decide(**req.model_dump())

@@ -1,4 +1,8 @@
+# Generated with:
+#   DECISION_LOG=/tmp/demo.jsonl python -m uvicorn advisor.main:app --port 8099 &
+#   python runtime_client.py
+#   cat /tmp/demo.jsonl
 tier: strong ledger: {'in': 1000, 'out': 400}
 
 --- decision log (demo) ---
-{"ts": 1795766839.589338, "task_id": "demo-1", "step_type": "plan", "phase": "entry", "current_tier": null, "struggle": null, "tokens": 0, "text_sha256": "458cefb9dbdf8827d9ca71b9815d4a139c4e8a3ccb064d703288778dc3dd15ae", "rules_version": "442a13dca8644ada4134b8e1d451f408036812477653029bd6c4c4119f77e4ff", "confidence": null, "tier": "strong", "model": "example-large", "source": "rule", "matched_rule": "planning", "clamp": "none"}
+{"ts": 1795767300.9617655, "task_id": "demo-1", "step_type": "plan", "phase": "entry", "current_tier": null, "struggle": null, "tokens": 0, "text_sha256": "458cefb9dbdf8827d9ca71b9815d4a139c4e8a3ccb064d703288778dc3dd15ae", "rules_version": "442a13dca8644ada4134b8e1d451f408036812477653029bd6c4c4119f77e4ff", "confidence": null, "tier": "strong", "model": "example-large", "source": "rule", "matched_rule": "planning", "clamp": "none"}

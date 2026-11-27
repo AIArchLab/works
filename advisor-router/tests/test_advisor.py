@@ -131,3 +131,65 @@ def test_runtime_retry_appends_user_message_once_and_counts_fails(monkeypatch):
     rc.run_task("t", [("extract", "hi")])
     assert set(seen) == {1}
     assert "tool_error_x3" in struggles
+
+
+# --- rule schema validation (fail closed) ---
+import pytest, yaml
+from fastapi.testclient import TestClient
+
+def _rules_file(tmp_path, rule):
+    cfg = {"default_model": "strong", "tiers": ["cheap", "mid", "strong"], "rules": [rule]}
+    p = tmp_path / "r.yaml"; p.write_text(yaml.safe_dump(cfg)); return str(p)
+
+def _load(tmp_path, when):
+    from advisor.rules import RuleEngine
+    return RuleEngine(_rules_file(tmp_path, {"name": "x", "when": when, "model": "cheap"}))
+
+def test_typo_key_rejected(tmp_path):
+    with pytest.raises(ValueError):
+        _load(tmp_path, {"keyword": ["prove"]})
+
+def test_empty_when_rejected(tmp_path):
+    with pytest.raises(ValueError):
+        _load(tmp_path, {})
+
+def test_string_min_tokens_rejected(tmp_path):
+    with pytest.raises(ValueError):
+        _load(tmp_path, {"min_tokens": "60000"})
+
+def test_rules_version_matches_applied_bytes(tmp_path):
+    import hashlib
+    eng = _load(tmp_path, {"step_type": ["extract"]})
+    assert eng.version == hashlib.sha256((tmp_path / "r.yaml").read_bytes()).hexdigest()
+
+# --- clamp contract ---
+def test_reask_at_top_logs_ceiling_not_upgrade(tmp_path):
+    out = make(tmp_path).decide("t", "extract", phase="reask", current_tier="strong", struggle="x")
+    assert out["tier"] == "strong" and out["clamp"] == "ceiling"
+
+def test_entry_result_above_current_tier_logs_upgrade(tmp_path):
+    out = make(tmp_path).decide("t", "plan", current_tier="cheap")
+    assert out["tier"] == "strong" and out["clamp"] == "upgrade"
+    rec = json.loads((tmp_path / "d.jsonl").read_text().splitlines()[-1])
+    assert rec["current_tier"] == "cheap" and rec["clamp"] == "upgrade"
+
+# --- HTTP ---
+def _client(tmp_path, monkeypatch):
+    monkeypatch.setenv("RULES", str(ROOT / "rules.yaml"))
+    monkeypatch.setenv("MODELS", str(ROOT / "models.yaml"))
+    monkeypatch.setenv("DECISION_LOG", str(tmp_path / "h.jsonl"))
+    import importlib, advisor.main as m
+    importlib.reload(m)
+    return TestClient(m.app)
+
+def test_http_reask_without_current_tier_is_422(tmp_path, monkeypatch):
+    c = _client(tmp_path, monkeypatch)
+    r = c.post("/decide", json={"task_id": "t", "step_type": "extract", "phase": "reask", "struggle": "x"})
+    assert r.status_code == 422
+    assert not (tmp_path / "h.jsonl").exists()
+
+def test_http_reask_at_top_reports_ceiling(tmp_path, monkeypatch):
+    c = _client(tmp_path, monkeypatch)
+    r = c.post("/decide", json={"task_id": "t", "step_type": "extract", "phase": "reask",
+                                "current_tier": "strong", "struggle": "x"})
+    assert r.status_code == 200 and r.json()["clamp"] == "ceiling"
