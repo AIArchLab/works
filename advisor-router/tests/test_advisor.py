@@ -3,9 +3,10 @@ from advisor.core import Advisor
 from advisor.classifier import Classifier
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+DATA = ROOT / "advisor" / "data"
 
 def make(tmp_path, clf=None):
-    return Advisor(rules=str(ROOT / "rules.yaml"), models=str(ROOT / "models.yaml"),
+    return Advisor(rules=str(DATA / "rules.yaml"), models=str(DATA / "models.yaml"),
                    log=str(tmp_path / "d.jsonl"), classifier=clf)
 
 def test_first_match_wins(tmp_path):
@@ -65,14 +66,14 @@ def test_default_must_be_strongest(tmp_path):
     bad = tmp_path / "rules.yaml"
     bad.write_text("default_model: mid\ntiers: [cheap, mid, strong]\nrules: []\n")
     with pytest.raises(ValueError):
-        Advisor(rules=str(bad), models=str(ROOT / "models.yaml"), log=str(tmp_path / "d"))
+        Advisor(rules=str(bad), models=str(DATA / "models.yaml"), log=str(tmp_path / "d"))
 
 def test_rule_with_unknown_tier_rejected_at_load(tmp_path):
     bad = tmp_path / "rules.yaml"
     bad.write_text("default_model: strong\ntiers: [cheap, strong]\nrules:\n"
                    "  - {name: x, when: {step_type: [a]}, model: ghost}\n")
     with pytest.raises(ValueError):
-        Advisor(rules=str(bad), models=str(ROOT / "models.yaml"), log=str(tmp_path / "d"))
+        Advisor(rules=str(bad), models=str(DATA / "models.yaml"), log=str(tmp_path / "d"))
 
 def test_log_has_explainability_fields_and_no_raw_text(tmp_path):
     a = make(tmp_path)
@@ -83,7 +84,7 @@ def test_log_has_explainability_fields_and_no_raw_text(tmp_path):
     assert r0["tokens"] == 100_000 and r0["matched_rule"] == "long-context"
     assert r0["clamp"] == "none" and r0["confidence"] is None
     assert r0["text_sha256"] == hashlib.sha256(b"secret words").hexdigest()
-    assert r0["rules_version"] == hashlib.sha256((ROOT / "rules.yaml").read_bytes()).hexdigest()
+    assert r0["rules_version"] == hashlib.sha256((DATA / "rules.yaml").read_bytes()).hexdigest()
     assert "secret words" not in json.dumps(rows)
     assert r1["source"] == "default" and r1["matched_rule"] is None and r1["confidence"] == 0.0
 
@@ -117,7 +118,7 @@ def test_http_rejects_negative_tokens(client):
     assert client.post("/decide", json={"task_id": "t", "step_type": "plan", "tokens": -1}).status_code == 422
 
 def test_runtime_retry_appends_user_message_once_and_counts_fails(monkeypatch):
-    import runtime_client as rc
+    import advisor.runtime_client as rc
     monkeypatch.chdir(ROOT)
     seen, struggles = [], []
     def fake_call(tier, messages):
@@ -175,8 +176,8 @@ def test_entry_result_above_current_tier_logs_upgrade(tmp_path):
 
 # --- HTTP ---
 def _client(tmp_path, monkeypatch):
-    monkeypatch.setenv("RULES", str(ROOT / "rules.yaml"))
-    monkeypatch.setenv("MODELS", str(ROOT / "models.yaml"))
+    monkeypatch.setenv("RULES", str(DATA / "rules.yaml"))
+    monkeypatch.setenv("MODELS", str(DATA / "models.yaml"))
     monkeypatch.setenv("DECISION_LOG", str(tmp_path / "h.jsonl"))
     import importlib, advisor.main as m
     importlib.reload(m)
@@ -235,25 +236,25 @@ def test_non_mapping_rule_rejected_with_rule_number(tmp_path):
     bad = tmp_path / "rules.yaml"
     bad.write_text('default_model: strong\ntiers: [cheap, mid, strong]\nrules: ["foo"]\n')
     with pytest.raises(ValueError, match=r"rule #1 must be a mapping"):
-        Advisor(rules=str(bad), models=str(ROOT / "models.yaml"), log=str(tmp_path / "d"))
+        Advisor(rules=str(bad), models=str(DATA / "models.yaml"), log=str(tmp_path / "d"))
 
 
 def test_rule_missing_model_rejected_with_rule_number(tmp_path):
     bad = tmp_path / "rules.yaml"
     bad.write_text("default_model: strong\ntiers: [cheap, mid, strong]\nrules:\n  - {name: x, when: {step_type: [a]}}\n")
     with pytest.raises(ValueError, match=r"rule #1 must include model"):
-        Advisor(rules=str(bad), models=str(ROOT / "models.yaml"), log=str(tmp_path / "d"))
+        Advisor(rules=str(bad), models=str(DATA / "models.yaml"), log=str(tmp_path / "d"))
 
 
 def test_missing_default_model_rejected_explicitly(tmp_path):
     bad = tmp_path / "rules.yaml"
     bad.write_text("tiers: [cheap, mid, strong]\nrules: []\n")
     with pytest.raises(ValueError, match="configuration must include default_model"):
-        Advisor(rules=str(bad), models=str(ROOT / "models.yaml"), log=str(tmp_path / "d"))
+        Advisor(rules=str(bad), models=str(DATA / "models.yaml"), log=str(tmp_path / "d"))
 
 
 def test_missing_tiers_rejected_explicitly(tmp_path):
     bad = tmp_path / "rules.yaml"
     bad.write_text("default_model: strong\nrules: []\n")
     with pytest.raises(ValueError, match="configuration must include tiers"):
-        Advisor(rules=str(bad), models=str(ROOT / "models.yaml"), log=str(tmp_path / "d"))
+        Advisor(rules=str(bad), models=str(DATA / "models.yaml"), log=str(tmp_path / "d"))

@@ -1,7 +1,22 @@
 # advisor-router
 
+## Quick start
+
+Needs Python 3.9 or newer (tested on 3.10).
+
+    pip install "git+https://github.com/AIArchLab/works.git#subdirectory=advisor-router"
+    advisor-router serve      # start the advisor on http://127.0.0.1:8099
+    advisor-router demo       # run the sticky-loop demo (starts its own temporary advisor)
+
+`serve` options: `--port 8100` (or `ADVISOR_PORT`), `--host`, `--rules my_rules.yaml`, `--models my_models.yaml`, `--log decisions.jsonl`. Without `--rules` and `--models` it uses the packaged example files. Ask it for a model:
+
+    curl -s localhost:8099/decide -H 'content-type: application/json' \
+         -d '{"task_id":"t1","step_type":"code_edit"}'
+
+Developers: `git clone https://github.com/AIArchLab/works && cd works/advisor-router && pip install -e ".[dev]" && python -m pytest -q`
+
 **Status:** Sample / Concept (research skeleton, not a product)
-**Evidence state:** Verified locally: rule matching, default-to-strongest, upgrade-only re-ask, decision log (37 tests pass, raw output in `evidence/`; the demo loop runs against a fake model reply). Not verified: any real provider call, any embedding classifier. Model names are placeholders.
+**Evidence state:** Verified locally: one-line install and the `advisor-router` commands, rule matching, default-to-strongest, upgrade-only re-ask, decision log (37 tests pass, raw output in `evidence/`; the demo loop runs against a fake model reply). Not verified: any real provider call, any embedding classifier. Model names are placeholders.
 **Scenario and data:** fictional. No real models, prices or users are involved.
 
 ## What it shows
@@ -23,19 +38,12 @@ Design choices:
 - `/decide` validates input: `phase` is `entry` or `reask`, `current_tier` must be a configured tier, `phase=reask` requires `struggle` and `current_tier`, `tokens >= 0`. Violations return 422.
 - The classifier slot is pluggable. The first version has none.
 
-## How to run
-
-    pip install -r requirements.txt
-    python -m uvicorn advisor.main:app --port 8099
-    python runtime_client.py          # in a second shell: the sticky loop demo
-    python -m pytest -q               # tests
-
 ## Contents
 
-- `rules.yaml`: rules, default tier, confidence threshold (0.6), tier order
-- `models.yaml`: illustrative registry (placeholder names; endpoint and key variable names are for the caller only)
-- `advisor/`: rule engine, registry, pluggable classifier, decision log, FastAPI app (`POST /decide`)
-- `runtime_client.py`: caller-side example of the sticky loop with a fake model reply
+- `advisor/data/rules.yaml`: rules, default tier, confidence threshold (0.6), tier order
+- `advisor/data/models.yaml`: illustrative registry (placeholder names; endpoint and key variable names are for the caller only)
+- `advisor/`: rule engine, `advisor-router` command line, registry, pluggable classifier, decision log, FastAPI app (`POST /decide`)
+- `advisor/runtime_client.py`: caller-side example of the sticky loop with a fake model reply
 - `tests/`: unit and HTTP-level tests
 - `evidence/`: raw output of the test run and the demo loop
 

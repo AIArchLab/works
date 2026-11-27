@@ -1,12 +1,15 @@
 import os
+from pathlib import Path
 from typing import Literal, Optional
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 from .core import Advisor
 
+DATA = Path(__file__).parent / "data"   # packaged default rules.yaml / models.yaml
+
 app = FastAPI(title="model-advisor")
-advisor = Advisor(rules=os.getenv("RULES", "rules.yaml"),
-                  models=os.getenv("MODELS", "models.yaml"),
+advisor = Advisor(rules=os.getenv("RULES") or str(DATA / "rules.yaml"),
+                  models=os.getenv("MODELS") or str(DATA / "models.yaml"),
                   log=os.getenv("DECISION_LOG", "decisions.jsonl"))
 
 class DecideReq(BaseModel):

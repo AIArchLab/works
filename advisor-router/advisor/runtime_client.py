@@ -1,10 +1,11 @@
 """Runtime-side example: sticky loop. The runtime owns state, keys, and usage accounting.
 The advisor only returns a model name."""
-import os, httpx, yaml
+import os, pathlib, httpx, yaml
 
 ADVISOR = os.getenv("ADVISOR_URL", "http://127.0.0.1:8099")
 def _load_models():
-    with open("models.yaml") as f:
+    path = os.getenv("MODELS") or str(pathlib.Path(__file__).parent / "data" / "models.yaml")
+    with open(path) as f:
         return yaml.safe_load(f)["models"]
 
 REG = _load_models()       # runtime has keys
@@ -51,5 +52,9 @@ def run_task(task_id, steps):
         messages.append({"role": "assistant", "content": resp["text"]})
     print("tier:", tier, "ledger:", usage_ledger)
 
-if __name__ == "__main__":
+def main():
     run_task("demo-1", [("plan", "design the migration"), ("code_edit", "apply it")])
+
+
+if __name__ == "__main__":
+    main()
