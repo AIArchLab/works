@@ -1,7 +1,7 @@
 # advisor-router
 
 **Status:** Sample / Concept (research skeleton, not a product)
-**Evidence state:** Verified locally: rule matching, default-to-strongest, upgrade-only re-ask, decision log (33 tests pass, raw output in `evidence/`; the demo loop runs against a fake model reply). Not verified: any real provider call, any embedding classifier. Model names are placeholders.
+**Evidence state:** Verified locally: rule matching, default-to-strongest, upgrade-only re-ask, decision log (37 tests pass, raw output in `evidence/`; the demo loop runs against a fake model reply). Not verified: any real provider call, any embedding classifier. Model names are placeholders.
 **Scenario and data:** fictional. No real models, prices or users are involved.
 
 ## What it shows

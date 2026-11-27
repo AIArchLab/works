@@ -229,3 +229,31 @@ def test_rules_mapping_rejected_as_value_error(tmp_path):
     cfg = {"default_model": "strong", "tiers": ["cheap", "mid", "strong"], "rules": {"a": "b"}}
     with pytest.raises(ValueError, match="rules must be a list"):
         _load_config(tmp_path, cfg)
+
+
+def test_non_mapping_rule_rejected_with_rule_number(tmp_path):
+    bad = tmp_path / "rules.yaml"
+    bad.write_text('default_model: strong\ntiers: [cheap, mid, strong]\nrules: ["foo"]\n')
+    with pytest.raises(ValueError, match=r"rule #1 must be a mapping"):
+        Advisor(rules=str(bad), models=str(ROOT / "models.yaml"), log=str(tmp_path / "d"))
+
+
+def test_rule_missing_model_rejected_with_rule_number(tmp_path):
+    bad = tmp_path / "rules.yaml"
+    bad.write_text("default_model: strong\ntiers: [cheap, mid, strong]\nrules:\n  - {name: x, when: {step_type: [a]}}\n")
+    with pytest.raises(ValueError, match=r"rule #1 must include model"):
+        Advisor(rules=str(bad), models=str(ROOT / "models.yaml"), log=str(tmp_path / "d"))
+
+
+def test_missing_default_model_rejected_explicitly(tmp_path):
+    bad = tmp_path / "rules.yaml"
+    bad.write_text("tiers: [cheap, mid, strong]\nrules: []\n")
+    with pytest.raises(ValueError, match="configuration must include default_model"):
+        Advisor(rules=str(bad), models=str(ROOT / "models.yaml"), log=str(tmp_path / "d"))
+
+
+def test_missing_tiers_rejected_explicitly(tmp_path):
+    bad = tmp_path / "rules.yaml"
+    bad.write_text("default_model: strong\nrules: []\n")
+    with pytest.raises(ValueError, match="configuration must include tiers"):
+        Advisor(rules=str(bad), models=str(ROOT / "models.yaml"), log=str(tmp_path / "d"))

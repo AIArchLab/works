@@ -14,13 +14,22 @@ class RuleEngine:
         self.rules = cfg.get("rules", [])
         if not isinstance(self.rules, list):
             raise ValueError("rules must be a list")
-        self.default = cfg["default_model"]
+        if "default_model" not in cfg:
+            raise ValueError("configuration must include default_model")
+        if "tiers" not in cfg:
+            raise ValueError("configuration must include tiers")
+        self.default = cfg.get("default_model")
         self.threshold = cfg.get("confidence_threshold", 0.6)
-        self.tiers = cfg["tiers"]
+        self.tiers = cfg.get("tiers")
         if (not isinstance(self.tiers, list) or not self.tiers
                 or not all(isinstance(t, str) and t.strip() for t in self.tiers)
                 or len(set(self.tiers)) != len(self.tiers)):
             raise ValueError("tiers must be a non-empty list of unique strings")
+        for index, rule in enumerate(self.rules, start=1):
+            if not isinstance(rule, dict):
+                raise ValueError(f"rule #{index} must be a mapping")
+            if "model" not in rule:
+                raise ValueError(f"rule #{index} must include model")
         rule_names = [r.get("name") for r in self.rules]
         if not all(isinstance(name, str) and name.strip() for name in rule_names):
             raise ValueError("every rule must have a non-empty string name")
