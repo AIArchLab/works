@@ -1,0 +1,32 @@
+# Fresh venv, run from an empty directory outside the repo. Python 3.10.12.
+$ pip install "git+https://github.com/AIArchLab/works.git#subdirectory=advisor-router"
+advisor-router    0.1.0
+fastapi           0.162.5
+httpx             0.29.0
+PyYAML            6.0.4
+uvicorn           0.54.0
+
+$ advisor-router --help
+usage: advisor-router [-h] {serve,demo} ...
+
+A model advisor that returns only a model name.
+
+positional arguments:
+  {serve,demo}
+    serve       start the advisor service
+    demo        run the sticky-loop demo against a temporary advisor
+
+options:
+  -h, --help    show this help message and exit
+
+$ advisor-router demo
+tier: strong ledger: {'in': 1000, 'out': 400}
+
+--- decision log (demo) ---
+{"ts": 1795768117.9910882, "task_id": "demo-1", "step_type": "plan", "phase": "entry", "current_tier": null, "struggle": null, "tokens": 0, "text_sha256": "458cefb9dbdf8827d9ca71b9815d4a139c4e8a3ccb064d703288778dc3dd15ae", "rules_version": "442a13dca8644ada4134b8e1d451f408036812477653029bd6c4c4119f77e4ff", "confidence": null, "tier": "strong", "model": "example-large", "source": "rule", "matched_rule": "planning", "clamp": "none"}
+
+$ advisor-router serve --port 8123 &   (then curl)
+$ curl -s localhost:8123/health
+{"ok":true}
+$ curl -s localhost:8123/decide -d {task_id:t1,step_type:code_edit}
+{"tier":"mid","model":"example-medium","source":"rule","matched_rule":"code-edit","clamp":"none"}
