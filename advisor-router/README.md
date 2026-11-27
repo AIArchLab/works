@@ -1,7 +1,7 @@
 # advisor-router
 
 **Status:** Sample / Concept (research skeleton, not a product)
-**Evidence state:** Verified locally: rule matching, default-to-strongest, upgrade-only re-ask, decision log (27 tests pass, raw output in `evidence/`; the demo loop runs against a fake model reply). Not verified: any real provider call, any embedding classifier. Model names are placeholders.
+**Evidence state:** Verified locally: rule matching, default-to-strongest, upgrade-only re-ask, decision log (33 tests pass, raw output in `evidence/`; the demo loop runs against a fake model reply). Not verified: any real provider call, any embedding classifier. Model names are placeholders.
 **Scenario and data:** fictional. No real models, prices or users are involved.
 
 ## What it shows
@@ -43,6 +43,6 @@ Design choices:
 
 - `text_sha256` is an unsalted hash. A short or guessable prompt can be recovered by dictionary guessing, so treat it as a content fingerprint, not as protection for the text. A keyed HMAC would fix that but adds key management, which this sample leaves out.
 - Skeleton only. Provider calls and message normalization in `runtime_client.py` are stubs.
-- No classifier is implemented; rules plus default-to-strongest is the whole first version.
+- No classifier is implemented; rules plus default-to-strongest is the whole first version. Validate `confidence_threshold`'s type and range before adding a classifier, when the classifier path begins using it.
 - No measurements of routing quality or savings. None are claimed.
 - Whether an advisor beats a proxy for a given setup is an open question this sample does not answer.

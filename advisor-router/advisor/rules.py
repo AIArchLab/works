@@ -12,9 +12,20 @@ class RuleEngine:
         self.version = hashlib.sha256(raw).hexdigest()
         cfg = yaml.safe_load(raw)
         self.rules = cfg.get("rules", [])
+        if not isinstance(self.rules, list):
+            raise ValueError("rules must be a list")
         self.default = cfg["default_model"]
         self.threshold = cfg.get("confidence_threshold", 0.6)
         self.tiers = cfg["tiers"]
+        if (not isinstance(self.tiers, list) or not self.tiers
+                or not all(isinstance(t, str) and t.strip() for t in self.tiers)
+                or len(set(self.tiers)) != len(self.tiers)):
+            raise ValueError("tiers must be a non-empty list of unique strings")
+        rule_names = [r.get("name") for r in self.rules]
+        if not all(isinstance(name, str) and name.strip() for name in rule_names):
+            raise ValueError("every rule must have a non-empty string name")
+        if len(set(rule_names)) != len(rule_names):
+            raise ValueError("rule names must be unique")
         for tier in [self.default] + [r["model"] for r in self.rules]:
             if tier not in self.tiers:
                 raise ValueError(f"unknown tier {tier!r} in rules; tiers are {self.tiers}")
@@ -37,8 +48,8 @@ class RuleEngine:
             raise ValueError(f"rule {name!r}: min_tokens must be an int, got {mt!r}")
         for k in ("step_type", "keywords"):
             if k in w and (not isinstance(w[k], list) or not w[k]
-                           or not all(isinstance(x, str) for x in w[k])):
-                raise ValueError(f"rule {name!r}: {k} must be a non-empty list of strings")
+                           or not all(isinstance(x, str) and x.strip() for x in w[k])):
+                raise ValueError(f"rule {name!r}: {k} must be a non-empty list of non-blank strings")
 
     def match(self, step_type, text, tokens):
         text = (text or "").lower()

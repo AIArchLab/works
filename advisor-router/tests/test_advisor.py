@@ -193,3 +193,39 @@ def test_http_reask_at_top_reports_ceiling(tmp_path, monkeypatch):
     r = c.post("/decide", json={"task_id": "t", "step_type": "extract", "phase": "reask",
                                 "current_tier": "strong", "struggle": "x"})
     assert r.status_code == 200 and r.json()["clamp"] == "ceiling"
+
+
+def _load_config(tmp_path, cfg):
+    p = tmp_path / "config.yaml"
+    p.write_text(yaml.safe_dump(cfg))
+    from advisor.rules import RuleEngine
+    return RuleEngine(str(p))
+
+def test_blank_keyword_rejected(tmp_path):
+    with pytest.raises(ValueError, match="non-blank"):
+        _load(tmp_path, {"keywords": [""]})
+
+def test_whitespace_keyword_rejected(tmp_path):
+    with pytest.raises(ValueError, match="non-blank"):
+        _load(tmp_path, {"keywords": [" "]})
+
+def test_duplicate_tiers_rejected(tmp_path):
+    with pytest.raises(ValueError, match="unique"):
+        _load_config(tmp_path, {"default_model": "strong", "tiers": ["cheap", "mid", "mid", "strong"], "rules": []})
+
+def test_empty_tiers_rejected(tmp_path):
+    with pytest.raises(ValueError, match="non-empty"):
+        _load_config(tmp_path, {"default_model": "strong", "tiers": [], "rules": []})
+
+def test_duplicate_rule_names_rejected(tmp_path):
+    rules = [
+        {"name": "same", "when": {"step_type": ["extract"]}, "model": "cheap"},
+        {"name": "same", "when": {"step_type": ["plan"]}, "model": "mid"},
+    ]
+    with pytest.raises(ValueError, match="rule names must be unique"):
+        _load_config(tmp_path, {"default_model": "strong", "tiers": ["cheap", "mid", "strong"], "rules": rules})
+
+def test_rules_mapping_rejected_as_value_error(tmp_path):
+    cfg = {"default_model": "strong", "tiers": ["cheap", "mid", "strong"], "rules": {"a": "b"}}
+    with pytest.raises(ValueError, match="rules must be a list"):
+        _load_config(tmp_path, cfg)
