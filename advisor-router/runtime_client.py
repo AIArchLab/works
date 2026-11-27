@@ -3,7 +3,11 @@ The advisor only returns a model name."""
 import os, httpx, yaml
 
 ADVISOR = os.getenv("ADVISOR_URL", "http://127.0.0.1:8099")
-REG = yaml.safe_load(open("models.yaml"))["models"]       # runtime has keys
+def _load_models():
+    with open("models.yaml") as f:
+        return yaml.safe_load(f)["models"]
+
+REG = _load_models()       # runtime has keys
 usage_ledger = {"in": 0, "out": 0}                         # usage accounting stays HERE
 
 def decide(**kw):
@@ -25,8 +29,8 @@ def normalize(messages, provider):
     return messages
 
 def struggling(resp, fails):
-    if not resp["ok"]: return "call_error"
     if fails >= 3: return "tool_error_x3"
+    if not resp["ok"]: return "call_error"
     return None
 
 def run_task(task_id, steps):
@@ -34,15 +38,16 @@ def run_task(task_id, steps):
     for step_type, text in steps:
         if tier is None:                              # entry classification, once
             tier = decide(task_id=task_id, step_type=step_type, text=text)["tier"]
+        messages.append({"role": "user", "content": text})   # once per step, not per retry
         while True:
-            messages.append({"role": "user", "content": text})
             resp = call_model(tier, messages)
+            fails = 0 if resp["ok"] else fails + 1
             why = struggling(resp, fails)
             if not why: break
             up = decide(task_id=task_id, step_type=step_type, text=text,
                         phase="reask", current_tier=tier, struggle=why)
             if up["tier"] == tier: break              # already strongest
-            tier, fails = up["tier"], 0               # upgrade only, same messages re-sent
+            tier = up["tier"]                         # upgrade only, same messages re-sent
         messages.append({"role": "assistant", "content": resp["text"]})
     print("tier:", tier, "ledger:", usage_ledger)
 

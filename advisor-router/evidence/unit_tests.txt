@@ -1,0 +1,33 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-9.2.0, pluggy-1.7.0 -- /tmp/v/bin/python
+cachedir: .pytest_cache
+rootdir: /tmp/w/advisor-router
+plugins: anyio-4.16.0
+collecting ... collected 19 items
+
+tests/test_advisor.py::test_first_match_wins PASSED                      [  5%]
+tests/test_advisor.py::test_default_is_strongest_when_nothing_matches PASSED [ 10%]
+tests/test_advisor.py::test_low_confidence_classifier_falls_back_to_default PASSED [ 15%]
+tests/test_advisor.py::test_confident_classifier_is_used PASSED          [ 21%]
+tests/test_advisor.py::test_reask_upgrades_only PASSED                   [ 26%]
+tests/test_advisor.py::test_never_downgrades_after_entry PASSED          [ 31%]
+tests/test_advisor.py::test_response_carries_name_only_and_log_has_no_secrets PASSED [ 36%]
+tests/test_advisor.py::test_long_context_not_shadowed_by_step_type_rule PASSED [ 42%]
+tests/test_advisor.py::test_keyword_rule_not_shadowed_and_case_insensitive PASSED [ 47%]
+tests/test_advisor.py::test_default_must_be_strongest PASSED             [ 52%]
+tests/test_advisor.py::test_rule_with_unknown_tier_rejected_at_load PASSED [ 57%]
+tests/test_advisor.py::test_log_has_explainability_fields_and_no_raw_text PASSED [ 63%]
+tests/test_advisor.py::test_clamp_field_values PASSED                    [ 68%]
+tests/test_advisor.py::test_http_happy_path PASSED                       [ 73%]
+tests/test_advisor.py::test_http_rejects_bad_phase PASSED                [ 78%]
+tests/test_advisor.py::test_http_rejects_unknown_current_tier PASSED     [ 84%]
+tests/test_advisor.py::test_http_reask_requires_struggle PASSED          [ 89%]
+tests/test_advisor.py::test_http_rejects_negative_tokens PASSED          [ 94%]
+tests/test_advisor.py::test_runtime_retry_appends_user_message_once_and_counts_fails PASSED [100%]
+
+=============================== warnings summary ===============================
+../../v/lib/python3.10/site-packages/fastapi/testclient.py:1
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 19 passed, 1 warning in 0.27s =========================

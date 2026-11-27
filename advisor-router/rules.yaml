@@ -1,8 +1,15 @@
 # Rules are checked top to bottom. First match wins.
+# Safety rules (long-context, keyword-hard) come first so a step_type rule cannot shadow them.
 # step_type comes from the runtime. keywords are matched against the text.
 default_model: strong        # used when nothing matches or confidence is low
 confidence_threshold: 0.6    # classifier answers below this fall back to default_model
 rules:
+  - name: long-context
+    when: {min_tokens: 60000}
+    model: strong
+  - name: keyword-hard
+    when: {keywords: ["prove", "root cause", "security audit"]}
+    model: strong
   - name: trivial-extract
     when: {step_type: [extract, format, summarize_short]}
     model: cheap
@@ -11,12 +18,6 @@ rules:
     model: mid
   - name: planning
     when: {step_type: [plan, review, architect]}
-    model: strong
-  - name: long-context
-    when: {min_tokens: 60000}
-    model: strong
-  - name: keyword-hard
-    when: {keywords: ["prove", "root cause", "security audit"]}
     model: strong
 # Escalation order, weakest to strongest. Upgrades only, never downgrade mid-task.
 tiers: [cheap, mid, strong]

@@ -1,7 +1,7 @@
 import os
-from typing import Optional
-from fastapi import FastAPI
-from pydantic import BaseModel
+from typing import Literal, Optional
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, Field
 from .core import Advisor
 
 app = FastAPI(title="model-advisor")
@@ -13,18 +13,24 @@ class DecideReq(BaseModel):
     task_id: str
     step_type: str
     text: str = ""
-    tokens: int = 0
-    phase: str = "entry"              # entry | reask
-    current_tier: Optional[str] = None
-    struggle: Optional[str] = None    # e.g. "tool_error_x3", "loop_detected"
+    tokens: int = Field(0, ge=0)
+    phase: Literal["entry", "reask"] = "entry"
+    current_tier: Optional[str] = None   # must be one of the configured tiers
+    struggle: Optional[str] = None       # e.g. "tool_error_x3"; required when phase=reask
 
 class DecideResp(BaseModel):
     tier: str
     model: str
-    source: str                        # why: rule:<name> | classifier | default | upgrade(...) | sticky(...)
+    source: str                          # rule | classifier | default
+    matched_rule: Optional[str] = None   # rule name when source=rule, else null
+    clamp: Literal["sticky", "upgrade", "none"]
 
 @app.post("/decide", response_model=DecideResp)
 def decide(req: DecideReq):
+    if req.current_tier is not None and req.current_tier not in advisor.reg.tiers:
+        raise HTTPException(422, f"current_tier must be one of {advisor.reg.tiers}")
+    if req.phase == "reask" and not req.struggle:
+        raise HTTPException(422, "struggle is required when phase=reask")
     return advisor.decide(**req.model_dump())
 
 @app.get("/health")
